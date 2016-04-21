@@ -6,9 +6,10 @@
 */
 #pragma once
 #include <string>
-#include "vector3.h"
 
 namespace hasenpfote{ namespace math{
+
+class Vector3;
 
 class AxisAngle final
 {

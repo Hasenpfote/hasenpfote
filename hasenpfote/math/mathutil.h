@@ -5,6 +5,7 @@
 * @date 2016/04/16
 */
 #pragma once
+#include <iostream>
 #include <cstdint>
 #include <cmath>
 #define _USE_MATH_DEFINES
@@ -78,5 +79,32 @@ inline float MathUtil::RadiansToDegrees(float angle)
 {
     return angle * 180.0f / static_cast<float>(M_PI);
 }
+
+template <typename T>
+T clamp(T value, T min, T max)
+{
+    if(value < min)
+        return min;
+    if(value > max)
+        return max;
+    return value;
+};
+
+template <typename T>
+bool contains_closed(T value, T lower, T upper)
+{
+    if(value <= lower || value >= upper)
+        return false;
+    return true;
+};
+
+template <typename T>
+bool contains_open(T value, T lower, T upper)
+{
+    if(value < lower || value > upper)
+        return false;
+    return true;
+};
+
 
 }}
