@@ -74,8 +74,8 @@ public:
     friend const RMatrix4 operator * (float scale, const RMatrix4& m);
 
 /* Subscript operator */
-    float& operator () (size_t row, size_t column);
-    const float& operator () (size_t row, size_t column) const;
+    float& operator () (std::size_t row, std::size_t column);
+    const float& operator () (std::size_t row, std::size_t column) const;
 
 /* Operation */
 
@@ -237,14 +237,14 @@ inline RMatrix4& RMatrix4::operator = (const std::array<float, num_elements>& m)
     return *this;
 }
 
-inline float& RMatrix4::operator () (size_t row, size_t column)
+inline float& RMatrix4::operator () (std::size_t row, std::size_t column)
 {
     assert(row < order);
     assert(column < order);
     return m[row][column];
 }
 
-inline const float& RMatrix4::operator () (size_t row, size_t column) const
+inline const float& RMatrix4::operator () (std::size_t row, std::size_t column) const
 {
     assert(row < order);
     assert(column < order);

@@ -15,7 +15,8 @@ namespace hasenpfote{ namespace math{
  * @param max_ulps unit in the last place.
  * @return a ≈ b
  */
-bool almost_equals(float a, float b, uint32_t max_ulps);
+bool almost_equals(float a, float b, std::uint32_t max_ulps);
+bool almost_equals(double a, double b, std::uint64_t max_ulps);
 
 /*!
  * sinc 関数のテイラー級数による近似.
