@@ -1,6 +1,6 @@
 ﻿#include <cassert>
 #include <string>
-#include "mathutil.h"
+#include "utility.h"
 #include "vector3.h"
 #include "cmatrix4.h"
 #include "rmatrix4.h"
@@ -160,7 +160,7 @@ RMatrix4 Quaternion::ToRotationRMatrix() const
 
 AxisAngle Quaternion::ToAxisAngle() const
 {
-    assert(MathUtil::AlmostEquals(1.0f, Norm(), 1));    // quaternion is not an unit quaternion.
+    assert(almost_equals(1.0f, Norm(), 1));    // quaternion is not an unit quaternion.
     AxisAngle result;
     const float i = NormV();
     if(i > 0.0f){    // TODO: 少し余裕を持たせる
@@ -208,7 +208,7 @@ Quaternion Quaternion::Ln(const Quaternion& q)
         coef = phi / i;
     }
     else{
-        coef = MathUtil::ReciprocalOfSinc(phi) / norm;
+        coef = rcp_sinc(phi) / norm;
     }
     return Quaternion(std::logf(norm), coef * q.x, coef * q.y, coef * q.z);
 }
@@ -218,44 +218,44 @@ Quaternion Quaternion::LnU(const Quaternion& q)
     const float i = q.NormV();
     const float phi = std::atan2f(i, q.w);
     const float norm = q.Norm();
-    assert(MathUtil::AlmostEquals(1.0f, norm, 1));    // not an unit quaternion.
+    assert(almost_equals(1.0f, norm, 1));    // not an unit quaternion.
 
-    float rcp_sinc;
+    float _rcp_sinc;
     if(i > 0.0f){    // TODO: 少し余裕を持たせる
-        rcp_sinc = phi / (i / norm);
+        _rcp_sinc = phi / (i / norm);
     }
     else{
-        rcp_sinc = MathUtil::ReciprocalOfSinc(phi);
+        _rcp_sinc = rcp_sinc(phi);
     }
-    return Quaternion(0.0f, rcp_sinc * q.x, rcp_sinc * q.y, rcp_sinc * q.z);
+    return Quaternion(0.0f, _rcp_sinc * q.x, _rcp_sinc * q.y, _rcp_sinc * q.z);
 }
 
 Quaternion Quaternion::Exp(const Quaternion& q)
 {
     const float i = q.NormV();
-    float sinc;
+    float _sinc;
     if(i > 0.0f) {    // TODO: 少し余裕を持たせる
-        sinc = std::sinf(i) / i;
+        _sinc = std::sinf(i) / i;
     }
     else{
-        sinc = MathUtil::Sinc(i);
+        _sinc = sinc(i);
     }
     const float exp_w = std::expf(q.w);
-    return Quaternion(exp_w * std::cosf(i), exp_w * q.x * sinc, exp_w * q.y * sinc, exp_w * q.z * sinc);
+    return Quaternion(exp_w * std::cosf(i), exp_w * q.x * _sinc, exp_w * q.y * _sinc, exp_w * q.z * _sinc);
 }
 
 Quaternion Quaternion::ExpP(const Quaternion& q)
 {
-    assert(MathUtil::AlmostEquals(0.0f, q.w, 1));    // not a purely imaginary quaternion.
+    assert(almost_equals(0.0f, q.w, 1));    // not a purely imaginary quaternion.
     const float i = q.NormV();
-    float sinc;
+    float _sinc;
     if(i > 0.0f){    // TODO: 少し余裕を持たせる
-        sinc = std::sinf(i) / i;
+        _sinc = std::sinf(i) / i;
     }
     else{
-        sinc = MathUtil::Sinc(i);
+        _sinc = sinc(i);
     }
-    return Quaternion(std::cosf(i), q.x * sinc, q.y * sinc, q.z * sinc);
+    return Quaternion(std::cosf(i), q.x * _sinc, q.y * _sinc, q.z * _sinc);
 }
 
 Quaternion Quaternion::Pow(const Quaternion& q, float exponent)
@@ -270,7 +270,7 @@ Quaternion Quaternion::PowU(const Quaternion& q, float exponent)
 
 Quaternion Quaternion::RotationAxis(const Vector3& axis, float angle)
 {
-    assert(MathUtil::AlmostEquals(1.0f, axis.Magnitude(), 1));    // axis is not an unit quaternion.
+    assert(almost_equals(1.0f, axis.Magnitude(), 1));    // axis is not an unit quaternion.
     const float half_angle = angle * 0.5f;
     const float s = std::sinf(half_angle);
     return Quaternion(std::cosf(half_angle), axis.x * s, axis.y * s, axis.z * s);
@@ -286,8 +286,8 @@ Quaternion Quaternion::RotationShortestArc(const Vector3& a, const Vector3& b)
 
 Quaternion Quaternion::RotationalDifference(const Quaternion& a, const Quaternion& b)
 {
-    assert(MathUtil::AlmostEquals(1.0f, a.Norm(), 1));    // a is not an unit quaternion.
-    assert(MathUtil::AlmostEquals(1.0f, b.Norm(), 1));    // b is not an unit quaternion.
+    assert(almost_equals(1.0f, a.Norm(), 1));    // a is not an unit quaternion.
+    assert(almost_equals(1.0f, b.Norm(), 1));    // b is not an unit quaternion.
     return Quaternion::Conjugate(a) * b;
 }
 
@@ -309,7 +309,7 @@ Quaternion Quaternion::Slerp(const Quaternion& a, const Quaternion& b, float t, 
     }
 
     float fx, fy;
-    if(MathUtil::AlmostEquals(1.0f, std::fabsf(cos_t), 1)){
+    if(almost_equals(1.0f, std::fabsf(cos_t), 1)){
         // |cosθ| ≈ 1 → sinθ ≈ 0 の時は線形補間に帰着
         fx = 1.0f - t;
         fy = t;

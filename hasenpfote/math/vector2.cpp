@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-#include "mathutil.h"
+#include "utility.h"
 #include "vector2.h"
 
 namespace hasenpfote{ namespace math{
@@ -151,8 +151,8 @@ bool Vector2::IsPerpendicular(const Vector2& a, const Vector2& b)
 
 bool Vector2::IsParallel(const Vector2& a, const Vector2& b)
 {
-    assert(MathUtil::AlmostEquals(1.0f, a.MagnitudeSquared(), 1));    // a is not an unit vector.
-    assert(MathUtil::AlmostEquals(1.0f, b.MagnitudeSquared(), 1));    // b is not an unit vector.
+    assert(almost_equals(1.0f, a.MagnitudeSquared(), 1));    // a is not an unit vector.
+    assert(almost_equals(1.0f, b.MagnitudeSquared(), 1));    // b is not an unit vector.
     return !(std::abs(DotProduct(a, b)) < 1.0f);
 
 }

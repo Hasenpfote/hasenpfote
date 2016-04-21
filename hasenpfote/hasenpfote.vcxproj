@@ -136,7 +136,7 @@
   <ItemGroup>
     <ClCompile Include="math\cmatrix4.cpp" />
     <ClCompile Include="math\complex_number.cpp" />
-    <ClCompile Include="math\mathutil.cpp" />
+    <ClCompile Include="math\utility.cpp" />
     <ClCompile Include="math\quaternion.cpp" />
     <ClCompile Include="math\rmatrix4.cpp" />
     <ClCompile Include="math\vector2.cpp" />
@@ -147,7 +147,7 @@
     <ClInclude Include="math\axis_angle.h" />
     <ClInclude Include="math\cmatrix4.h" />
     <ClInclude Include="math\complex_number.h" />
-    <ClInclude Include="math\mathutil.h" />
+    <ClInclude Include="math\utility.h" />
     <ClInclude Include="math\quaternion.h" />
     <ClInclude Include="math\rmatrix4.h" />
     <ClInclude Include="math\vector2.h" />

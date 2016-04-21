@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math/mathutil.h"
+#include "math/utility.h"
 #include "math/vector2.h"
 #include "math/vector3.h"
 #include "math/cmatrix4.h"

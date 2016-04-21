@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-#include "mathutil.h"
+#include "utility.h"
 #include "cmatrix4.h"
 #include "vector3.h"
 
@@ -174,8 +174,8 @@ bool Vector3::IsPerpendicular(const Vector3& a, const Vector3& b)
 
 bool Vector3::IsParallel(const Vector3& a, const Vector3& b)
 {
-    assert(MathUtil::AlmostEquals(1.0f, a.MagnitudeSquared(), 1));    // a is not an unit vector.
-    assert(MathUtil::AlmostEquals(1.0f, b.MagnitudeSquared(), 1));    // b is not an unit vector.
+    assert(almost_equals(1.0f, a.MagnitudeSquared(), 1));    // a is not an unit vector.
+    assert(almost_equals(1.0f, b.MagnitudeSquared(), 1));    // b is not an unit vector.
     return !(std::abs(DotProduct(a, b)) < 1.0f);
 
 }

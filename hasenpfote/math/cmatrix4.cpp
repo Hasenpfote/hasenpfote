@@ -1,5 +1,5 @@
 #include <string>
-#include "mathutil.h"
+#include "utility.h"
 #include "vector3.h"
 #include "quaternion.h"
 #include "cmatrix4.h"
@@ -238,7 +238,7 @@ CMatrix4 CMatrix4::RotationZ(float angle)
 
 CMatrix4 CMatrix4::RotationAxis(Vector3 axis, float angle)
 {
-    assert(MathUtil::AlmostEquals(1.0f, axis.Magnitude(), 1));    // axis is not an unit vector.
+    assert(almost_equals(1.0f, axis.Magnitude(), 1));    // axis is not an unit vector.
     const float x = axis.x;
     const float y = axis.y;
     const float z = axis.z;
