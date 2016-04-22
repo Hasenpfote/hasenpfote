@@ -55,31 +55,68 @@ float to_radians(float angle);
  */
 float to_degrees(float angle);
 
+/*!
+ * 値 x を [min, max] の範囲内に制限する.
+ * @param[in] x
+ * @param[in] min
+ * @param[in] max
+ * @return 制限された値 x
+ */
 template <typename T>
-T clamp(T value, T min, T max)
+T clamp(T x, T min, T max)
 {
-    if(value < min)
+    if(x < min)
         return min;
-    if(value > max)
+    if(x > max)
         return max;
-    return value;
+    return x;
 };
 
-template <typename T>
-bool contains_closed(T value, T lower, T upper)
+/*!
+ * [min1, max1] の範囲内にある x を [min2, max2] に写像する.
+ * @param[in] x
+ * @param[in] min1
+ * @param[in] max1
+ * @param[in] min2
+ * @param[in] max2
+ * @return 写像された値 x
+ */
+template<typename T>
+T remap(T x, T min1, T max1, T min2, T max2)
 {
-    if(value <= lower || value >= upper)
+    return (((x - min1) / (max1 - min1)) * (max2 - min2)) + min2;
+}
+
+/*!
+ * 値 x が 閉区間 [lower, upper] に含まれるか.
+ * @param[in] x
+ * @param[in] lower
+ * @param[in] upper
+ * @retval true 含む
+ * @retval false 含まない
+ */
+template <typename T>
+bool contains_closed(T x, T lower, T upper)
+{
+    if(x < lower || x > upper)
         return false;
     return true;
 };
 
+/*!
+* 値 x が 開区間 (lower, upper) に含まれるか.
+* @param[in] x
+* @param[in] lower
+* @param[in] upper
+* @retval true 含む
+* @retval false 含まない
+*/
 template <typename T>
-bool contains_open(T value, T lower, T upper)
+bool contains_open(T x, T lower, T upper)
 {
-    if(value < lower || value > upper)
+    if(x <= lower || x >= upper)
         return false;
     return true;
 };
-
 
 }}
