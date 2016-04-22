@@ -1,7 +1,6 @@
-﻿#define _USE_MATH_DEFINES
-#include <iostream>
-#include <cmath>
+﻿#include <iostream>
 #include <cstdint>
+#include "constants.h"
 #include "utility.h"
 
 namespace hasenpfote{ namespace math{
@@ -76,12 +75,12 @@ float rcp_sinc(float x)
 
 float to_radians(float angle)
 {
-    return angle * static_cast<float>(M_PI) / 180.0f;
+    return angle * pi<float>() / 180.0f;
 }
 
 float to_degrees(float angle)
 {
-    return angle * 180.0f / static_cast<float>(M_PI);
+    return angle * 180.0f / pi<float>();
 }
 
 

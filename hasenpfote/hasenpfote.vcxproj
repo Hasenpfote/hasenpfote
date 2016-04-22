@@ -149,6 +149,7 @@
     <ClInclude Include="math\axis_angle.h" />
     <ClInclude Include="math\cmatrix4.h" />
     <ClInclude Include="math\complex_number.h" />
+    <ClInclude Include="math\constants.h" />
     <ClInclude Include="math\qquat.h" />
     <ClInclude Include="math\utility.h" />
     <ClInclude Include="math\quaternion.h" />
