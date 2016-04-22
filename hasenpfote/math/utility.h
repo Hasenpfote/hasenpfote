@@ -5,6 +5,7 @@
 * @date 2016/04/16
 */
 #pragma once
+#include <cstdint>
 
 namespace hasenpfote{ namespace math{
 
