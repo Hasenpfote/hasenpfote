@@ -1,8 +1,28 @@
-﻿#include "complex_number.h"
+﻿#include <cassert>
+#include "complex_number.h"
 
 namespace hasenpfote{ namespace math{
 
 const ComplexNumber ComplexNumber::IDENTITY = ComplexNumber(1.0f, 0.0f);
+
+ComplexNumber::ComplexNumber(const ComplexNumber& c)
+{
+    re = c.re;
+    im = c.im;
+}
+
+ComplexNumber::ComplexNumber(float re, float im)
+{
+    this->re = re;
+    this->im = im;
+}
+
+ComplexNumber& ComplexNumber::operator = (const ComplexNumber& c)
+{
+    re = c.re;
+    im = c.im;
+    return *this;
+}
 
 ComplexNumber& ComplexNumber::operator += (const ComplexNumber& c)
 {
@@ -37,6 +57,16 @@ ComplexNumber& ComplexNumber::operator /= (float divisor)
     re /= divisor;
     im /= divisor;
     return *this;
+}
+
+const ComplexNumber ComplexNumber::operator + () const
+{
+    return *this;
+}
+
+const ComplexNumber ComplexNumber::operator - () const
+{
+    return ComplexNumber(-re, -im);
 }
 
 const ComplexNumber ComplexNumber::operator + (const ComplexNumber& c) const

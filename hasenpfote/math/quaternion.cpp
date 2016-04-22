@@ -11,6 +11,56 @@ namespace hasenpfote{ namespace math{
 
 const Quaternion Quaternion::IDENTITY = Quaternion(1.0f, 0.0f, 0.0f, 0.0f);
 
+Quaternion::Quaternion(const Quaternion& q)
+{
+    w = q.w;
+    x = q.x;
+    y = q.y;
+    z = q.z;
+}
+
+Quaternion::Quaternion(float w, float x, float y, float z)
+{
+    this->w = w;
+    this->x = x;
+    this->y = y;
+    this->z = z;
+}
+
+Quaternion::Quaternion(float s, const Vector3& v)
+{
+    w = s;
+    x = v.x;
+    y = v.y;
+    z = v.z;
+}
+
+Quaternion::Quaternion(const std::array<float, 4>& q)
+{
+    w = q[0];
+    x = q[1];
+    y = q[2];
+    z = q[3];
+}
+
+Quaternion& Quaternion::operator = (const Quaternion& q)
+{
+    w = q.w;
+    x = q.x;
+    y = q.y;
+    z = q.z;
+    return *this;
+}
+
+Quaternion& Quaternion::operator = (const std::array<float, 4>& q)
+{
+    w = q[0];
+    x = q[1];
+    y = q[2];
+    z = q[3];
+    return *this;
+}
+
 Quaternion& Quaternion::operator += (const Quaternion& q)
 {
     w += q.w;
@@ -52,6 +102,16 @@ Quaternion& Quaternion::operator /= (float divisor)
     y /= divisor;
     z /= divisor;
     return *this;
+}
+
+const Quaternion Quaternion::operator + () const
+{
+    return *this;
+}
+
+const Quaternion Quaternion::operator - () const
+{
+    return Quaternion(-w, -x, -y, -z);
 }
 
 const Quaternion Quaternion::operator + (const Quaternion& q) const

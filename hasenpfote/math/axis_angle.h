@@ -5,11 +5,9 @@
 * @date 2016/04/20
 */
 #pragma once
-#include <string>
+#include "vector3.h"
 
 namespace hasenpfote{ namespace math{
-
-class Vector3;
 
 class AxisAngle final
 {
@@ -37,29 +35,5 @@ public:
 };
 
 /* Inline */
-
-inline AxisAngle::AxisAngle(const AxisAngle& a)
-{
-    axis = a.axis;
-    angle = a.angle;
-}
-
-inline AxisAngle::AxisAngle(const Vector3& axis, float angle)
-{
-    this->axis = axis;
-    this->angle = angle;
-}
-
-inline AxisAngle& AxisAngle::operator = (const AxisAngle& a)
-{
-    axis = a.axis;
-    angle = a.angle;
-    return *this;
-}
-
-inline std::string AxisAngle::ToString() const
-{
-    return "AxisAngle{" + axis.ToString() + ", " + std::to_string(angle) + "}";
-}
 
 }}

@@ -11,6 +11,38 @@ const Vector2 Vector2::ZERO = Vector2(0.0f, 0.0f);
 const Vector2 Vector2::E_X = Vector2(1.0f, 0.0f);
 const Vector2 Vector2::E_Y = Vector2(0.0f, 1.0f);
 
+Vector2::Vector2(const Vector2& v)
+{
+    x = v.x;
+    y = v.y;
+}
+
+Vector2::Vector2(float x, float y)
+{
+    this->x = x;
+    this->y = y;
+}
+
+Vector2::Vector2(const std::array<float, 2>& v)
+{
+    x = v[0];
+    y = v[1];
+}
+
+Vector2& Vector2::operator = (const Vector2& v)
+{
+    x = v.x;
+    y = v.y;
+    return *this;
+}
+
+Vector2& Vector2::operator = (const std::array<float, 2>& v)
+{
+    x = v[0];
+    y = v[1];
+    return *this;
+}
+
 Vector2& Vector2::operator += (const Vector2& v)
 {
     x += v.x;
@@ -38,6 +70,16 @@ Vector2& Vector2::operator /= (float divisor)
     x /= divisor;
     y /= divisor;
     return *this;
+}
+
+const Vector2 Vector2::operator + () const
+{
+    return *this;
+}
+
+const Vector2 Vector2::operator - () const
+{
+    return Vector2(-x, -y);
 }
 
 const Vector2 Vector2::operator + (const Vector2& v) const

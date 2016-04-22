@@ -5,7 +5,6 @@
 * @date 2016/04/19
 */
 #pragma once
-#include <cassert>
 #include <string>
 
 namespace hasenpfote{ namespace math{
@@ -141,34 +140,5 @@ public:
 };
 
 /* Inline */
-
-inline ComplexNumber::ComplexNumber(const ComplexNumber& c)
-{
-    re = c.re;
-    im = c.im;
-}
-
-inline ComplexNumber::ComplexNumber(float re, float im)
-{
-    this->re = re;
-    this->im = im;
-}
-
-inline ComplexNumber& ComplexNumber::operator = (const ComplexNumber& c)
-{
-    re = c.re;
-    im = c.im;
-    return *this;
-}
-
-inline const ComplexNumber ComplexNumber::operator + () const
-{
-    return *this;
-}
-
-inline const ComplexNumber ComplexNumber::operator - () const
-{
-    return ComplexNumber(-re, -im);
-}
 
 }}
