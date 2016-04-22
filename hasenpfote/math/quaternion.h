@@ -29,6 +29,13 @@ public:
         std::array<float, 4> q;
     };
 public:
+    enum class Component : std::uint32_t
+    {
+        W = 0,
+        X = 1,
+        Y = 2,
+        Z = 3
+    };
     static const Quaternion IDENTITY;
 
 public:
