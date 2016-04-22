@@ -19,6 +19,9 @@
     <Filter Include="ヘッダー ファイル\math">
       <UniqueIdentifier>{92c52899-160d-4b4d-b204-4f725dc53c01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\quantization">
+      <UniqueIdentifier>{4bf1d92f-d01c-4a5c-97cd-e72aa14771a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="math\constants.h">
       <Filter>ヘッダー ファイル\math</Filter>
+    </ClInclude>
+    <ClInclude Include="quantization\quantization.h">
+      <Filter>ヘッダー ファイル\quantization</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -156,6 +156,7 @@
     <ClInclude Include="math\rmatrix4.h" />
     <ClInclude Include="math\vector2.h" />
     <ClInclude Include="math\vector3.h" />
+    <ClInclude Include="quantization\quantization.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
