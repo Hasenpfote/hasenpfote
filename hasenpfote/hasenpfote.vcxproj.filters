@@ -22,6 +22,9 @@
     <Filter Include="ヘッダー ファイル\quantization">
       <UniqueIdentifier>{4bf1d92f-d01c-4a5c-97cd-e72aa14771a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\quantization">
+      <UniqueIdentifier>{d5e00974-47bb-4ae4-91cc-490ea78c48cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -48,11 +51,11 @@
     <ClCompile Include="math\utility.cpp">
       <Filter>ソース ファイル\math</Filter>
     </ClCompile>
-    <ClCompile Include="math\qquat.cpp">
-      <Filter>ソース ファイル\math</Filter>
-    </ClCompile>
     <ClCompile Include="math\axis_angle.cpp">
       <Filter>ソース ファイル\math</Filter>
+    </ClCompile>
+    <ClCompile Include="quantization\quantization.cpp">
+      <Filter>ソース ファイル\quantization</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -81,9 +84,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="math\utility.h">
-      <Filter>ヘッダー ファイル\math</Filter>
-    </ClInclude>
-    <ClInclude Include="math\qquat.h">
       <Filter>ヘッダー ファイル\math</Filter>
     </ClInclude>
     <ClInclude Include="math\constants.h">

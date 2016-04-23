@@ -137,12 +137,12 @@
     <ClCompile Include="math\axis_angle.cpp" />
     <ClCompile Include="math\cmatrix4.cpp" />
     <ClCompile Include="math\complex_number.cpp" />
-    <ClCompile Include="math\qquat.cpp" />
     <ClCompile Include="math\utility.cpp" />
     <ClCompile Include="math\quaternion.cpp" />
     <ClCompile Include="math\rmatrix4.cpp" />
     <ClCompile Include="math\vector2.cpp" />
     <ClCompile Include="math\vector3.cpp" />
+    <ClCompile Include="quantization\quantization.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hasenpfote.h" />
@@ -150,7 +150,6 @@
     <ClInclude Include="math\cmatrix4.h" />
     <ClInclude Include="math\complex_number.h" />
     <ClInclude Include="math\constants.h" />
-    <ClInclude Include="math\qquat.h" />
     <ClInclude Include="math\utility.h" />
     <ClInclude Include="math\quaternion.h" />
     <ClInclude Include="math\rmatrix4.h" />

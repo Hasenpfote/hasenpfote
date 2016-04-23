@@ -8,6 +8,10 @@
 #include <cstdint>
 //#include "../math/utility.h"
 
+namespace hasenpfote{ namespace math{
+class Quaternion;
+}}
+
 namespace hasenpfote{ namespace quantization{
 
 // N-bit unsigned normalized value([0,1]) encoder.
@@ -37,5 +41,26 @@ template <unsigned N> float decode_snorm(std::uint16_t x)
     static_assert(((N) > 1) && ((N) <= 16), "out of range.");
     return decode_unorm<(N)- 1>(x >> 1) * ((x & 0x1) ? -1.0f : 1.0f);
 }
+
+/*!
+ * 回転を表す四元数を量子化する.
+ * <pre>
+ * [30-31]bits: specifying the max component among X, Y, Z, W.<br>
+ * [20-29]bits: component1. \f$[-\frac{1}{\sqrt{2}}, +\frac{1}{\sqrt{2}}]\f$<br>
+ * [10-19]bits: component2. \f$[-\frac{1}{\sqrt{2}}, +\frac{1}{\sqrt{2}}]\f$<br>
+ * [ 0- 9]bits: component3. \f$[-\frac{1}{\sqrt{2}}, +\frac{1}{\sqrt{2}}]\f$
+ * </pre>
+ * @param[in] q
+ * @return 量子化された四元数
+ */
+std::uint32_t encode32_quat(const math::Quaternion& q);
+
+/*!
+ * 回転を表す四元数を逆量子化する.
+ * @param[in] q
+ * @return 逆量子化された四元数
+ * @see encode32_quat()
+ */
+math::Quaternion decode32_quat(std::uint32_t q);
 
 }}
