@@ -73,15 +73,4 @@ float rcp_sinc(float x)
     return 1.0f + x2 / 6.0f + 7.0f * x4 / 360.0f + 31.0f * (x2 * x4) / 15120.0f;
 }
 
-float to_radians(float angle)
-{
-    return angle * pi<float>() / 180.0f;
-}
-
-float to_degrees(float angle)
-{
-    return angle * 180.0f / pi<float>();
-}
-
-
 }}

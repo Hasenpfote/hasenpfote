@@ -6,6 +6,7 @@
 */
 #pragma once
 #include <cstdint>
+#include "constants.h"
 
 namespace hasenpfote{ namespace math{
 
@@ -46,14 +47,20 @@ float rcp_sinc(float x);
  * @param[in] angle an angle in degrees.
  * @return an angle in radians.
  */
-float to_radians(float angle);
+constexpr float to_radians(float angle)
+{
+    return angle * pi<float>() / 180.0f;
+}
 
 /*!
  * radians to degrees.
  * @param[in] angle an angle in radians.
  * @return an angle in degrees.
  */
-float to_degrees(float angle);
+constexpr float to_degrees(float angle)
+{
+    return angle * 180.0f / pi<float>();
+}
 
 /*!
  * 値 x を [min, max] の範囲内に制限する.
