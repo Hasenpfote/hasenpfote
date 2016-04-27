@@ -167,9 +167,12 @@ ComplexNumber ComplexNumber::Rotation(float angle)
     return ComplexNumber(std::cosf(angle), std::sinf(angle));
 }
 
-std::string ComplexNumber::ToString() const
+std::ostream& operator<<(std::ostream& os, const ComplexNumber& c)
 {
-    return "ComplexNumber{" + std::to_string(re) + ", " + std::to_string(im) + "}";
+    const auto flags = os.flags();
+    os << "ComplexNumber{" << c.re << ", " << c.im << "}";
+    os.flags(flags);
+    return os;
 }
 
 }}

@@ -368,17 +368,18 @@ CMatrix4 CMatrix4::Ortho(float top, float bottom, float left, float right, float
         0.0f, 0.0f, 0.0f,    1.0f);
 }
 
-std::string CMatrix4::ToString() const
+std::ostream& operator<<(std::ostream& os, const CMatrix4& m)
 {
-    std::string result;
-    for(auto i = 0; i < order; i++){
-        result.append("CMatrix4[" + std::to_string(i)  + "]{" + std::to_string(m[i][0]));
-        for(auto j = 1; j < order; j++){
-            result.append(", " + std::to_string(m[i][j]));
+    const auto flags = os.flags();
+    for(auto i = 0; i < CMatrix4::order; i++){
+        os << "CMatrix4[" << i << "]{" << m.m[i][0];
+        for(auto j = 1; j < CMatrix4::order; j++){
+            os << ", " << m.m[i][j];
         }
-        result.append("}\n");
+        os << "}" << std::endl;
     }
-    return result;
+    os.flags(flags);
+    return os;
 }
 
 }}

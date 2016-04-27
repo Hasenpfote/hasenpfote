@@ -169,7 +169,7 @@ public:
     static bool IsParallel(const Vector3& a, const Vector3& b);
 
 /* Debug */
-    std::string ToString() const;
+    friend std::ostream& operator<<(std::ostream& os, const Vector3& v);
 };
 
 /* Inline */

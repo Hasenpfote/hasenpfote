@@ -164,7 +164,7 @@ public:
     static bool IsParallel(const Vector2& a, const Vector2& b);
 
 /* Debug */
-    std::string ToString() const;
+    friend std::ostream& operator<<(std::ostream& os, const Vector2& v);
 };
 
 /* Inline */

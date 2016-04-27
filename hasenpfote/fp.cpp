@@ -43,7 +43,7 @@ FP16& FP16::operator = (const FP32& fp)
 
 std::ostream& operator<<(std::ostream& os, const FP16& fp)
 {
-    auto flags = os.flags();
+    const auto flags = os.flags();
     os << "FP16{s=" << fp.sign;
     os << std::setfill('0');
     os << " e=0x" << std::hex << std::setw(2) << fp.exponent << "(" << std::dec << fp.exponent << ")";
@@ -78,7 +78,7 @@ FP32& FP32::operator = (const FP16& fp)
 
 std::ostream& operator<<(std::ostream& os, const FP32& fp)
 {
-    auto flags = os.flags();
+    const auto flags = os.flags();
     os << "FP32{s=" << fp.sign;
     os << std::setfill('0');
     os << " e=0x" << std::hex << std::setw(2) << fp.exponent << "(" << std::dec << fp.exponent << ")";

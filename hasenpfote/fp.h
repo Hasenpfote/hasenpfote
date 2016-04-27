@@ -21,21 +21,21 @@ union FP16
         std::uint16_t exponent : 5;
         std::uint16_t sign : 1;
     };
+/* Constructor */
 
     FP16() = default;
     constexpr FP16(std::uint16_t u) : u(u) {};
+    FP16(const FP32& fp){ *this = fp; }
 
-    FP16(const FP32& fp) {
-        *this = fp;
-    }
+/* Assignment operator */
 
     FP16& operator = (std::uint16_t u){
         this->u = u;
         return *this;
     }
-
     FP16& operator = (const FP32& fp);
 
+/* Debug */
     friend std::ostream& operator<<(std::ostream& os, const FP16& fp);
 };
 
@@ -50,13 +50,14 @@ union FP32
         std::uint32_t sign : 1;
     };
 
+/* Constructor */
+
     FP32() = default;
     constexpr FP32(std::uint32_t u) : u(u) {};
     constexpr FP32(float f) : f(f) {};
+    FP32(const FP16& fp){ *this = fp; }
 
-    FP32(const FP16& fp) {
-        *this = fp;
-    }
+/* Assignment operator */
 
     FP32& operator = (std::uint32_t u){
         this->u = u;
@@ -70,6 +71,7 @@ union FP32
 
     FP32& operator = (const FP16& fp);
 
+/* Debug */
     friend std::ostream& operator<<(std::ostream& os, const FP32& fp);
 };
 

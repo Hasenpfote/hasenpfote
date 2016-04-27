@@ -368,17 +368,18 @@ RMatrix4 RMatrix4::Ortho(float top, float bottom, float left, float right, float
         woff, hoff, -near*q, 1.0f);
 }
 
-std::string RMatrix4::ToString() const
+std::ostream& operator<<(std::ostream& os, const RMatrix4& m)
 {
-    std::string result;
-    for(auto i = 0; i < order; i++){
-        result.append("RMatrix4[" + std::to_string(i) + "]{" + std::to_string(m[i][0]));
-        for(auto j = 1; j < order; j++){
-            result.append(", " + std::to_string(m[i][j]));
+    const auto flags = os.flags();
+    for(auto i = 0; i < RMatrix4::order; i++){
+        os << "RMatrix4[" << i << "]{" << m.m[i][0];
+        for (auto j = 1; j < RMatrix4::order; j++){
+            os << ", " << m.m[i][j];
         }
-        result.append("}\n");
+        os << "}" << std::endl;
     }
-    return result;
+    os.flags(flags);
+    return os;
 }
 
 }}

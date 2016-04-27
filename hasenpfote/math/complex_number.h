@@ -5,7 +5,7 @@
 * @date 2016/04/19
 */
 #pragma once
-#include <string>
+#include <ostream>
 
 namespace hasenpfote{ namespace math{
 
@@ -136,7 +136,7 @@ public:
     static ComplexNumber Rotation(float angle);
 
 /* Debug */
-    std::string ToString() const;
+    friend std::ostream& operator<<(std::ostream& os, const ComplexNumber& c);
 };
 
 /* Inline */

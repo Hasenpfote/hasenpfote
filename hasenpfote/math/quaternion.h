@@ -285,7 +285,7 @@ public:
     static Quaternion Spline(Quaternion prev, Quaternion current, Quaternion next);
 
 /* Debug */
-    std::string ToString() const;
+    friend std::ostream& operator<<(std::ostream& os, const Quaternion& q);
 };
 
 /* Inline */

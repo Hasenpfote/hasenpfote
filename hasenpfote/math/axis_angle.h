@@ -31,7 +31,7 @@ public:
     AxisAngle& operator = (const AxisAngle& a);
 
 /* Debug */
-    std::string ToString() const;
+    friend std::ostream& operator<<(std::ostream& os, const AxisAngle& a);
 };
 
 /* Inline */

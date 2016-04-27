@@ -398,9 +398,12 @@ Quaternion Quaternion::Spline(Quaternion prev, Quaternion current, Quaternion ne
     return current * ExpP(-0.25f * (LnU(conj_cur * prev) + LnU(conj_cur * next)));
 }
 
-std::string Quaternion::ToString() const
+std::ostream& operator<<(std::ostream& os, const Quaternion& q)
 {
-    return "Quaternion{" + std::to_string(w) + ", " +  std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + "}";
+    const auto flags = os.flags();
+    os << "Quaternion{" << q.w << ", " << q.x << ", " << q.y << ", " << q.z << "}";
+    os.flags(flags);
+    return os;
 }
 
 }}

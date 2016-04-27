@@ -22,9 +22,12 @@ AxisAngle& AxisAngle::operator = (const AxisAngle& a)
     return *this;
 }
 
-std::string AxisAngle::ToString() const
+std::ostream& operator<<(std::ostream& os, const AxisAngle& a)
 {
-    return "AxisAngle{" + axis.ToString() + ", " + std::to_string(angle) + "}";
+    const auto flags = os.flags();
+    os << "AxisAngle{" << a.axis << ", " << a.angle << "}";
+    os.flags(flags);
+    return os;
 }
 
 }}

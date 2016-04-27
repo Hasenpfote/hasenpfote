@@ -227,9 +227,12 @@ bool Vector3::IsParallel(const Vector3& a, const Vector3& b)
 
 }
 
-std::string Vector3::ToString() const
+std::ostream& operator<<(std::ostream& os, const Vector3& v)
 {
-    return "Vector3{" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + "}";
+    const auto flags = os.flags();
+    os << "Vector3{" << v.x << ", " << v.y << ", " << v.z << "}";
+    os.flags(flags);
+    return os;
 }
 
 }}

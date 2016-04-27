@@ -199,9 +199,12 @@ bool Vector2::IsParallel(const Vector2& a, const Vector2& b)
 
 }
 
-std::string Vector2::ToString() const
+std::ostream& operator<<(std::ostream& os, const Vector2& v)
 {
-    return "Vector2{" + std::to_string(x) + ", " + std::to_string(y) + "}";
+    const auto flags = os.flags();
+    os << "Vector2{" << v.x << ", " << v.y << "}";
+    os.flags(flags);
+    return os;
 }
 
 }}

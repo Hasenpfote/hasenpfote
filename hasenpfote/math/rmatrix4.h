@@ -197,7 +197,7 @@ public:
     static RMatrix4 Ortho(float top, float bottom, float left, float right, float near, float far);
 
 /* Debug */
-    std::string ToString() const;
+    friend std::ostream& operator<<(std::ostream& os, const RMatrix4& m);
 };
 
 /* Inline */
