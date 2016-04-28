@@ -6,10 +6,10 @@
 */
 #pragma once
 #include <cstdint>
-//#include "../math/utility.h"
 
 namespace hasenpfote{ namespace math{
 class Quaternion;
+class Vector3;
 }}
 
 namespace hasenpfote{ namespace quantization{
@@ -62,5 +62,20 @@ std::uint32_t encode32_quat(const math::Quaternion& q);
  * @see encode32_quat()
  */
 math::Quaternion decode32_quat(std::uint32_t q);
+
+/*!
+ * 3 次元ベクトルを 16:16:16 に量子化する.
+ * @param[in] v
+ * @return 量子化された 3 次元ベクトル
+ */
+std::uint64_t encode161616_vec(const math::Vector3& v);
+
+/*!
+ * 3 次元ベクトルを逆量子化する.
+ * @param[in] v
+ * @return 逆量子化された 3 次元ベクトル
+ * @see encode161616_vec()
+ */
+math::Vector3 decode161616_vec(std::uint64_t v);
 
 }}

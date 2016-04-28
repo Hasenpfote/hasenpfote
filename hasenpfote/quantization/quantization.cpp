@@ -1,7 +1,9 @@
 ﻿#include <cassert>
+#include "../fp.h"
 #include "../math/constants.h"
 #include "../math/utility.h"
 #include "../math/quaternion.h"
+#include "../math/vector3.h"
 #include "quantization.h"
 
 namespace hasenpfote{ namespace quantization{
@@ -170,6 +172,21 @@ math::Quaternion decode32_quat(std::uint32_t q)
             break;
     }
     return math::Quaternion(w, x, y, z);
+}
+
+std::uint64_t encode161616_vec(const math::Vector3& v)
+{
+    return (static_cast<std::uint64_t>(float_to_half(v.x)) << 32)
+        | (static_cast<std::uint64_t>(float_to_half(v.y)) << 16)
+        | static_cast<std::uint64_t>(float_to_half(v.z));
+}
+
+math::Vector3 decode161616_vec(std::uint64_t v)
+{
+    return math::Vector3(
+        half_to_float((v >> 32) & 0xFFFF),
+        half_to_float((v >> 16) & 0xFFFF),
+        half_to_float(v & 0xFFFF));
 }
 
 }}
