@@ -3,15 +3,17 @@
 
 namespace hasenpfote{
 
-FP16& FP16::operator = (const FP32& fp)
+std::uint16_t float_to_half(float f)
 {
     FP16 o = { 0 };
+    FP32 fp;
+    fp.f = f;
     if(fp.exponent == 0){   // signed zero/denormal
         o.exponent = 0;     // => signed zero
     }
     else if(fp.exponent == 255){    // signed Inf/NaN(SNaN or QNaN)
         o.exponent = 31;
-        o.mantissa = (fp.mantissa)? 0x200 : 0; // signed NaN => signed QNaN / signed Inf => sigend Inf
+        o.mantissa = (fp.mantissa) ? 0x200 : 0; // signed NaN => signed QNaN / signed Inf => sigend Inf
     }
     else{
         // normalized number
@@ -20,7 +22,7 @@ FP16& FP16::operator = (const FP32& fp)
             o.exponent = 31;    // => signed Inf
         }
         else if(newexp <= 0){   // underflow
-            if(newexp >= -10){  
+            if(newexp >= -10){
                 // 非正規化数の処理(2^-25 <= newexp <= 2^0)
                 std::uint32_t mant = fp.mantissa | 0x800000; // hidden 1 bit
                 o.mantissa = mant >> (14 - newexp);
@@ -28,7 +30,7 @@ FP16& FP16::operator = (const FP32& fp)
                     o.u++;  // 指数ビットにオーバーフローする可能性があるが問題ない
             }
         }
-        else {
+        else{
             o.exponent = newexp;
             o.mantissa = fp.mantissa >> 13;
             if(fp.mantissa & 0x1000)    // round
@@ -36,28 +38,15 @@ FP16& FP16::operator = (const FP32& fp)
         }
     }
     o.sign = fp.sign;
-
-    this->u = o.u;
-    return *this;
+    return o.u;
 }
 
-std::ostream& operator<<(std::ostream& os, const FP16& fp)
-{
-    const auto flags = os.flags();
-    os << "FP16{s=" << fp.sign;
-    os << std::setfill('0');
-    os << " e=0x" << std::hex << std::setw(2) << fp.exponent << "(" << std::dec << fp.exponent << ")";
-    os << " m=0x" << std::hex << std::setw(3) << fp.mantissa << "(" << std::dec << fp.mantissa << ")";
-    os << " u=0x" << std::hex << std::setw(4) << fp.u << "}";
-    os.flags(flags);
-    return os;
-}
-
-FP32& FP32::operator = (const FP16& fp)
+float half_to_float(std::uint16_t h)
 {
     constexpr FP32 magic = { static_cast<uint32_t>(113 << 23) };    // sign:0 exp:113 mantissa:0
     constexpr std::uint32_t shifted_exp = 0x7c00 << 13;
     FP32 o;
+    FP16 fp = { h };
     o.u = (fp.u & 0x7fff) << 13;    // exponent / mantissa bits
     const std::uint32_t exp = o.u & shifted_exp;
     o.u += (127 - 15) << 23;    // FP16 と FP32 のバイアスの差分(127 - 15)を足しこみ指数部を調整
@@ -71,9 +60,19 @@ FP32& FP32::operator = (const FP16& fp)
         o.f -= magic.f;     // renormalize
     }
     o.u |= (fp.u & 0x8000) << 16;   // sign bit
+    return o.f;
+}
 
-    this->u = o.u;
-    return *this;
+std::ostream& operator<<(std::ostream& os, const FP16& fp)
+{
+    const auto flags = os.flags();
+    os << "FP16{s=" << fp.sign;
+    os << std::setfill('0');
+    os << " e=0x" << std::hex << std::setw(2) << fp.exponent << "(" << std::dec << fp.exponent << ")";
+    os << " m=0x" << std::hex << std::setw(3) << fp.mantissa << "(" << std::dec << fp.mantissa << ")";
+    os << " u=0x" << std::hex << std::setw(4) << fp.u << "}";
+    os.flags(flags);
+    return os;
 }
 
 std::ostream& operator<<(std::ostream& os, const FP32& fp)
