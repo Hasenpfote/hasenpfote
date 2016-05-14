@@ -230,10 +230,41 @@ CMatrix4 CMatrix4::Transpose(const CMatrix4& m)
     return result;
 }
 
-CMatrix4 CMatrix4::Inverse(const CMatrix4& m)
+CMatrix4 CMatrix4::Inverse(const CMatrix4& m, float* determinant)
 {
-    assert(0);
-    return CMatrix4();
+    const float det = m.m11 * (m.m22 * m.m33 - m.m32 * m.m23)
+                    - m.m21 * (m.m12 * m.m33 - m.m32 * m.m13)
+                    + m.m31 * (m.m12 * m.m23 - m.m22 * m.m13);
+
+    if(determinant)
+        *determinant = det;
+
+    if(almost_equals(0.0f, std::fabsf(det), 1))
+        return CMatrix4::IDENTITY;
+
+    CMatrix4 result;
+
+    result.m11 = (m.m22 * m.m33 - m.m32 * m.m23) / det;
+    result.m21 =-(m.m21 * m.m33 - m.m31 * m.m23) / det;
+    result.m31 = (m.m21 * m.m32 - m.m31 * m.m22) / det;
+    result.m41 = 0.0f;
+
+    result.m12 =-(m.m12 * m.m33 - m.m32 * m.m13) / det;
+    result.m22 = (m.m11 * m.m33 - m.m31 * m.m13) / det;
+    result.m32 =-(m.m11 * m.m32 - m.m31 * m.m12) / det;
+    result.m42 = 0.0f;
+
+    result.m13 = (m.m12 * m.m23 - m.m22 * m.m13) / det;
+    result.m23 =-(m.m11 * m.m23 - m.m21 * m.m13) / det;
+    result.m33 = (m.m11 * m.m22 - m.m21 * m.m12) / det;
+    result.m43 = 0.0f;
+
+    result.m14 = -(result.m11 * m.m14 + result.m12 * m.m24 + result.m13 * m.m34);
+    result.m24 = -(result.m21 * m.m14 + result.m22 * m.m24 + result.m23 * m.m34);
+    result.m34 = -(result.m31 * m.m14 + result.m32 * m.m24 + result.m33 * m.m34);
+    result.m44 = 1.0f;
+
+    return result;
 }
 
 CMatrix4 CMatrix4::Translation(float x, float y, float z)

@@ -102,9 +102,10 @@ public:
     /*!
      * 逆行列を生成.
      * @param[in] m
+     * @param[out] determinant
      * @return CMatrix4
      */
-    static CMatrix4 Inverse(const CMatrix4& m);
+    static CMatrix4 Inverse(const CMatrix4& m, float* determinant = nullptr);
 
     /*!
      * 平行移動行列を生成.
