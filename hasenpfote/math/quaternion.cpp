@@ -386,13 +386,13 @@ Quaternion Quaternion::Slerp(const Quaternion& a, const Quaternion& b, float t, 
     return fx * a + fy * b;
 }
 
-Quaternion Quaternion::Squad(Quaternion p, Quaternion q, Quaternion a, Quaternion b, float t)
+Quaternion Quaternion::Squad(const Quaternion& p, const Quaternion& q, const Quaternion& a, const Quaternion& b, float t)
 {
     assert(t >= 0.0f && t <= 1.0f);    // t is not in range.
     return Slerp(Slerp(p, q, t, false), Slerp(a, b, t, false), 2.0f*t*(1.0f-t), false);
 }
 
-Quaternion Quaternion::Spline(Quaternion prev, Quaternion current, Quaternion next)
+Quaternion Quaternion::Spline(const Quaternion& prev, const Quaternion& current, const Quaternion& next)
 {
     Quaternion conj_cur = Conjugate(current);
     return current * ExpP(-0.25f * (LnU(conj_cur * prev) + LnU(conj_cur * next)));

@@ -267,7 +267,7 @@ public:
      * @param t \f$[0,1]\f$
      * @return Quaternion
      */
-    static Quaternion Squad(Quaternion p, Quaternion q, Quaternion a, Quaternion b, float t);
+    static Quaternion Squad(const Quaternion& p, const Quaternion& q, const Quaternion& a, const Quaternion& b, float t);
 
     /*!
      * スプライン補間で利用する制御点を計算する.
@@ -282,7 +282,7 @@ public:
      * @param next      \f$q_{n+1}\f$
      * @return Quaternion
      */
-    static Quaternion Spline(Quaternion prev, Quaternion current, Quaternion next);
+    static Quaternion Spline(const Quaternion& prev, const Quaternion& current, const Quaternion& next);
 
 /* Debug */
     friend std::ostream& operator<<(std::ostream& os, const Quaternion& q);
