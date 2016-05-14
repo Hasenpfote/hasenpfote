@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "utility.h"
 #include "cmatrix4.h"
+#include "rmatrix4.h"
 #include "vector3.h"
 
 namespace hasenpfote{ namespace math{
@@ -125,6 +126,15 @@ const Vector3 operator * (const CMatrix4& m, const Vector3& v)
     result.x = m.m11 * v.x + m.m12 * v.y + m.m13 * v.z + m.m14;
     result.y = m.m21 * v.x + m.m22 * v.y + m.m23 * v.z + m.m24;
     result.z = m.m31 * v.x + m.m32 * v.y + m.m33 * v.z + m.m34;
+    return result;
+}
+
+const Vector3 operator * (const Vector3& v, const RMatrix4& m)
+{
+    Vector3 result;
+    result.x = v.x * m.m11 + v.y * m.m21 + v.z * m.m31 + m.m41;
+    result.y = v.x * m.m12 + v.y * m.m22 + v.z * m.m32 + m.m42;
+    result.z = v.x * m.m13 + v.y * m.m23 + v.z * m.m33 + m.m43;
     return result;
 }
 

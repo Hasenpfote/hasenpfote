@@ -10,6 +10,7 @@
 namespace hasenpfote{ namespace math{
 
 class CMatrix4;
+class RMatrix4;
 
 class Vector3 final
 {
@@ -65,6 +66,7 @@ public:
 
     friend const Vector3 operator * (float scale, const Vector3& v);
     friend const Vector3 operator * (const CMatrix4& m, const Vector3& v);
+    friend const Vector3 operator * (const Vector3& v, const RMatrix4& m);
 
 /* Operation */
 
