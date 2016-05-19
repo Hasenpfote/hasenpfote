@@ -79,6 +79,12 @@ public:
 /* Operation */
 
     /*!
+     * 行列式.
+     * @return
+     */
+    float Determinant() const;
+
+    /*!
      * トレース.
      * @return
      */
@@ -106,6 +112,14 @@ public:
      * @return RMatrix4
      */
     static RMatrix4 Inverse(const RMatrix4& m, float* determinant = nullptr);
+
+    /*!
+     * アフィン変換の逆行列を生成.
+     * @param[in] m affine transformation matrix
+     * @param[out] determinant
+     * @return RMatrix4
+     */
+    static RMatrix4 InverseAffineTransformation(const RMatrix4& m, float* determinant = nullptr);
 
     /*!
      * 平行移動行列を生成.

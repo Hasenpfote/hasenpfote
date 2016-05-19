@@ -1,4 +1,4 @@
-#include <cassert>
+﻿#include <cassert>
 #include <string>
 #include "utility.h"
 #include "vector3.h"
@@ -175,6 +175,14 @@ const float& CMatrix4::operator () (std::size_t row, std::size_t column) const
     return m[column][row];
 }
 
+float CMatrix4::Determinant() const
+{
+    return m11 * (m22 * (m33 * m44 - m34 * m43) + m23 * (m34 * m42 - m32 * m44) + m24 * (m32 * m43 - m33 * m42))
+         + m12 * (m21 * (m34 * m43 - m33 * m44) + m23 * (m31 * m44 - m34 * m41) + m24 * (m33 * m41 - m31 * m43))
+         + m13 * (m21 * (m32 * m44 - m34 * m42) + m22 * (m34 * m41 - m31 * m44) + m24 * (m31 * m42 - m32 * m41))
+         + m14 * (m21 * (m33 * m42 - m32 * m43) + m22 * (m31 * m43 - m33 * m41) + m23 * (m32 * m41 - m31 * m42));
+}
+
 float CMatrix4::Trace() const
 {
     return m11 + m22 + m33 + m44;
@@ -185,7 +193,7 @@ Quaternion CMatrix4::ToRotationQuaternion() const
     Quaternion result;
     const float tr = Trace();
     if(tr >= 1.0f){
-        // |w| ���ő�
+        // |w| が最大
         result.w = std::sqrtf(tr) * 0.5f;
         const float rcp_4w = 1.0f / (4.0f * result.w);  // 1/4|w|
         result.x = (m32 - m23) * rcp_4w;    // 4wx / 4|w|
@@ -194,7 +202,7 @@ Quaternion CMatrix4::ToRotationQuaternion() const
     }
     else
     if((m11 > m22) && (m11 > m33)){
-        // |x| ���ő�
+        // |x| が最大
         result.x = std::sqrtf(m11 - m22 - m33 + 1.0f) * 0.5f;
         const float rcp_4x = 1.0f / (4.0f * result.x);  // 1/4|x|
         result.y = (m12 + m21) * rcp_4x;    // 4xy / 4|x|
@@ -203,7 +211,7 @@ Quaternion CMatrix4::ToRotationQuaternion() const
     }
     else
     if((m22 > m33)){
-        // |y| ���ő�
+        // |y| が最大
         result.y = std::sqrtf(m22 - m33 - m11 + 1.0f) * 0.5f;
         const float rcp_4y = 1.0f / (4.0f * result.y);  // 1/4|y|
         result.x = (m12 + m21) * rcp_4y;    // 4xy / 4|y|
@@ -211,7 +219,7 @@ Quaternion CMatrix4::ToRotationQuaternion() const
         result.w = (m13 - m31) * rcp_4y;    // 4wy / 4|y|
     }
     else{
-        // |z| ���ő�
+        // |z| が最大
         result.z = std::sqrtf(m33 - m11 - m22 + 1.0f) * 0.5f;
         const float rcp_4z = 1.0f / (4.0f * result.z);  // 1/4|z|
         result.x = (m13 + m31) * rcp_4z;    // 4xz / 4|z|
@@ -232,9 +240,44 @@ CMatrix4 CMatrix4::Transpose(const CMatrix4& m)
 
 CMatrix4 CMatrix4::Inverse(const CMatrix4& m, float* determinant)
 {
-    const float det = m.m11 * (m.m22 * m.m33 - m.m32 * m.m23)
-                    - m.m21 * (m.m12 * m.m33 - m.m32 * m.m13)
-                    + m.m31 * (m.m12 * m.m23 - m.m22 * m.m13);
+    const float det = m.Determinant();
+
+    if(determinant)
+        *determinant = det;
+
+    if(almost_equals(0.0f, std::fabsf(det), 1))
+        return CMatrix4::IDENTITY;
+
+    // 余因子行列を求める.
+    CMatrix4 adjugate;
+    adjugate.m11 = m.m22 * (m.m33 * m.m44 - m.m34 * m.m43) + m.m23 * (m.m34 * m.m42 - m.m32 * m.m44) + m.m24 * (m.m32 * m.m43 - m.m33 * m.m42);
+    adjugate.m21 = m.m21 * (m.m34 * m.m43 - m.m33 * m.m44) + m.m23 * (m.m31 * m.m44 - m.m34 * m.m41) + m.m24 * (m.m33 * m.m41 - m.m31 * m.m43);
+    adjugate.m31 = m.m21 * (m.m32 * m.m44 - m.m34 * m.m42) + m.m22 * (m.m34 * m.m41 - m.m31 * m.m44) + m.m24 * (m.m31 * m.m42 - m.m32 * m.m41);
+    adjugate.m41 = m.m21 * (m.m33 * m.m42 - m.m32 * m.m43) + m.m22 * (m.m31 * m.m43 - m.m33 * m.m41) + m.m23 * (m.m32 * m.m41 - m.m31 * m.m42);
+
+    adjugate.m12 = m.m12 * (m.m34 * m.m43 - m.m33 * m.m44) + m.m13 * (m.m32 * m.m44 - m.m34 * m.m42) + m.m14 * (m.m33 * m.m42 - m.m32 * m.m43);
+    adjugate.m22 = m.m11 * (m.m33 * m.m44 - m.m34 * m.m43) + m.m13 * (m.m34 * m.m41 - m.m31 * m.m44) + m.m14 * (m.m31 * m.m43 - m.m33 * m.m41);
+    adjugate.m32 = m.m11 * (m.m34 * m.m42 - m.m32 * m.m44) + m.m12 * (m.m31 * m.m44 - m.m34 * m.m41) + m.m14 * (m.m32 * m.m41 - m.m31 * m.m42);
+    adjugate.m42 = m.m11 * (m.m32 * m.m43 - m.m33 * m.m42) + m.m12 * (m.m33 * m.m41 - m.m31 * m.m43) + m.m13 * (m.m31 * m.m42 - m.m32 * m.m41);
+
+    adjugate.m13 = m.m12 * (m.m23 * m.m44 - m.m24 * m.m43) + m.m13 * (m.m24 * m.m42 - m.m22 * m.m44) + m.m14 * (m.m22 * m.m43 - m.m23 * m.m42);
+    adjugate.m23 = m.m11 * (m.m24 * m.m43 - m.m23 * m.m44) + m.m13 * (m.m21 * m.m44 - m.m24 * m.m41) + m.m14 * (m.m23 * m.m41 - m.m21 * m.m43);
+    adjugate.m33 = m.m11 * (m.m22 * m.m44 - m.m24 * m.m42) + m.m12 * (m.m24 * m.m41 - m.m21 * m.m44) + m.m14 * (m.m21 * m.m42 - m.m22 * m.m41);
+    adjugate.m43 = m.m11 * (m.m23 * m.m42 - m.m22 * m.m43) + m.m12 * (m.m21 * m.m43 - m.m23 * m.m41) + m.m13 * (m.m22 * m.m41 - m.m21 * m.m42);
+
+    adjugate.m14 = m.m12 * (m.m24 * m.m33 - m.m23 * m.m34) + m.m13 * (m.m22 * m.m34 - m.m24 * m.m32) + m.m14 * (m.m23 * m.m32 - m.m22 * m.m33);
+    adjugate.m24 = m.m11 * (m.m23 * m.m34 - m.m24 * m.m33) + m.m13 * (m.m24 * m.m31 - m.m21 * m.m34) + m.m14 * (m.m21 * m.m33 - m.m23 * m.m31);
+    adjugate.m34 = m.m11 * (m.m24 * m.m32 - m.m22 * m.m34) + m.m12 * (m.m21 * m.m34 - m.m24 * m.m31) + m.m14 * (m.m22 * m.m31 - m.m21 * m.m32);
+    adjugate.m44 = m.m11 * (m.m22 * m.m33 - m.m23 * m.m32) + m.m12 * (m.m23 * m.m31 - m.m21 * m.m33) + m.m13 * (m.m21 * m.m32 - m.m22 * m.m31);
+    // 逆行列を求める.
+    return (1.0f / det) * adjugate;
+}
+
+CMatrix4 CMatrix4::InverseAffineTransformation(const CMatrix4& m, float* determinant)
+{
+    const float det = m.m11 * (m.m22 * m.m33 - m.m23 * m.m32)
+                    + m.m12 * (m.m23 * m.m31 - m.m21 * m.m33)
+                    + m.m13 * (m.m21 * m.m32 - m.m22 * m.m31);
 
     if(determinant)
         *determinant = det;
@@ -244,19 +287,19 @@ CMatrix4 CMatrix4::Inverse(const CMatrix4& m, float* determinant)
 
     CMatrix4 result;
 
-    result.m11 = (m.m22 * m.m33 - m.m32 * m.m23) / det;
-    result.m21 =-(m.m21 * m.m33 - m.m31 * m.m23) / det;
-    result.m31 = (m.m21 * m.m32 - m.m31 * m.m22) / det;
+    result.m11 = (m.m22 * m.m33 - m.m23 * m.m32) / det;
+    result.m21 = (m.m23 * m.m31 - m.m21 * m.m33) / det;
+    result.m31 = (m.m21 * m.m32 - m.m22 * m.m31) / det;
     result.m41 = 0.0f;
 
-    result.m12 =-(m.m12 * m.m33 - m.m32 * m.m13) / det;
-    result.m22 = (m.m11 * m.m33 - m.m31 * m.m13) / det;
-    result.m32 =-(m.m11 * m.m32 - m.m31 * m.m12) / det;
+    result.m12 = (m.m13 * m.m32 - m.m12 * m.m33) / det;
+    result.m22 = (m.m11 * m.m33 - m.m13 * m.m31) / det;
+    result.m32 = (m.m12 * m.m31 - m.m11 * m.m32) / det;
     result.m42 = 0.0f;
 
-    result.m13 = (m.m12 * m.m23 - m.m22 * m.m13) / det;
-    result.m23 =-(m.m11 * m.m23 - m.m21 * m.m13) / det;
-    result.m33 = (m.m11 * m.m22 - m.m21 * m.m12) / det;
+    result.m13 = (m.m12 * m.m23 - m.m13 * m.m22) / det;
+    result.m23 = (m.m13 * m.m21 - m.m11 * m.m23) / det;
+    result.m33 = (m.m11 * m.m22 - m.m12 * m.m21) / det;
     result.m43 = 0.0f;
 
     result.m14 = -(result.m11 * m.m14 + result.m12 * m.m24 + result.m13 * m.m34);

@@ -175,6 +175,14 @@ const float& RMatrix4::operator () (std::size_t row, std::size_t column) const
     return m[row][column];
 }
 
+float RMatrix4::Determinant() const
+{
+    return m11 * (m22 * (m33 * m44 - m34 * m43) + m23 * (m34 * m42 - m32 * m44) + m24 * (m32 * m43 - m33 * m42))
+         + m12 * (m21 * (m34 * m43 - m33 * m44) + m23 * (m31 * m44 - m34 * m41) + m24 * (m33 * m41 - m31 * m43))
+         + m13 * (m21 * (m32 * m44 - m34 * m42) + m22 * (m34 * m41 - m31 * m44) + m24 * (m31 * m42 - m32 * m41))
+         + m14 * (m21 * (m33 * m42 - m32 * m43) + m22 * (m31 * m43 - m33 * m41) + m23 * (m32 * m41 - m31 * m42));
+}
+
 float RMatrix4::Trace() const
 {
     return m11 + m22 + m33 + m44;
@@ -232,9 +240,44 @@ RMatrix4 RMatrix4::Transpose(const RMatrix4& m)
 
 RMatrix4 RMatrix4::Inverse(const RMatrix4& m, float* determinant)
 {
-    const float det = m.m11 * (m.m22 * m.m33 - m.m32 * m.m23)
-                    - m.m21 * (m.m12 * m.m33 - m.m32 * m.m13)
-                    + m.m31 * (m.m12 * m.m23 - m.m22 * m.m13);
+    const float det = m.Determinant();
+
+    if(determinant)
+        *determinant = det;
+
+    if(almost_equals(0.0f, std::fabsf(det), 1))
+        return RMatrix4::IDENTITY;
+
+    // 余因子行列を求める.
+    RMatrix4 adjugate;
+    adjugate.m11 = m.m22 * (m.m33 * m.m44 - m.m34 * m.m43) + m.m23 * (m.m34 * m.m42 - m.m32 * m.m44) + m.m24 * (m.m32 * m.m43 - m.m33 * m.m42);
+    adjugate.m12 = m.m12 * (m.m34 * m.m43 - m.m33 * m.m44) + m.m13 * (m.m32 * m.m44 - m.m34 * m.m42) + m.m14 * (m.m33 * m.m42 - m.m32 * m.m43);
+    adjugate.m13 = m.m12 * (m.m23 * m.m44 - m.m24 * m.m43) + m.m13 * (m.m24 * m.m42 - m.m22 * m.m44) + m.m14 * (m.m22 * m.m43 - m.m23 * m.m42);
+    adjugate.m14 = m.m12 * (m.m24 * m.m33 - m.m23 * m.m34) + m.m13 * (m.m22 * m.m34 - m.m24 * m.m32) + m.m14 * (m.m23 * m.m32 - m.m22 * m.m33);
+
+    adjugate.m21 = m.m21 * (m.m34 * m.m43 - m.m33 * m.m44) + m.m23 * (m.m31 * m.m44 - m.m34 * m.m41) + m.m24 * (m.m33 * m.m41 - m.m31 * m.m43);
+    adjugate.m22 = m.m11 * (m.m33 * m.m44 - m.m34 * m.m43) + m.m13 * (m.m34 * m.m41 - m.m31 * m.m44) + m.m14 * (m.m31 * m.m43 - m.m33 * m.m41);
+    adjugate.m23 = m.m11 * (m.m24 * m.m43 - m.m23 * m.m44) + m.m13 * (m.m21 * m.m44 - m.m24 * m.m41) + m.m14 * (m.m23 * m.m41 - m.m21 * m.m43);
+    adjugate.m24 = m.m11 * (m.m23 * m.m34 - m.m24 * m.m33) + m.m13 * (m.m24 * m.m31 - m.m21 * m.m34) + m.m14 * (m.m21 * m.m33 - m.m23 * m.m31);
+
+    adjugate.m31 = m.m21 * (m.m32 * m.m44 - m.m34 * m.m42) + m.m22 * (m.m34 * m.m41 - m.m31 * m.m44) + m.m24 * (m.m31 * m.m42 - m.m32 * m.m41);
+    adjugate.m32 = m.m11 * (m.m34 * m.m42 - m.m32 * m.m44) + m.m12 * (m.m31 * m.m44 - m.m34 * m.m41) + m.m14 * (m.m32 * m.m41 - m.m31 * m.m42);
+    adjugate.m33 = m.m11 * (m.m22 * m.m44 - m.m24 * m.m42) + m.m12 * (m.m24 * m.m41 - m.m21 * m.m44) + m.m14 * (m.m21 * m.m42 - m.m22 * m.m41);
+    adjugate.m34 = m.m11 * (m.m24 * m.m32 - m.m22 * m.m34) + m.m12 * (m.m21 * m.m34 - m.m24 * m.m31) + m.m14 * (m.m22 * m.m31 - m.m21 * m.m32);
+
+    adjugate.m41 = m.m21 * (m.m33 * m.m42 - m.m32 * m.m43) + m.m22 * (m.m31 * m.m43 - m.m33 * m.m41) + m.m23 * (m.m32 * m.m41 - m.m31 * m.m42);
+    adjugate.m42 = m.m11 * (m.m32 * m.m43 - m.m33 * m.m42) + m.m12 * (m.m33 * m.m41 - m.m31 * m.m43) + m.m13 * (m.m31 * m.m42 - m.m32 * m.m41);
+    adjugate.m43 = m.m11 * (m.m23 * m.m42 - m.m22 * m.m43) + m.m12 * (m.m21 * m.m43 - m.m23 * m.m41) + m.m13 * (m.m22 * m.m41 - m.m21 * m.m42);
+    adjugate.m44 = m.m11 * (m.m22 * m.m33 - m.m23 * m.m32) + m.m12 * (m.m23 * m.m31 - m.m21 * m.m33) + m.m13 * (m.m21 * m.m32 - m.m22 * m.m31);
+    // 逆行列を求める.
+    return (1.0f / det) * adjugate;
+}
+
+RMatrix4 RMatrix4::InverseAffineTransformation(const RMatrix4& m, float* determinant)
+{
+    const float det = m.m11 * (m.m22 * m.m33 - m.m23 * m.m32)
+                    + m.m12 * (m.m23 * m.m31 - m.m21 * m.m33)
+                    + m.m13 * (m.m21 * m.m32 - m.m22 * m.m31);
 
     if(determinant)
         *determinant = det;
@@ -244,19 +287,19 @@ RMatrix4 RMatrix4::Inverse(const RMatrix4& m, float* determinant)
 
     RMatrix4 result;
 
-    result.m11 = (m.m22 * m.m33 - m.m32 * m.m23) / det;
-    result.m12 =-(m.m12 * m.m33 - m.m32 * m.m13) / det;
-    result.m13 = (m.m12 * m.m23 - m.m22 * m.m13) / det;
+    result.m11 = (m.m22 * m.m33 - m.m23 * m.m32) / det;
+    result.m12 = (m.m13 * m.m32 - m.m12 * m.m33) / det;
+    result.m13 = (m.m12 * m.m23 - m.m13 * m.m22) / det;
     result.m14 = 0.0f;
 
-    result.m21 =-(m.m21 * m.m33 - m.m31 * m.m23) / det;
-    result.m22 = (m.m11 * m.m33 - m.m31 * m.m13) / det;
-    result.m23 =-(m.m11 * m.m23 - m.m21 * m.m13) / det;
+    result.m21 = (m.m23 * m.m31 - m.m21 * m.m33) / det;
+    result.m22 = (m.m11 * m.m33 - m.m13 * m.m31) / det;
+    result.m23 = (m.m13 * m.m21 - m.m11 * m.m23) / det;
     result.m24 = 0.0f;
 
-    result.m31 = (m.m21 * m.m32 - m.m31 * m.m22) / det;
-    result.m32 =-(m.m11 * m.m32 - m.m31 * m.m12) / det;
-    result.m33 = (m.m11 * m.m22 - m.m21 * m.m12) / det;
+    result.m31 = (m.m21 * m.m32 - m.m22 * m.m31) / det;
+    result.m32 = (m.m12 * m.m31 - m.m11 * m.m32) / det;
+    result.m33 = (m.m11 * m.m22 - m.m12 * m.m21) / det;
     result.m34 = 0.0f;
 
     result.m41 = -(m.m41 * result.m11 + m.m42 * result.m21 + m.m43 * result.m31);
