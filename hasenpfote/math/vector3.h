@@ -170,6 +170,18 @@ public:
      */
     static bool IsParallel(const Vector3& a, const Vector3& b);
 
+    /*!
+     * 2 つのベクトルの最小要素を計算する.
+     * @return 最小要素ベクトル.
+     */
+    static Vector3 Minimize(const Vector3& a, const Vector3& b);
+
+    /*!
+     * 2 つのベクトルの最大要素を計算する.
+     * @return 最大要素ベクトル.
+     */
+    static Vector3 Maximize(const Vector3& a, const Vector3& b);
+
 /* Debug */
     friend std::ostream& operator<<(std::ostream& os, const Vector3& v);
 };

@@ -9,6 +9,7 @@
 
 namespace hasenpfote{ namespace math{
 
+class Vector3;
 class CMatrix4;
 class RMatrix4;
 
@@ -35,6 +36,7 @@ public:
     Vector4() = default;
     Vector4(const Vector4& v);
     Vector4(float x, float y, float z, float w);
+    Vector4(const Vector3& v, float w);
     Vector4(const std::array<float, 4>& v);
 
 /* Destructor */
@@ -103,6 +105,18 @@ public:
      * @return 内積.
      */
     static float DotProduct(const Vector4& a, const Vector4& b);
+
+    /*!
+     * 2 つのベクトルの最小要素を計算する.
+     * @return 最小要素ベクトル.
+     */
+    static Vector4 Minimize(const Vector4& a, const Vector4& b);
+
+    /*!
+     * 2 つのベクトルの最大要素を計算する.
+     * @return 最大要素ベクトル.
+     */
+    static Vector4 Maximize(const Vector4& a, const Vector4& b);
 
 /* Debug */
     friend std::ostream& operator<<(std::ostream& os, const Vector4& v);

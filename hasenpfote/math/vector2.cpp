@@ -199,6 +199,22 @@ bool Vector2::IsParallel(const Vector2& a, const Vector2& b)
 
 }
 
+Vector2 Vector2::Minimize(const Vector2& a, const Vector2& b)
+{
+    return Vector2(
+        (a.x < b.x)? a.x : b.x,
+        (a.y < b.y)? a.y : b.y
+        );
+}
+
+Vector2 Vector2::Maximize(const Vector2& a, const Vector2& b)
+{
+    return Vector2(
+        (a.x > b.x)? a.x : b.x,
+        (a.y > b.y)? a.y : b.y
+    );
+}
+
 std::ostream& operator<<(std::ostream& os, const Vector2& v)
 {
     const auto flags = os.flags();

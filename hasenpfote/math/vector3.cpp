@@ -237,6 +237,24 @@ bool Vector3::IsParallel(const Vector3& a, const Vector3& b)
 
 }
 
+Vector3 Vector3::Minimize(const Vector3& a, const Vector3& b)
+{
+    return Vector3(
+        (a.x < b.x)? a.x : b.x,
+        (a.y < b.y)? a.y : b.y,
+        (a.z < b.z)? a.z : b.z
+    );
+}
+
+Vector3 Vector3::Maximize(const Vector3& a, const Vector3& b)
+{
+    return Vector3(
+        (a.x > b.x)? a.x : b.x,
+        (a.y > b.y)? a.y : b.y,
+        (a.z > b.z)? a.z : b.z
+    );
+}
+
 std::ostream& operator<<(std::ostream& os, const Vector3& v)
 {
     const auto flags = os.flags();

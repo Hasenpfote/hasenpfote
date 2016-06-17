@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include "utility.h"
+#include "vector3.h"
 #include "cmatrix4.h"
 #include "rmatrix4.h"
 #include "vector4.h"
@@ -24,6 +25,14 @@ Vector4::Vector4(float x, float y, float z, float w)
     this->x = x;
     this->y = y;
     this->z = z;
+    this->w = w;
+}
+
+Vector4::Vector4(const Vector3& v, float w)
+{
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
     this->w = w;
 }
 
@@ -181,6 +190,26 @@ void Vector4::Negate()
 float Vector4::DotProduct(const Vector4& a, const Vector4& b)
 {
     return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+}
+
+Vector4 Vector4::Minimize(const Vector4& a, const Vector4& b)
+{
+    return Vector4(
+        (a.x < b.x)? a.x : b.x,
+        (a.y < b.y)? a.y : b.y,
+        (a.z < b.z)? a.z : b.z,
+        (a.w < b.w)? a.w : b.w
+    );
+}
+
+Vector4 Vector4::Maximize(const Vector4& a, const Vector4& b)
+{
+    return Vector4(
+        (a.x > b.x)? a.x : b.x,
+        (a.y > b.y)? a.y : b.y,
+        (a.z > b.z)? a.z : b.z,
+        (a.w > b.w)? a.w : b.w
+    );
 }
 
 std::ostream& operator<<(std::ostream& os, const Vector4& v)
