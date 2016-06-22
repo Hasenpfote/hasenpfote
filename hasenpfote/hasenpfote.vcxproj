@@ -147,6 +147,7 @@
     <ClCompile Include="quantization\quantization.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="assert.h" />
     <ClInclude Include="fp.h" />
     <ClInclude Include="hasenpfote.h" />
     <ClInclude Include="math\axis_angle.h" />
