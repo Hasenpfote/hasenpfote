@@ -1,4 +1,4 @@
-﻿#include <cassert>
+﻿#include "../assert.h"
 #include <string>
 #include <iostream>
 #include <algorithm>
@@ -91,7 +91,7 @@ Vector4& Vector4::operator *= (float scale)
 
 Vector4& Vector4::operator /= (float divisor)
 {
-    assert(std::fabsf(divisor) > 0.0f);    // division by zero.
+    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     x /= divisor;
     y /= divisor;
     z /= divisor;
@@ -126,7 +126,7 @@ const Vector4 Vector4::operator * (float scale) const
 
 const Vector4 Vector4::operator / (float divisor) const
 {
-    assert(std::fabsf(divisor) > 0.0f);    // division by zero.
+    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     return Vector4(x / divisor, y / divisor, z / divisor, w / divisor);
 }
 
@@ -168,7 +168,7 @@ float Vector4::MagnitudeSquared() const
 void Vector4::Normalize()
 {
     const float mag = Magnitude();
-    assert(mag > 0.0f);    // division by zero.
+    ASSERT_MSG(mag > 0.0f, "Division by zero.");
     *this /= mag;
 }
 

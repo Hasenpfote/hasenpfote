@@ -1,4 +1,4 @@
-﻿#include <cassert>
+﻿#include "../assert.h"
 #include "complex_number.h"
 
 namespace hasenpfote{ namespace math{
@@ -53,7 +53,7 @@ ComplexNumber& ComplexNumber::operator *= (float scale)
 
 ComplexNumber& ComplexNumber::operator /= (float divisor)
 {
-    assert(std::fabsf(divisor) > 0.0f);    // division by zero.
+    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     re /= divisor;
     im /= divisor;
     return *this;
@@ -94,7 +94,7 @@ const ComplexNumber ComplexNumber::operator * (float scale) const
 
 const ComplexNumber ComplexNumber::operator / (float divisor) const
 {
-    assert(std::fabsf(divisor) > 0.0f);    // division by zero.
+    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     return ComplexNumber(re / divisor, im / divisor);
 }
 
@@ -116,7 +116,7 @@ float ComplexNumber::Argument() const
 void ComplexNumber::Normalize()
 {
     const float n = Norm();
-    assert(n > 0.0f);    // division by zero.
+    ASSERT_MSG(n > 0.0f, "Division by zero.");
     re /= n;
     im /= n;
 }
@@ -124,7 +124,7 @@ void ComplexNumber::Normalize()
 ComplexNumber ComplexNumber::Normalized() const
 {
     const float n = Norm();
-    assert(n > 0.0f);    // division by zero.
+    ASSERT_MSG(n > 0.0f, "Division by zero.");
     return ComplexNumber(re / n, im / n);
 }
 
@@ -136,7 +136,7 @@ ComplexNumber ComplexNumber::Polar(float rho, float theta)
 ComplexNumber ComplexNumber::Inverse(const ComplexNumber& c)
 {
     const float nsq = c.NormSquared();
-    assert(nsq > 0.0f);    // division by zero.
+    ASSERT_MSG(nsq > 0.0f, "Division by zero.");
     return ComplexNumber(c.re / nsq, -c.im / nsq);
 }
 

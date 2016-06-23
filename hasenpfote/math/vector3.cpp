@@ -1,4 +1,4 @@
-﻿#include <cassert>
+﻿#include "../assert.h"
 #include <string>
 #include <iostream>
 #include <algorithm>
@@ -77,7 +77,7 @@ Vector3& Vector3::operator *= (float scale)
 
 Vector3& Vector3::operator /= (float divisor)
 {
-    assert(std::fabsf(divisor) > 0.0f);    // division by zero.
+    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     x /= divisor;
     y /= divisor;
     z /= divisor;
@@ -111,7 +111,7 @@ const Vector3 Vector3::operator * (float scale) const
 
 const Vector3 Vector3::operator / (float divisor) const
 {
-    assert(std::fabsf(divisor) > 0.0f);    // division by zero.
+    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     return Vector3(x / divisor, y / divisor, z / divisor);
 }
 
@@ -151,7 +151,7 @@ float Vector3::MagnitudeSquared() const
 void Vector3::Normalize()
 {
     const float mag = Magnitude();
-    assert(mag > 0.0f);    // division by zero.
+    ASSERT_MSG(mag > 0.0f, "Division by zero.");
     *this /= mag;
 }
 
@@ -231,8 +231,8 @@ bool Vector3::IsPerpendicular(const Vector3& a, const Vector3& b)
 
 bool Vector3::IsParallel(const Vector3& a, const Vector3& b)
 {
-    assert(almost_equals(1.0f, a.MagnitudeSquared(), 1));    // a is not an unit vector.
-    assert(almost_equals(1.0f, b.MagnitudeSquared(), 1));    // b is not an unit vector.
+    ASSERT_MSG(almost_equals(1.0f, a.MagnitudeSquared(), 1), "Not an unit vector.");
+    ASSERT_MSG(almost_equals(1.0f, b.MagnitudeSquared(), 1), "Not an unit vector.");
     return !(std::abs(DotProduct(a, b)) < 1.0f);
 
 }

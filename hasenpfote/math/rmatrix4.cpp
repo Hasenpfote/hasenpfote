@@ -1,4 +1,4 @@
-﻿#include <cassert>
+﻿#include "../assert.h"
 #include <string>
 #include "utility.h"
 #include "vector3.h"
@@ -80,7 +80,7 @@ RMatrix4& RMatrix4::operator *= (float scale)
 
 RMatrix4& RMatrix4::operator /= (float divisor)
 {
-    assert(std::fabsf(divisor) > 0.0f);    // division by zero.
+    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     for(auto i = 0; i < order; i++)
         for(auto j = 0; j < order; j++)
             this->m[i][j] /= divisor;
@@ -144,7 +144,7 @@ const RMatrix4 RMatrix4::operator * (float scale) const
 
 const RMatrix4 RMatrix4::operator / (float divisor) const
 {
-    assert(std::fabsf(divisor) > 0.0f);    // division by zero.
+    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     RMatrix4 result;
     for(auto i = 0; i < order; i++)
         for(auto j = 0; j < order; j++)
@@ -163,15 +163,15 @@ const RMatrix4 operator * (float scale, const RMatrix4& m)
 
 float& RMatrix4::operator () (std::size_t row, std::size_t column)
 {
-    assert(row < order);
-    assert(column < order);
+    ASSERT_MSG(row < order, "Row index out of bounds.");
+    ASSERT_MSG(column < order, "Column index out of bounds.");
     return m[row][column];
 }
 
 const float& RMatrix4::operator () (std::size_t row, std::size_t column) const
 {
-    assert(row < order);
-    assert(column < order);
+    ASSERT_MSG(row < order, "Row index out of bounds.");
+    ASSERT_MSG(column < order, "Column index out of bounds.");
     return m[row][column];
 }
 
@@ -366,7 +366,7 @@ RMatrix4 RMatrix4::RotationZ(float angle)
 
 RMatrix4 RMatrix4::RotationAxis(Vector3 axis, float angle)
 {
-    assert(almost_equals(1.0f, axis.Magnitude(), 1));    // axis is not an unit vector.
+    ASSERT_MSG(almost_equals(1.0f, axis.Magnitude(), 1), "Axis is not an unit vector.");
     const float x = axis.x;
     const float y = axis.y;
     const float z = axis.z;
@@ -396,9 +396,9 @@ RMatrix4 RMatrix4::LookAt(Vector3 position, Vector3 target, Vector3 up)
 
 RMatrix4 RMatrix4::Perspective(float fovy, float aspectRatio, float near, float far)
 {
-    assert(fovy > 0.0f);
-    assert(aspectRatio > 0.0f);
-    assert(far > near);
+    ASSERT(fovy > 0.0f);
+    ASSERT(aspectRatio > 0.0f);
+    ASSERT(far > near);
     const float cot = 1.0f / std::tanf(fovy * 0.5f);
     const float q = far / (far - near);
     return RMatrix4(
@@ -410,9 +410,9 @@ RMatrix4 RMatrix4::Perspective(float fovy, float aspectRatio, float near, float 
 
 RMatrix4 RMatrix4::Frustum(float top, float bottom, float left, float right, float near, float far)
 {
-    assert(top > bottom);
-    assert(right > left);
-    assert(far > near);
+    ASSERT(top > bottom);
+    ASSERT(right > left);
+    ASSERT(far > near);
     const float w = 2.0f * near / (right - left);
     const float h = 2.0f * near / (top - bottom);
     const float q = far / (far - near);
@@ -427,9 +427,9 @@ RMatrix4 RMatrix4::Frustum(float top, float bottom, float left, float right, flo
 
 RMatrix4 RMatrix4::Ortho(float top, float bottom, float left, float right, float near, float far)
 {
-    assert(top > bottom);
-    assert(right > left);
-    assert(far > near);
+    ASSERT(top > bottom);
+    ASSERT(right > left);
+    ASSERT(far > near);
     const float w = 2.0f / (right - left);
     const float h = 2.0f / (top - bottom);
     const float q = 1.0f / (far - near);
