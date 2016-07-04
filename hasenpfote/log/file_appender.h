@@ -10,7 +10,7 @@
 #include <filesystem>
 #include "appender.h"
 
-namespace hasenpfote{ namespace mylog{
+namespace hasenpfote{ namespace log{
 
 class FileAppender final : public IAppender
 {

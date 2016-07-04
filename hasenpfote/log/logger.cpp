@@ -7,7 +7,7 @@
 #include "appender.h"
 #include "logger.h"
 
-namespace hasenpfote{ namespace mylog{
+namespace hasenpfote{ namespace log{
 
 static std::string GetTimestamp(std::string& format)
 {

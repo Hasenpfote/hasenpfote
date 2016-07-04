@@ -1,6 +1,6 @@
 ﻿#include "file_appender.h"
 
-namespace hasenpfote{ namespace mylog{
+namespace hasenpfote{ namespace log{
 
 void FileAppender::Write(const std::string& buffer)
 {

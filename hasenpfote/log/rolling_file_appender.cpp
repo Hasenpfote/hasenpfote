@@ -1,7 +1,7 @@
 ﻿#include <sstream>
 #include "rolling_file_appender.h"
 
-namespace hasenpfote{ namespace mylog{
+namespace hasenpfote{ namespace log{
 
 static std::tr2::sys::path BuildFilePath(const std::tr2::sys::path& filepath, int number)
 {

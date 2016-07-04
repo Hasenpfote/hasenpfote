@@ -7,7 +7,7 @@
 #pragma once
 #include <string>
 
-namespace hasenpfote{ namespace mylog{
+namespace hasenpfote{ namespace log{
 
 class IAppender
 {

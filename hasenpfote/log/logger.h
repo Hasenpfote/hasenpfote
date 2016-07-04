@@ -8,7 +8,7 @@
 #include <string>
 #include <memory>
 
-namespace hasenpfote{ namespace mylog{
+namespace hasenpfote{ namespace log{
 
 class IAppender;
 

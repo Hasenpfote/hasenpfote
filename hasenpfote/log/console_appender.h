@@ -7,7 +7,7 @@
 #pragma once
 #include "appender.h"
 
-namespace hasenpfote{ namespace mylog{
+namespace hasenpfote{ namespace log{
 
 class ConsoleAppender final : public IAppender
 {

@@ -11,7 +11,7 @@
 #include <cassert>
 #include "appender.h"
 
-namespace hasenpfote{ namespace mylog{
+namespace hasenpfote{ namespace log{
 
 class RollingFileAppender final : public IAppender
 {

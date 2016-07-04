@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include "console_appender.h"
 
-namespace hasenpfote{ namespace mylog{
+namespace hasenpfote{ namespace log{
 
 void ConsoleAppender::Write(const std::string& buffer)
 {
