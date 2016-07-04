@@ -25,6 +25,12 @@
     <Filter Include="ソース ファイル\quantization">
       <UniqueIdentifier>{d5e00974-47bb-4ae4-91cc-490ea78c48cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\log">
+      <UniqueIdentifier>{4541911e-953c-46be-a690-19d6e9ebba51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\log">
+      <UniqueIdentifier>{3ec8a998-d749-40bc-8830-4453c51a7092}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -62,6 +68,18 @@
     </ClCompile>
     <ClCompile Include="math\vector4.cpp">
       <Filter>ソース ファイル\math</Filter>
+    </ClCompile>
+    <ClCompile Include="log\console_appender.cpp">
+      <Filter>ソース ファイル\log</Filter>
+    </ClCompile>
+    <ClCompile Include="log\file_appender.cpp">
+      <Filter>ソース ファイル\log</Filter>
+    </ClCompile>
+    <ClCompile Include="log\logger.cpp">
+      <Filter>ソース ファイル\log</Filter>
+    </ClCompile>
+    <ClCompile Include="log\rolling_file_appender.cpp">
+      <Filter>ソース ファイル\log</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +124,21 @@
     </ClInclude>
     <ClInclude Include="assert.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="log\rolling_file_appender.h">
+      <Filter>ヘッダー ファイル\log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\appender.h">
+      <Filter>ヘッダー ファイル\log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\console_appender.h">
+      <Filter>ヘッダー ファイル\log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\file_appender.h">
+      <Filter>ヘッダー ファイル\log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\logger.h">
+      <Filter>ヘッダー ファイル\log</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

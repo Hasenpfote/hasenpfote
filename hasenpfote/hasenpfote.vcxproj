@@ -135,6 +135,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fp.cpp" />
+    <ClCompile Include="log\console_appender.cpp" />
+    <ClCompile Include="log\file_appender.cpp" />
+    <ClCompile Include="log\logger.cpp" />
+    <ClCompile Include="log\rolling_file_appender.cpp" />
     <ClCompile Include="math\axis_angle.cpp" />
     <ClCompile Include="math\cmatrix4.cpp" />
     <ClCompile Include="math\complex_number.cpp" />
@@ -150,6 +154,11 @@
     <ClInclude Include="assert.h" />
     <ClInclude Include="fp.h" />
     <ClInclude Include="hasenpfote.h" />
+    <ClInclude Include="log\appender.h" />
+    <ClInclude Include="log\console_appender.h" />
+    <ClInclude Include="log\file_appender.h" />
+    <ClInclude Include="log\logger.h" />
+    <ClInclude Include="log\rolling_file_appender.h" />
     <ClInclude Include="math\axis_angle.h" />
     <ClInclude Include="math\cmatrix4.h" />
     <ClInclude Include="math\complex_number.h" />
