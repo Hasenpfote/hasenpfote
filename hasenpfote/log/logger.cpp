@@ -59,29 +59,29 @@ public:
     Impl(Impl&&) = delete;
     Impl& operator = (Impl&&) = delete;
 
-    void AddAppender(const std::string& name, const std::shared_ptr<IAppender>& appender);
-    void RemoveAppender(const std::string& name);
+    void AddAppender(const std::type_index& index, const std::shared_ptr<IAppender>& appender);
+    void RemoveAppender(const std::type_index& index);
     void SetSeverity(Severity severity);
     void Log(Severity severity, const std::string& filename, int line, const std::string& message);
     void SetTimestampFormat(const std::string& format);
 
 private:
-    std::unordered_map<std::string, std::shared_ptr<IAppender>> appender;
+    std::unordered_map<std::type_index, std::shared_ptr<IAppender>> appender;
     Severity severity;
     std::string format;
     std::mutex m;
 };
 
-void Logger::Impl::AddAppender(const std::string& name, const std::shared_ptr<IAppender>& appender)
+void Logger::Impl::AddAppender(const std::type_index& index, const std::shared_ptr<IAppender>& appender)
 {
     std::lock_guard<std::mutex> lg(m);
-    this->appender[name] = appender;
+    this->appender[index] = appender;
 }
 
-void Logger::Impl::RemoveAppender(const std::string& name)
+void Logger::Impl::RemoveAppender(const std::type_index& index)
 {
     std::lock_guard<std::mutex> lg(m);
-    auto& it = appender.find(name);
+    auto& it = appender.find(index);
     if(it != appender.end()){
         appender.erase(it);
     }
@@ -120,15 +120,15 @@ Logger::Logger()
 
 Logger::~Logger() = default;
 
-void Logger::AddAppender(const std::string& name, const std::shared_ptr<IAppender>& appender)
+void Logger::AddAppender(const std::type_index& index, const std::shared_ptr<IAppender>& appender)
 {
     assert(appender);
-    pimpl->AddAppender(name, appender);
+    pimpl->AddAppender(index, appender);
 }
 
-void Logger::RemoveAppender(const std::string& name)
+void Logger::RemoveAppender(const std::type_index& index)
 {
-    pimpl->RemoveAppender(name);
+    pimpl->RemoveAppender(index);
 }
 
 void Logger::SetSeverity(Severity severity)

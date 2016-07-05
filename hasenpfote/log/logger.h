@@ -7,6 +7,7 @@
 #pragma once
 #include <string>
 #include <memory>
+#include <typeindex>
 
 namespace hasenpfote{ namespace log{
 
@@ -38,14 +39,14 @@ public:
     void AddAppender(const std::shared_ptr<IAppender>& appender)
     {
         static_assert(std::is_base_of<IAppender, T>::value == true, "T must be derived from IAppender.");
-        AddAppender(typeid(T).name(), appender);
+        AddAppender(typeid(T), appender);
     }
 
     template<typename T>
     void RemoveAppender()
     {
         static_assert(std::is_base_of<IAppender, T>::value == true, "T must be derived from IAppender.");
-        RemoveAppender(typeid(T).name());
+        RemoveAppender(typeid(T));
     }
 
     void SetSeverity(Severity severity);
@@ -53,8 +54,8 @@ public:
     void SetTimestampFormat(const std::string& format); // Use for std::put_time.
 
 private:
-    void AddAppender(const std::string& name, const std::shared_ptr<IAppender>& appender);
-    void RemoveAppender(const std::string& name);
+    void AddAppender(const std::type_index& index, const std::shared_ptr<IAppender>& appender);
+    void RemoveAppender(const std::type_index& index);
 
 private:
     class Impl;
