@@ -12,13 +12,6 @@ namespace hasenpfote{ namespace math{
 class ComplexNumber final
 {
 public:
-    float re;
-    float im;
-
-public:
-    static const ComplexNumber IDENTITY;
-
-public:
 /* Constructor */
 
     ComplexNumber() = default;
@@ -137,6 +130,13 @@ public:
 
 /* Debug */
     friend std::ostream& operator<<(std::ostream& os, const ComplexNumber& c);
+
+public:
+    static const ComplexNumber IDENTITY;
+
+public:
+    float re;
+    float im;
 };
 
 /* Inline */

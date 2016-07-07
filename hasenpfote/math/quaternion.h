@@ -17,35 +17,13 @@ class AxisAngle;
 class Quaternion final
 {
 public:
-    union
-    {
-        struct
-        {
-            float w;
-            float x;
-            float y;
-            float z;
-        };
-        std::array<float, 4> q;
-    };
-public:
-    enum class Component : std::uint32_t
-    {
-        W = 0,
-        X = 1,
-        Y = 2,
-        Z = 3
-    };
-    static const Quaternion IDENTITY;
-
-public:
 /* Constructor */
 
     Quaternion() = default;
     Quaternion(const Quaternion& q);
     Quaternion(float w, float x, float y, float z);
     Quaternion(float s, const Vector3& v);
-    Quaternion(const std::array<float, 4>& q);
+    explicit Quaternion(const std::array<float, 4>& q);
 
 /* Destructor */
 
@@ -286,6 +264,29 @@ public:
 
 /* Debug */
     friend std::ostream& operator<<(std::ostream& os, const Quaternion& q);
+
+public:
+    enum class Component : std::uint32_t
+    {
+        W = 0,
+        X = 1,
+        Y = 2,
+        Z = 3
+    };
+    static const Quaternion IDENTITY;
+
+public:
+    union
+    {
+        struct
+        {
+            float w;
+            float x;
+            float y;
+            float z;
+        };
+        std::array<float, 4> q;
+    };
 };
 
 /* Inline */

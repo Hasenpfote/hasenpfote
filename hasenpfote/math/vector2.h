@@ -12,27 +12,12 @@ namespace hasenpfote{ namespace math{
 class Vector2 final
 {
 public:
-    union
-    {
-        struct
-        {
-            float x;
-            float y;
-        };
-        std::array<float, 2> v;
-    };
-public:
-    static const Vector2 ZERO;  //!< ゼロベクトル.
-    static const Vector2 E_X;   //!< 基底ベクトル.
-    static const Vector2 E_Y;   //!< 基底ベクトル.
-
-public:
 /* Constructor */
 
     Vector2() = default;
     Vector2(const Vector2& v);
     Vector2(float x, float y);
-    Vector2(const std::array<float, 2>& v);
+    explicit Vector2(const std::array<float, 2>& v);
 
 /* Destructor */
 
@@ -177,6 +162,22 @@ public:
 
 /* Debug */
     friend std::ostream& operator<<(std::ostream& os, const Vector2& v);
+
+public:
+    static const Vector2 ZERO;  //!< ゼロベクトル.
+    static const Vector2 E_X;   //!< 基底ベクトル.
+    static const Vector2 E_Y;   //!< 基底ベクトル.
+
+public:
+    union
+    {
+        struct
+        {
+            float x;
+            float y;
+        };
+        std::array<float, 2> v;
+    };
 };
 
 /* Inline */

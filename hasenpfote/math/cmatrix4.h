@@ -14,22 +14,8 @@ class Quaternion;
 
 class CMatrix4 final
 {
-public:
     static constexpr auto order = 4;
     static constexpr auto num_elements = order * order;
-    union
-    {
-        struct
-        {
-            float m11, m21, m31, m41;
-            float m12, m22, m32, m42;
-            float m13, m23, m33, m43;
-            float m14, m24, m34, m44;
-        };
-        float m[order][order];
-    };
-public:
-    static const CMatrix4 IDENTITY;
 
 public:
 /* Constructor */
@@ -41,7 +27,7 @@ public:
         float m21, float m22, float m23, float m24,
         float m31, float m32, float m33, float m34,
         float m41, float m42, float m43, float m44);
-    CMatrix4(const std::array<float, num_elements>& m);
+    explicit CMatrix4(const std::array<float, num_elements>& m);
 
 /* Destructor */
 
@@ -213,6 +199,22 @@ public:
 
 /* Debug */
     friend std::ostream& operator<<(std::ostream& os, const CMatrix4& m);
+
+public:
+    static const CMatrix4 IDENTITY;
+
+public:
+    union
+    {
+        struct
+        {
+            float m11, m21, m31, m41;
+            float m12, m22, m32, m42;
+            float m13, m23, m33, m43;
+            float m14, m24, m34, m44;
+        };
+        float m[order][order];
+    };
 };
 
 /* Inline */

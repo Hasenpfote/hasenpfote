@@ -15,29 +15,12 @@ class RMatrix4;
 class Vector3 final
 {
 public:
-    union
-    {
-        struct
-        {
-            float x;
-            float y;
-            float z;
-        };
-        std::array<float, 3> v;
-    };
-public:
-    static const Vector3 ZERO;  //!< ゼロベクトル.
-    static const Vector3 E_X;   //!< 基底ベクトル.
-    static const Vector3 E_Y;   //!< 基底ベクトル.
-    static const Vector3 E_Z;   //!< 基底ベクトル.
-
-public:
 /* Constructor */
 
     Vector3() = default;
     Vector3(const Vector3& v);
     Vector3(float x, float y, float z);
-    Vector3(const std::array<float, 3>& v);
+    explicit Vector3(const std::array<float, 3>& v);
 
 /* Destructor */
 
@@ -184,6 +167,24 @@ public:
 
 /* Debug */
     friend std::ostream& operator<<(std::ostream& os, const Vector3& v);
+
+public:
+    static const Vector3 ZERO;  //!< ゼロベクトル.
+    static const Vector3 E_X;   //!< 基底ベクトル.
+    static const Vector3 E_Y;   //!< 基底ベクトル.
+    static const Vector3 E_Z;   //!< 基底ベクトル.
+
+public:
+    union
+    {
+        struct
+        {
+            float x;
+            float y;
+            float z;
+        };
+        std::array<float, 3> v;
+    };
 };
 
 /* Inline */

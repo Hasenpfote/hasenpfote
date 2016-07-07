@@ -12,10 +12,6 @@ namespace hasenpfote{ namespace math{
 class AxisAngle final
 {
 public:
-    Vector3 axis;   //!< an unit vector.
-    float angle;    //!< an angle in radians.
-
-public:
 /* Constructor */
 
     AxisAngle() = default;
@@ -32,6 +28,10 @@ public:
 
 /* Debug */
     friend std::ostream& operator<<(std::ostream& os, const AxisAngle& a);
+
+public:
+    Vector3 axis;   //!< an unit vector.
+    float angle;    //!< an angle in radians.
 };
 
 /* Inline */
