@@ -2,6 +2,7 @@
 #include "../assert.h"
 #include "utility.h"
 #include "vector3.h"
+#include "vector4.h"
 #include "quaternion.h"
 #include "cmatrix4.h"
 
@@ -34,6 +35,36 @@ CMatrix4::CMatrix4(
 CMatrix4::CMatrix4(const std::array<float, num_elements>& m)
 {
     *this = m;
+}
+
+void CMatrix4::SetRow(std::int32_t row, const Vector4& v)
+{
+    ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
+    m[0][row] = v.GetX();
+    m[1][row] = v.GetY();
+    m[2][row] = v.GetZ();
+    m[3][row] = v.GetW();
+}
+
+void CMatrix4::SetColumn(std::int32_t column, const Vector4& v)
+{
+    ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
+    m[column][0] = v.GetX();
+    m[column][1] = v.GetY();
+    m[column][2] = v.GetZ();
+    m[column][3] = v.GetW();
+}
+
+Vector4 CMatrix4::GetRow(std::int32_t row) const
+{
+    ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
+    return Vector4(m[0][row], m[1][row], m[2][row], m[3][row]);
+}
+
+Vector4 CMatrix4::GetColumn(std::int32_t column) const
+{
+    ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
+    return Vector4(m[column][0], m[column][1], m[column][2], m[column][3]);
 }
 
 CMatrix4& CMatrix4::operator = (const CMatrix4& m)
@@ -161,17 +192,17 @@ const CMatrix4 operator * (float scale, const CMatrix4& m)
     return result;
 }
 
-float& CMatrix4::operator () (std::size_t row, std::size_t column)
+float& CMatrix4::operator () (std::int32_t row, std::int32_t column)
 {
-    ASSERT_MSG(row < order, "Row index out of bounds.");
-    ASSERT_MSG(column < order, "Column index out of bounds.");
+    ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
+    ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
     return m[column][row];
 }
 
-const float& CMatrix4::operator () (std::size_t row, std::size_t column) const
+const float& CMatrix4::operator () (std::int32_t row, std::int32_t column) const
 {
-    ASSERT_MSG(row < order, "Row index out of bounds.");
-    ASSERT_MSG(column < order, "Column index out of bounds.");
+    ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
+    ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
     return m[column][row];
 }
 

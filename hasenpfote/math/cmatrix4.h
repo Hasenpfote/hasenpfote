@@ -15,8 +15,8 @@ class CMatrix4 final
     friend class Vector4;
     friend class Quaternion;
 
-    static constexpr auto order = 4;
-    static constexpr auto num_elements = order * order;
+    static constexpr std::int32_t order = 4;
+    static constexpr std::int32_t num_elements = order * order;
 
 public:
 /* Constructor */
@@ -33,6 +33,19 @@ public:
 /* Destructor */
 
     ~CMatrix4() = default;
+
+/* Setter, Getter */
+
+    void SetRow(std::int32_t row, const Vector4& v);
+    void SetColumn(std::int32_t column, const Vector4& v);
+
+    Vector4 GetRow(std::int32_t row) const;
+    Vector4 GetColumn(std::int32_t column) const;
+
+/* Casting operator */
+
+    inline explicit operator float* (){ return m[0]; }
+    inline explicit operator const float* () const { return m[0]; }
 
 /* Assignment operator */
 
@@ -60,8 +73,8 @@ public:
     friend const CMatrix4 operator * (float scale, const CMatrix4& m);
 
 /* Subscript operator */
-    float& operator () (std::size_t row, std::size_t column);
-    const float& operator () (std::size_t row, std::size_t column) const;
+    float& operator () (std::int32_t row, std::int32_t column);
+    const float& operator () (std::int32_t row, std::int32_t column) const;
 
 /* Operation */
 
