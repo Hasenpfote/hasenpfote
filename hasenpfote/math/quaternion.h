@@ -10,12 +10,13 @@
 namespace hasenpfote{ namespace math{
 
 class Vector3;
-class CMatrix4;
-class RMatrix4;
 class AxisAngle;
 
 class Quaternion final
 {
+    friend class CMatrix4;
+    friend class RMatrix4;
+
 public:
 /* Constructor */
 
@@ -28,6 +29,23 @@ public:
 /* Destructor */
 
     ~Quaternion() = default;
+
+/* Setter, Getter */
+
+    inline void SetW(float w){ this->w = w; }
+    inline void SetX(float x){ this->x = x; }
+    inline void SetY(float y){ this->y = y; }
+    inline void SetZ(float z){ this->z = z; }
+
+    inline float GetW() const { return w; }
+    inline float GetX() const { return x; }
+    inline float GetY() const { return y; }
+    inline float GetZ() const { return z; }
+
+/* Casting operator */
+
+    inline explicit operator float* (){ return q.data(); }
+    inline explicit operator const float* () const { return q.data(); }
 
 /* Assignment operator */
 
@@ -275,7 +293,7 @@ public:
     };
     static const Quaternion IDENTITY;
 
-public:
+private:
     union
     {
         struct

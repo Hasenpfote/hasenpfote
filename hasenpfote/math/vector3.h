@@ -9,11 +9,13 @@
 
 namespace hasenpfote{ namespace math{
 
-class CMatrix4;
-class RMatrix4;
-
 class Vector3 final
 {
+    friend class Vector4;
+    friend class CMatrix4;
+    friend class RMatrix4;
+    friend class Quaternion;
+
 public:
 /* Constructor */
 
@@ -25,6 +27,21 @@ public:
 /* Destructor */
 
     ~Vector3() = default;
+
+/* Setter, Getter */
+
+    inline void SetX(float x){ this->x = x; }
+    inline void SetY(float y){ this->y = y; }
+    inline void SetZ(float z){ this->z = z; }
+
+    inline float GetX() const { return x; }
+    inline float GetY() const { return y; }
+    inline float GetZ() const { return z; }
+
+/* Casting operator */
+
+    inline explicit operator float* (){ return v.data(); }
+    inline explicit operator const float* () const { return v.data(); }
 
 /* Assignment operator */
 
@@ -174,7 +191,7 @@ public:
     static const Vector3 E_Y;   //!< 基底ベクトル.
     static const Vector3 E_Z;   //!< 基底ベクトル.
 
-public:
+private:
     union
     {
         struct

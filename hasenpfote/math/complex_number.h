@@ -22,6 +22,14 @@ public:
 
     ~ComplexNumber() = default;
 
+/* Setter, Getter */
+
+    void SetRealPart(float re){ this->re = re; }
+    void SetImaginaryPart(float im){ this->im = im; }
+
+    float GetRealPart() const { return re; }
+    float GetImaginaryPart() const { return im; }
+
 /* Assignment operator */
 
     ComplexNumber& operator = (const ComplexNumber& c);
@@ -134,7 +142,7 @@ public:
 public:
     static const ComplexNumber IDENTITY;
 
-public:
+private:
     float re;
     float im;
 };

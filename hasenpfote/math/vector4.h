@@ -28,6 +28,23 @@ public:
 
     ~Vector4() = default;
 
+/* Setter, Getter */
+
+    inline void SetX(float x){ this->x = x; }
+    inline void SetY(float y){ this->y = y; }
+    inline void SetZ(float z){ this->z = z; }
+    inline void SetW(float w){ this->w = w; }
+
+    inline float GetX() const { return x; }
+    inline float GetY() const { return y; }
+    inline float GetZ() const { return z; }
+    inline float GetW() const { return w; }
+
+/* Casting operator */
+
+    inline explicit operator float* (){ return v.data(); }
+    inline explicit operator const float* () const { return v.data(); }
+
 /* Assignment operator */
 
     Vector4& operator = (const Vector4& v);
@@ -109,7 +126,7 @@ public:
 public:
     static const Vector4 ZERO;  //!< ゼロベクトル.
 
-public:
+private:
     union
     {
         struct

@@ -11,6 +11,8 @@ namespace hasenpfote{ namespace math{
 
 class AxisAngle final
 {
+    friend class Quaternion;
+
 public:
 /* Constructor */
 
@@ -22,6 +24,15 @@ public:
 
     ~AxisAngle() = default;
 
+/* Setter, Getter */
+
+    inline void SetAxis(const Vector3& axis){ this->axis = axis; }
+    inline void SetAngle(float angle){ this->angle = angle; }
+
+    inline Vector3& GetAxis(){ return axis; }
+    inline const Vector3& GetAxis() const { return axis; }
+    inline float GetAngle() const { return angle; }
+
 /* Assignment operator */
 
     AxisAngle& operator = (const AxisAngle& a);
@@ -29,7 +40,7 @@ public:
 /* Debug */
     friend std::ostream& operator<<(std::ostream& os, const AxisAngle& a);
 
-public:
+private:
     Vector3 axis;   //!< an unit vector.
     float angle;    //!< an angle in radians.
 };

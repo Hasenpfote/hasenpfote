@@ -23,6 +23,19 @@ public:
 
     ~Vector2() = default;
 
+/* Setter, Getter */
+
+    inline void SetX(float x){ this->x = x; }
+    inline void SetY(float y){ this->y = y; }
+
+    inline float GetX() const { return x; }
+    inline float GetY() const { return y; }
+
+/* Casting operator */
+
+    inline explicit operator float* (){ return v.data(); }
+    inline explicit operator const float* () const { return v.data(); }
+
 /* Assignment operator */
 
     Vector2& operator = (const Vector2& v);
@@ -168,7 +181,7 @@ public:
     static const Vector2 E_X;   //!< 基底ベクトル.
     static const Vector2 E_Y;   //!< 基底ベクトル.
 
-public:
+private:
     union
     {
         struct

@@ -16,18 +16,18 @@ namespace hasenpfote{ namespace quantization{
 static math::Quaternion::Component get_component_by_abs_max(const math::Quaternion& q)
 {
     auto component = math::Quaternion::Component::W;
-    auto max = std::fabsf(q.w);
-    auto abs = std::fabsf(q.x);
+    auto max = std::fabsf(q.GetW());
+    auto abs = std::fabsf(q.GetX());
     if(abs > max){
         component = math::Quaternion::Component::X;
         max = abs;
     }
-    abs = std::fabsf(q.y);
+    abs = std::fabsf(q.GetY());
     if(abs > max){
         component = math::Quaternion::Component::Y;
         max = abs;
     }
-    abs = std::fabsf(q.z);
+    abs = std::fabsf(q.GetZ());
     if(abs > max){
         component = math::Quaternion::Component::Z;
     }
@@ -47,15 +47,15 @@ std::uint32_t encode32_quat(const math::Quaternion& q)
         case math::Quaternion::Component::W:
             {
                 float x, y, z;
-                if(q.w < 0.0f){
-                    x = math::remap(-q.x, min, max, -1.0f, 1.0f);
-                    y = math::remap(-q.y, min, max, -1.0f, 1.0f);
-                    z = math::remap(-q.z, min, max, -1.0f, 1.0f);
+                if(q.GetW() < 0.0f){
+                    x = math::remap(-q.GetX(), min, max, -1.0f, 1.0f);
+                    y = math::remap(-q.GetY(), min, max, -1.0f, 1.0f);
+                    z = math::remap(-q.GetZ(), min, max, -1.0f, 1.0f);
                 }
                 else{
-                    x = math::remap(q.x, min, max, -1.0f, 1.0f);
-                    y = math::remap(q.y, min, max, -1.0f, 1.0f);
-                    z = math::remap(q.z, min, max, -1.0f, 1.0f);
+                    x = math::remap(q.GetX(), min, max, -1.0f, 1.0f);
+                    y = math::remap(q.GetY(), min, max, -1.0f, 1.0f);
+                    z = math::remap(q.GetZ(), min, max, -1.0f, 1.0f);
                 }
                 result = (c << 30) | (encode_snorm<bit>(x) << 20) | (encode_snorm<bit>(y) << 10) | encode_snorm<bit>(z);
             }
@@ -63,15 +63,15 @@ std::uint32_t encode32_quat(const math::Quaternion& q)
         case math::Quaternion::Component::X:
             {
                 float w, y, z;
-                if(q.x < 0.0f){
-                    w = math::remap(-q.w, min, max, -1.0f, 1.0f);
-                    y = math::remap(-q.y, min, max, -1.0f, 1.0f);
-                    z = math::remap(-q.z, min, max, -1.0f, 1.0f);
+                if(q.GetX() < 0.0f){
+                    w = math::remap(-q.GetW(), min, max, -1.0f, 1.0f);
+                    y = math::remap(-q.GetY(), min, max, -1.0f, 1.0f);
+                    z = math::remap(-q.GetZ(), min, max, -1.0f, 1.0f);
                 }
                 else{
-                    w = math::remap(q.w, min, max, -1.0f, 1.0f);
-                    y = math::remap(q.y, min, max, -1.0f, 1.0f);
-                    z = math::remap(q.z, min, max, -1.0f, 1.0f);
+                    w = math::remap(q.GetW(), min, max, -1.0f, 1.0f);
+                    y = math::remap(q.GetY(), min, max, -1.0f, 1.0f);
+                    z = math::remap(q.GetZ(), min, max, -1.0f, 1.0f);
                 }
                 result = (c << 30) | (encode_snorm<bit>(w) << 20) | (encode_snorm<bit>(y) << 10) | encode_snorm<bit>(z);
             }
@@ -79,15 +79,15 @@ std::uint32_t encode32_quat(const math::Quaternion& q)
         case math::Quaternion::Component::Y:
             {
                 float w, x, z;
-                if(q.y < 0.0f){
-                    w = math::remap(-q.w, min, max, -1.0f, 1.0f);
-                    x = math::remap(-q.x, min, max, -1.0f, 1.0f);
-                    z = math::remap(-q.z, min, max, -1.0f, 1.0f);
+                if(q.GetY() < 0.0f){
+                    w = math::remap(-q.GetW(), min, max, -1.0f, 1.0f);
+                    x = math::remap(-q.GetX(), min, max, -1.0f, 1.0f);
+                    z = math::remap(-q.GetZ(), min, max, -1.0f, 1.0f);
                 }
                 else{
-                    w = math::remap(q.w, min, max, -1.0f, 1.0f);
-                    x = math::remap(q.x, min, max, -1.0f, 1.0f);
-                    z = math::remap(q.z, min, max, -1.0f, 1.0f);
+                    w = math::remap(q.GetW(), min, max, -1.0f, 1.0f);
+                    x = math::remap(q.GetX(), min, max, -1.0f, 1.0f);
+                    z = math::remap(q.GetZ(), min, max, -1.0f, 1.0f);
                 }
                 result = (c << 30) | (encode_snorm<bit>(w) << 20) | (encode_snorm<bit>(x) << 10) | encode_snorm<bit>(z);
             }
@@ -95,15 +95,15 @@ std::uint32_t encode32_quat(const math::Quaternion& q)
         case math::Quaternion::Component::Z:
             {
                 float w, x, y;
-                if(q.z < 0.0f){
-                    w = math::remap(-q.w, min, max, -1.0f, 1.0f);
-                    x = math::remap(-q.x, min, max, -1.0f, 1.0f);
-                    y = math::remap(-q.y, min, max, -1.0f, 1.0f);
+                if(q.GetZ() < 0.0f){
+                    w = math::remap(-q.GetW(), min, max, -1.0f, 1.0f);
+                    x = math::remap(-q.GetX(), min, max, -1.0f, 1.0f);
+                    y = math::remap(-q.GetY(), min, max, -1.0f, 1.0f);
                 }
                 else{
-                    w = math::remap(q.w, min, max, -1.0f, 1.0f);
-                    x = math::remap(q.x, min, max, -1.0f, 1.0f);
-                    y = math::remap(q.y, min, max, -1.0f, 1.0f);
+                    w = math::remap(q.GetW(), min, max, -1.0f, 1.0f);
+                    x = math::remap(q.GetX(), min, max, -1.0f, 1.0f);
+                    y = math::remap(q.GetY(), min, max, -1.0f, 1.0f);
                 }
                 result = (c << 30) | (encode_snorm<bit>(w) << 20) | (encode_snorm<bit>(x) << 10) | encode_snorm<bit>(y);
             }
@@ -176,9 +176,9 @@ math::Quaternion decode32_quat(std::uint32_t q)
 
 std::uint64_t encode161616_vec(const math::Vector3& v)
 {
-    return (static_cast<std::uint64_t>(float_to_half(v.x)) << 32)
-        | (static_cast<std::uint64_t>(float_to_half(v.y)) << 16)
-        | static_cast<std::uint64_t>(float_to_half(v.z));
+    return (static_cast<std::uint64_t>(float_to_half(v.GetX())) << 32)
+        | (static_cast<std::uint64_t>(float_to_half(v.GetY())) << 16)
+        | static_cast<std::uint64_t>(float_to_half(v.GetZ()));
 }
 
 math::Vector3 decode161616_vec(std::uint64_t v)
