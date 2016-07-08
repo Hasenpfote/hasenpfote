@@ -5,6 +5,7 @@
 #include "utility.h"
 #include "cmatrix4.h"
 #include "rmatrix4.h"
+#include "vector4.h"
 #include "vector3.h"
 
 namespace hasenpfote{ namespace math{
@@ -33,6 +34,13 @@ Vector3::Vector3(const std::array<float, 3>& v)
     x = v[0];
     y = v[1];
     z = v[2];
+}
+
+Vector3::Vector3(const Vector4& v)
+{
+    x = v.x;
+    y = v.y;
+    z = v.z;
 }
 
 Vector3& Vector3::operator = (const Vector3& v)

@@ -23,6 +23,7 @@ public:
     Vector3(const Vector3& v);
     Vector3(float x, float y, float z);
     explicit Vector3(const std::array<float, 3>& v);
+    explicit Vector3(const Vector4& v);
 
 /* Destructor */
 
