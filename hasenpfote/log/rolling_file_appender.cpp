@@ -1,4 +1,5 @@
 ﻿#include <sstream>
+#include <cassert>
 #include "rolling_file_appender.h"
 
 namespace hasenpfote{ namespace log{
@@ -23,6 +24,12 @@ static std::streampos GetNextPosition(std::ofstream& ofs, const std::string& buf
     pos += buffer.length() + 1;
 #endif
     return pos;
+}
+
+RollingFileAppender::RollingFileAppender(const std::tr2::sys::path& filepath, int max_files, std::size_t max_file_size)
+    : ofs(std::make_unique<std::ofstream>()), filepath(filepath), max_files(max_files), max_file_size(max_file_size)
+{
+    assert(max_files > 0);
 }
 
 void RollingFileAppender::Write(const std::string& buffer)

@@ -15,10 +15,7 @@ namespace hasenpfote{ namespace log{
 class FileAppender final : public IAppender
 {
 public:
-    explicit FileAppender(const std::tr2::sys::path& filepath)
-        : ofs(std::make_unique<std::ofstream>(filepath))
-    {
-    }
+    explicit FileAppender(const std::tr2::sys::path& filepath);
     ~FileAppender() = default;
     void Write(const std::string& buffer) override;
 
