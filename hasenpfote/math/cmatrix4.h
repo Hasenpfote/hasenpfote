@@ -218,7 +218,7 @@ public:
 public:
     static const CMatrix4 IDENTITY;
 
-public:
+private:
     union
     {
         struct

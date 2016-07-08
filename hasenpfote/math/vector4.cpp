@@ -137,22 +137,40 @@ const Vector4 operator * (float scale, const Vector4& v)
 
 const Vector4 operator * (const CMatrix4& m, const Vector4& v)
 {
+#if 0
     Vector4 result;
     result.x = m.m11 * v.x + m.m12 * v.y + m.m13 * v.z + m.m14 * v.w;
     result.y = m.m21 * v.x + m.m22 * v.y + m.m23 * v.z + m.m24 * v.w;
     result.z = m.m31 * v.x + m.m32 * v.y + m.m33 * v.z + m.m34 * v.w;
     result.w = m.m41 * v.x + m.m42 * v.y + m.m43 * v.z + m.m44 * v.w;
     return result;
+#else
+    return Vector4(
+        Vector4::DotProduct(m.GetRow(0), v),
+        Vector4::DotProduct(m.GetRow(1), v),
+        Vector4::DotProduct(m.GetRow(2), v),
+        Vector4::DotProduct(m.GetRow(3), v)
+    );
+#endif
 }
 
 const Vector4 operator * (const Vector4& v, const RMatrix4& m)
 {
+#if 0
     Vector4 result;
     result.x = v.x * m.m11 + v.y * m.m21 + v.z * m.m31 + v.w * m.m41;
     result.y = v.x * m.m12 + v.y * m.m22 + v.z * m.m32 + v.w * m.m42;
     result.z = v.x * m.m13 + v.y * m.m23 + v.z * m.m33 + v.w * m.m43;
     result.w = v.x * m.m14 + v.y * m.m24 + v.z * m.m34 + v.w * m.m44;
     return result;
+#else
+    return Vector4(
+        Vector4::DotProduct(v, m.GetColumn(0)),
+        Vector4::DotProduct(v, m.GetColumn(1)),
+        Vector4::DotProduct(v, m.GetColumn(2)),
+        Vector4::DotProduct(v, m.GetColumn(3))
+    );
+#endif
 }
 
 float Vector4::Magnitude() const
