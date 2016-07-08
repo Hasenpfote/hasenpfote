@@ -32,6 +32,15 @@ RMatrix4::RMatrix4(
     this->m41 = m41; this->m42 = m42; this->m43 = m43; this->m44 = m44;
 }
 
+RMatrix4::RMatrix4(const Vector4& v1, const Vector4& v2, const Vector4& v3, const Vector4& v4)
+{
+    constexpr std::size_t bytes = sizeof(float) * 4;
+    std::memcpy(this->m[0], static_cast<const float*>(v1), bytes);
+    std::memcpy(this->m[1], static_cast<const float*>(v2), bytes);
+    std::memcpy(this->m[2], static_cast<const float*>(v3), bytes);
+    std::memcpy(this->m[3], static_cast<const float*>(v4), bytes);
+}
+
 RMatrix4::RMatrix4(const std::array<float, num_elements>& m)
 {
     *this = m;

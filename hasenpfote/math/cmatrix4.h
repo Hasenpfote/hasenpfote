@@ -28,6 +28,7 @@ public:
         float m21, float m22, float m23, float m24,
         float m31, float m32, float m33, float m34,
         float m41, float m42, float m43, float m44);
+    CMatrix4(const Vector4& v1, const Vector4& v2, const Vector4& v3, const Vector4& v4);
     explicit CMatrix4(const std::array<float, num_elements>& m);
 
 /* Destructor */
