@@ -24,11 +24,11 @@ public:
 
 /* Setter, Getter */
 
-    void SetRealPart(float re){ this->re = re; }
-    void SetImaginaryPart(float im){ this->im = im; }
+    inline void SetRealPart(float re){ this->re = re; }
+    inline void SetImaginaryPart(float im){ this->im = im; }
 
-    float GetRealPart() const { return re; }
-    float GetImaginaryPart() const { return im; }
+    inline float GetRealPart() const { return re; }
+    inline float GetImaginaryPart() const { return im; }
 
 /* Assignment operator */
 
