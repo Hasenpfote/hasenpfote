@@ -9,12 +9,12 @@
 
 namespace hasenpfote{ namespace math{
 
-class Vector3;
-class CMatrix4;
-class RMatrix4;
-
 class Vector4 final
 {
+    friend class Vector3;
+    friend class CMatrix4;
+    friend class RMatrix4;
+
 public:
 /* Constructor */
 

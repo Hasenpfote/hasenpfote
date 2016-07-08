@@ -40,19 +40,19 @@ RMatrix4::RMatrix4(const std::array<float, num_elements>& m)
 void RMatrix4::SetRow(std::int32_t row, const Vector4& v)
 {
     ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
-    m[row][0] = v.GetX();
-    m[row][1] = v.GetY();
-    m[row][2] = v.GetZ();
-    m[row][3] = v.GetW();
+    m[row][0] = v.x;
+    m[row][1] = v.y;
+    m[row][2] = v.z;
+    m[row][3] = v.w;
 }
 
 void RMatrix4::SetColumn(std::int32_t column, const Vector4& v)
 {
     ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
-    m[0][column] = v.GetX();
-    m[1][column] = v.GetY();
-    m[2][column] = v.GetZ();
-    m[3][column] = v.GetW();
+    m[0][column] = v.x;
+    m[1][column] = v.y;
+    m[2][column] = v.z;
+    m[3][column] = v.w;
 }
 
 Vector4 RMatrix4::GetRow(std::int32_t row) const
