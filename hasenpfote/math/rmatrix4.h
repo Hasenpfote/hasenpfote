@@ -59,21 +59,6 @@ public:
     RMatrix4& operator *= (float scale);
     RMatrix4& operator /= (float divisor);
 
-/* Unary operator */
-
-    const RMatrix4 operator + () const;
-    const RMatrix4 operator - () const;
-
-/* Binary operator */
-
-    const RMatrix4 operator + (const RMatrix4& m) const;
-    const RMatrix4 operator - (const RMatrix4& m) const;
-    const RMatrix4 operator * (const RMatrix4& m) const;
-    const RMatrix4 operator * (float scale) const;
-    const RMatrix4 operator / (float divisor) const;
-
-    friend const RMatrix4 operator * (float scale, const RMatrix4& m);
-
 /* Subscript operator */
     float& operator () (std::int32_t row, std::int32_t column);
     const float& operator () (std::int32_t row, std::int32_t column) const;
@@ -97,6 +82,12 @@ public:
      * @return Quaternion
      */
     Quaternion ToRotationQuaternion() const;
+
+    /*!
+     * 文字列の生成.
+     * @return std::string.
+     */
+    std::string ToString() const;
 
 /* Static */
 
@@ -213,10 +204,8 @@ public:
      */
     static RMatrix4 Ortho(float top, float bottom, float left, float right, float near, float far);
 
-/* Debug */
-    friend std::ostream& operator<<(std::ostream& os, const RMatrix4& m);
-
 public:
+    static const RMatrix4 ZERO;
     static const RMatrix4 IDENTITY;
 
 private:
@@ -232,6 +221,21 @@ private:
         float m[order][order];
     };
 };
+
+/* Unary operator */
+RMatrix4 operator + (const RMatrix4& m);
+RMatrix4 operator - (const RMatrix4& m);
+
+/* Binary operator */
+RMatrix4 operator + (const RMatrix4& lhs, const RMatrix4& rhs);
+RMatrix4 operator - (const RMatrix4& lhs, const RMatrix4& rhs);
+RMatrix4 operator * (const RMatrix4& lhs, const RMatrix4& rhs);
+RMatrix4 operator * (const RMatrix4& m, float scale);
+RMatrix4 operator * (float scale, const RMatrix4& m);
+RMatrix4 operator / (const RMatrix4& m, float divisor);
+
+/* Stream out */
+std::ostream& operator << (std::ostream& os, const RMatrix4& m);
 
 /* Inline */
 

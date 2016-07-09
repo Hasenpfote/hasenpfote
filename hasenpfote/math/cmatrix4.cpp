@@ -1,4 +1,5 @@
 ﻿#include <string>
+#include <sstream>
 #include "../assert.h"
 #include "utility.h"
 #include "vector3.h"
@@ -7,6 +8,13 @@
 #include "cmatrix4.h"
 
 namespace hasenpfote{ namespace math{
+
+const CMatrix4 CMatrix4::ZERO = {
+    0.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 0.0f
+};
 
 const CMatrix4 CMatrix4::IDENTITY = {
     1.0f, 0.0f, 0.0f, 0.0f,
@@ -106,7 +114,15 @@ CMatrix4& CMatrix4::operator -= (const CMatrix4& m)
 
 CMatrix4& CMatrix4::operator *= (const CMatrix4& m)
 {
-    *this = *this * m;
+    const CMatrix4 temp(*this);
+    for(auto col = 0; col < order; col++){
+        for(auto row = 0; row < order; row++){
+            this->m[col][row] = 0.0f;
+            for(auto i = 0; i < order; i++){
+                this->m[col][row] += temp.m[i][row] * m.m[col][i];
+            }
+        }
+    }
     return *this;
 }
 
@@ -125,80 +141,6 @@ CMatrix4& CMatrix4::operator /= (float divisor)
         for(auto j = 0; j < order; j++)
             this->m[i][j] /= divisor;
     return *this;
-}
-
-const CMatrix4 CMatrix4::operator + () const
-{
-    return *this;
-}
-
-const CMatrix4 CMatrix4::operator - () const
-{
-    CMatrix4 result;
-    for(auto i = 0; i < order; i++)
-        for(auto j = 0; j < order; j++)
-            result.m[i][j] = -m[i][j];
-    return result;
-}
-
-const CMatrix4 CMatrix4::operator + (const CMatrix4& m) const
-{
-    CMatrix4 result;
-    for(auto i = 0; i < order; i++)
-        for(auto j = 0; j < order; j++)
-            result.m[i][j] = this->m[i][j] + m.m[i][j];
-    return result;
-}
-
-const CMatrix4 CMatrix4::operator - (const CMatrix4& m) const
-{
-    CMatrix4 result;
-    for(auto i = 0; i < order; i++)
-        for(auto j = 0; j < order; j++)
-            result.m[i][j] = this->m[i][j] - m.m[i][j];
-    return result;
-}
-
-const CMatrix4 CMatrix4::operator * (const CMatrix4& m) const
-{
-    CMatrix4 result;
-    for(auto col = 0; col < order; col++){
-        for(auto row = 0; row < order; row++){
-            result.m[col][row] = 0.0f;
-            for(auto i = 0; i < order; i++){
-                result.m[col][row] += (this->m)[i][row] * m.m[col][i];
-            }
-        }
-    }
-    return result;
-}
-
-const CMatrix4 CMatrix4::operator * (float scale) const
-{
-    CMatrix4 result;
-    for(auto i = 0; i < order; i++)
-        for(auto j = 0; j < order; j++)
-            result.m[i][j] = m[i][j] * scale;
-    return result;
-}
-
-const CMatrix4 CMatrix4::operator / (float divisor) const
-{
-    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
-    CMatrix4 result;
-    for(auto i = 0; i < order; i++)
-        for(auto j = 0; j < order; j++)
-            result.m[i][j] = m[i][j] / divisor;
-    return result;
-}
-
-const CMatrix4 operator * (float scale, const CMatrix4& m)
-{
-    CMatrix4 result;
-    for(auto i = 0; i < CMatrix4::order; i++)
-        for(auto j = 0; j < CMatrix4::order; j++)
-            result.m[i][j] = scale * m.m[i][j];
-    return result;
 }
 
 float& CMatrix4::operator () (std::int32_t row, std::int32_t column)
@@ -267,6 +209,19 @@ Quaternion CMatrix4::ToRotationQuaternion() const
         result.w = (m21 - m12) * rcp_4z;    // 4wz / 4|z|
     }
     return result;
+}
+
+std::string CMatrix4::ToString() const
+{
+    std::ostringstream oss;
+    for(auto i = 0; i < order; i++){
+        oss << "CMatrix4[" << i << "]{" << m[i][0];
+        for(auto j = 1; j < order; j++){
+            oss << ", " << m[i][j];
+        }
+        oss << "}" << std::endl;
+    }
+    return oss.str();
 }
 
 CMatrix4 CMatrix4::Transpose(const CMatrix4& m)
@@ -482,16 +437,50 @@ CMatrix4 CMatrix4::Ortho(float top, float bottom, float left, float right, float
         0.0f, 0.0f, 0.0f,    1.0f);
 }
 
-std::ostream& operator<<(std::ostream& os, const CMatrix4& m)
+CMatrix4 operator + (const CMatrix4& m)
+{
+    return m;
+}
+
+CMatrix4 operator - (const CMatrix4& m)
+{
+    return CMatrix4(CMatrix4::ZERO) -= m;
+}
+
+CMatrix4 operator + (const CMatrix4& lhs, const CMatrix4& rhs)
+{
+    return CMatrix4(lhs) += rhs;
+}
+
+CMatrix4 operator - (const CMatrix4& lhs, const CMatrix4& rhs)
+{
+    return CMatrix4(lhs) -= rhs;
+}
+
+CMatrix4 operator * (const CMatrix4& lhs, const CMatrix4& rhs)
+{
+    return CMatrix4(lhs) *= rhs;
+}
+
+CMatrix4 operator * (const CMatrix4& m, float scale)
+{
+    return CMatrix4(m) *= scale;
+}
+
+CMatrix4 operator * (float scale, const CMatrix4& m)
+{
+    return CMatrix4(m) *= scale;
+}
+
+CMatrix4 operator / (const CMatrix4& m, float divisor)
+{
+    return CMatrix4(m) /= divisor;
+}
+
+std::ostream& operator << (std::ostream& os, const CMatrix4& m)
 {
     const auto flags = os.flags();
-    for(auto i = 0; i < CMatrix4::order; i++){
-        os << "CMatrix4[" << i << "]{" << m.m[i][0];
-        for(auto j = 1; j < CMatrix4::order; j++){
-            os << ", " << m.m[i][j];
-        }
-        os << "}" << std::endl;
-    }
+    os << m.ToString() << std::endl;
     os.flags(flags);
     return os;
 }
