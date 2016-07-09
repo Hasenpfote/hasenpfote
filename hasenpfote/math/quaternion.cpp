@@ -31,6 +31,11 @@ Quaternion::Quaternion(const std::array<float, 4>& q)
 {
 }
 
+Quaternion::Quaternion(const AxisAngle& a)
+{
+    *this = RotationAxis(a.GetAxis(), a.GetAngle());
+}
+
 Quaternion& Quaternion::operator = (const Quaternion& q)
 {
     w = q.w;
@@ -171,12 +176,12 @@ AxisAngle Quaternion::ToAxisAngle() const
     const float i = NormV();
     if(i > 0.0f){    // TODO: 少し余裕を持たせる
         float rcp_i = 1.0f / i;
-        result.axis = Vector3(x * rcp_i, y * rcp_i, z * rcp_i);
-        result.angle = 2.0f * std::atan2f(i, w);
+        result.SetAxis(Vector3(x * rcp_i, y * rcp_i, z * rcp_i));
+        result.SetAngle(2.0f * std::atan2f(i, w));
     }
     else{
-        result.axis = Vector3::ZERO;
-        result.angle = 0.0f;
+        result.SetAxis(Vector3::ZERO);
+        result.SetAngle(0.0f);
     }
     return result;
 }
@@ -282,6 +287,11 @@ Quaternion Quaternion::RotationAxis(const Vector3& axis, float angle)
     return Quaternion(std::cosf(half_angle), axis.x * s, axis.y * s, axis.z * s);
 }
 
+Quaternion Quaternion::RotationAxis(const AxisAngle& a)
+{
+    return RotationAxis(a.GetAxis(), a.GetAngle());
+}
+
 Quaternion Quaternion::RotationShortestArc(const Vector3& a, const Vector3& b)
 {
     const float d = Vector3::DotProduct(a, b);
@@ -384,7 +394,7 @@ Quaternion operator / (const Quaternion& q, float divisor)
     return Quaternion(q) /= divisor;
 }
 
-std::ostream& operator<<(std::ostream& os, const Quaternion& q)
+std::ostream& operator << (std::ostream& os, const Quaternion& q)
 {
     const auto flags = os.flags();
     os << "Quaternion{" << q.GetW() << ", " << q.GetX() << ", " << q.GetY() << ", " << q.GetZ() << "}";

@@ -45,20 +45,6 @@ public:
     Vector2& operator *= (float scale);
     Vector2& operator /= (float divisor);
 
-/* Unary operator */
-
-    const Vector2 operator + () const;
-    const Vector2 operator - () const;
-
-/* Binary operator */
-
-    const Vector2 operator + (const Vector2& v) const;
-    const Vector2 operator - (const Vector2& v) const;
-    const Vector2 operator * (float scale) const;
-    const Vector2 operator / (float divisor) const;
-
-    friend const Vector2 operator * (float scale, const Vector2& v);
-
 /* Operation */
 
     /*!
@@ -173,9 +159,6 @@ public:
      */
     static Vector2 Maximize(const Vector2& a, const Vector2& b);
 
-/* Debug */
-    friend std::ostream& operator<<(std::ostream& os, const Vector2& v);
-
 public:
     static const Vector2 ZERO;  //!< ゼロベクトル.
     static const Vector2 E_X;   //!< 基底ベクトル.
@@ -192,6 +175,20 @@ private:
         std::array<float, 2> v;
     };
 };
+
+/* Unary operator */
+Vector2 operator + (const Vector2& v);
+Vector2 operator - (const Vector2& v);
+
+/* Binary operator */
+Vector2 operator + (const Vector2& lhs, const Vector2& rhs);
+Vector2 operator - (const Vector2& lhs, const Vector2& rhs);
+Vector2 operator * (const Vector2& v, float scale);
+Vector2 operator * (float scale, const Vector2& v);
+Vector2 operator / (const Vector2& v, float divisor);
+
+/* Stream out */
+std::ostream& operator << (std::ostream& os, const Vector2& v);
 
 /* Inline */
 

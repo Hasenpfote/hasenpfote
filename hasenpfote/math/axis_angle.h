@@ -11,8 +11,6 @@ namespace hasenpfote{ namespace math{
 
 class AxisAngle final
 {
-    friend class Quaternion;
-
 public:
 /* Constructor */
 
@@ -43,7 +41,7 @@ private:
 };
 
 /* Stream out */
-std::ostream& operator<<(std::ostream& os, const AxisAngle& a);
+std::ostream& operator << (std::ostream& os, const AxisAngle& a);
 
 /* Inline */
 

@@ -12,21 +12,18 @@ const Vector2 Vector2::E_X = Vector2(1.0f, 0.0f);
 const Vector2 Vector2::E_Y = Vector2(0.0f, 1.0f);
 
 Vector2::Vector2(const Vector2& v)
+    : x(v.x), y(v.y)
 {
-    x = v.x;
-    y = v.y;
 }
 
 Vector2::Vector2(float x, float y)
+    : x(x), y(y)
 {
-    this->x = x;
-    this->y = y;
 }
 
 Vector2::Vector2(const std::array<float, 2>& v)
+    : Vector2(v[0], v[1])
 {
-    x = v[0];
-    y = v[1];
 }
 
 Vector2& Vector2::operator = (const Vector2& v)
@@ -70,42 +67,6 @@ Vector2& Vector2::operator /= (float divisor)
     x /= divisor;
     y /= divisor;
     return *this;
-}
-
-const Vector2 Vector2::operator + () const
-{
-    return *this;
-}
-
-const Vector2 Vector2::operator - () const
-{
-    return Vector2(-x, -y);
-}
-
-const Vector2 Vector2::operator + (const Vector2& v) const
-{
-    return Vector2(x + v.x, y + v.y);
-}
-
-const Vector2 Vector2::operator - (const Vector2& v) const
-{
-    return Vector2(x - v.x, y - v.y);
-}
-
-const Vector2 Vector2::operator * (float scale) const
-{
-    return Vector2(x * scale, y * scale);
-}
-
-const Vector2 Vector2::operator / (float divisor) const
-{
-    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
-    return Vector2(x / divisor, y / divisor);
-}
-
-const Vector2 operator * (float scale, const Vector2& v)
-{
-    return Vector2(scale * v.x, scale * v.y);
 }
 
 float Vector2::Magnitude() const
@@ -196,7 +157,6 @@ bool Vector2::IsParallel(const Vector2& a, const Vector2& b)
     ASSERT_MSG(almost_equals(1.0f, a.MagnitudeSquared(), 1), "Not an unit vector.");
     ASSERT_MSG(almost_equals(1.0f, b.MagnitudeSquared(), 1), "Not an unit vector.");
     return !(std::abs(DotProduct(a, b)) < 1.0f);
-
 }
 
 Vector2 Vector2::Minimize(const Vector2& a, const Vector2& b)
@@ -204,7 +164,7 @@ Vector2 Vector2::Minimize(const Vector2& a, const Vector2& b)
     return Vector2(
         (a.x < b.x)? a.x : b.x,
         (a.y < b.y)? a.y : b.y
-        );
+    );
 }
 
 Vector2 Vector2::Maximize(const Vector2& a, const Vector2& b)
@@ -215,10 +175,45 @@ Vector2 Vector2::Maximize(const Vector2& a, const Vector2& b)
     );
 }
 
-std::ostream& operator<<(std::ostream& os, const Vector2& v)
+Vector2 operator + (const Vector2& v)
+{
+    return v;
+}
+
+Vector2 operator - (const Vector2& v)
+{
+    return Vector2(-v.GetX(), -v.GetY());
+}
+
+Vector2 operator + (const Vector2& lhs, const Vector2& rhs)
+{
+    return Vector2(lhs) += rhs;
+}
+
+Vector2 operator - (const Vector2& lhs, const Vector2& rhs)
+{
+    return Vector2(lhs) -= rhs;
+}
+
+Vector2 operator * (const Vector2& v, float scale)
+{
+    return Vector2(v) *= scale;
+}
+
+Vector2 operator * (float scale, const Vector2& v)
+{
+    return Vector2(v) *= scale;
+}
+
+Vector2 operator / (const Vector2& v, float divisor)
+{
+    return Vector2(v) /= divisor;
+}
+
+std::ostream& operator << (std::ostream& os, const Vector2& v)
 {
     const auto flags = os.flags();
-    os << "Vector2{" << v.x << ", " << v.y << "}";
+    os << "Vector2{" << v.GetX() << ", " << v.GetY() << "}";
     os.flags(flags);
     return os;
 }

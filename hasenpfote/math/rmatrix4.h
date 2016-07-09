@@ -9,10 +9,11 @@
 
 namespace hasenpfote{ namespace math{
 
+class Vector3;
+class Vector4;
+
 class RMatrix4 final
 {
-    friend class Vector3;
-    friend class Vector4;
     friend class Quaternion;
 
     static constexpr std::int32_t order = 4;

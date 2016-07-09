@@ -13,35 +13,24 @@ namespace hasenpfote{ namespace math{
 const Vector4 Vector4::ZERO = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 
 Vector4::Vector4(const Vector4& v)
+    : x(v.x), y(v.y), z(v.z), w(v.w)
 {
-    x = v.x;
-    y = v.y;
-    z = v.z;
-    w = v.w;
 }
 
 Vector4::Vector4(float x, float y, float z, float w)
+    : x(x), y(y), z(z), w(w)
 {
-    this->x = x;
-    this->y = y;
-    this->z = z;
-    this->w = w;
 }
 
 Vector4::Vector4(const Vector3& v, float w)
+    : Vector4(v.GetX(), v.GetY(), v.GetZ(), w)
 {
-    this->x = v.x;
-    this->y = v.y;
-    this->z = v.z;
-    this->w = w;
+   
 }
 
 Vector4::Vector4(const std::array<float, 4>& v)
+    : Vector4(v[0], v[1], v[2], v[3])
 {
-    x = v[0];
-    y = v[1];
-    z = v[2];
-    w = v[3];
 }
 
 Vector4& Vector4::operator = (const Vector4& v)
@@ -97,80 +86,6 @@ Vector4& Vector4::operator /= (float divisor)
     z /= divisor;
     w /= divisor;
     return *this;
-}
-
-const Vector4 Vector4::operator + () const
-{
-    return *this;
-}
-
-const Vector4 Vector4::operator - () const
-{
-    return Vector4(-x, -y, -z, -w);
-}
-
-const Vector4 Vector4::operator + (const Vector4& v) const
-{
-    return Vector4(x + v.x, y + v.y, z + v.z, w + v.w);
-}
-
-const Vector4 Vector4::operator - (const Vector4& v) const
-{
-    return Vector4(x - v.x, y - v.y, z - v.z, w - v.w);
-}
-
-const Vector4 Vector4::operator * (float scale) const
-{
-    return Vector4(x * scale, y * scale, z * scale, w * scale);
-}
-
-const Vector4 Vector4::operator / (float divisor) const
-{
-    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
-    return Vector4(x / divisor, y / divisor, z / divisor, w / divisor);
-}
-
-const Vector4 operator * (float scale, const Vector4& v)
-{
-    return Vector4(scale * v.x, scale * v.y, scale * v.z, scale * v.w);
-}
-
-const Vector4 operator * (const CMatrix4& m, const Vector4& v)
-{
-#if 0
-    Vector4 result;
-    result.x = m.m11 * v.x + m.m12 * v.y + m.m13 * v.z + m.m14 * v.w;
-    result.y = m.m21 * v.x + m.m22 * v.y + m.m23 * v.z + m.m24 * v.w;
-    result.z = m.m31 * v.x + m.m32 * v.y + m.m33 * v.z + m.m34 * v.w;
-    result.w = m.m41 * v.x + m.m42 * v.y + m.m43 * v.z + m.m44 * v.w;
-    return result;
-#else
-    return Vector4(
-        Vector4::DotProduct(m.GetRow(0), v),
-        Vector4::DotProduct(m.GetRow(1), v),
-        Vector4::DotProduct(m.GetRow(2), v),
-        Vector4::DotProduct(m.GetRow(3), v)
-    );
-#endif
-}
-
-const Vector4 operator * (const Vector4& v, const RMatrix4& m)
-{
-#if 0
-    Vector4 result;
-    result.x = v.x * m.m11 + v.y * m.m21 + v.z * m.m31 + v.w * m.m41;
-    result.y = v.x * m.m12 + v.y * m.m22 + v.z * m.m32 + v.w * m.m42;
-    result.z = v.x * m.m13 + v.y * m.m23 + v.z * m.m33 + v.w * m.m43;
-    result.w = v.x * m.m14 + v.y * m.m24 + v.z * m.m34 + v.w * m.m44;
-    return result;
-#else
-    return Vector4(
-        Vector4::DotProduct(v, m.GetColumn(0)),
-        Vector4::DotProduct(v, m.GetColumn(1)),
-        Vector4::DotProduct(v, m.GetColumn(2)),
-        Vector4::DotProduct(v, m.GetColumn(3))
-    );
-#endif
 }
 
 float Vector4::Magnitude() const
@@ -230,10 +145,65 @@ Vector4 Vector4::Maximize(const Vector4& a, const Vector4& b)
     );
 }
 
-std::ostream& operator<<(std::ostream& os, const Vector4& v)
+Vector4 operator + (const Vector4& v)
+{
+    return v;
+}
+
+Vector4 operator - (const Vector4& v)
+{
+    return Vector4(-v.GetX(), -v.GetY(), -v.GetZ(), -v.GetW());
+}
+
+Vector4 operator + (const Vector4& lhs, const Vector4& rhs)
+{
+    return Vector4(lhs) += rhs;
+}
+
+Vector4 operator - (const Vector4& lhs, const Vector4& rhs)
+{
+    return Vector4(lhs) -= rhs;
+}
+
+Vector4 operator * (const Vector4& v, float scale)
+{
+    return Vector4(v) *= scale;
+}
+
+Vector4 operator * (float scale, const Vector4& v)
+{
+    return Vector4(v) *= scale;
+}
+
+Vector4 operator / (const Vector4& v, float divisor)
+{
+    return Vector4(v) /= divisor;
+}
+
+Vector4 operator * (const CMatrix4& m, const Vector4& v)
+{
+    return Vector4(
+        Vector4::DotProduct(m.GetRow(0), v),
+        Vector4::DotProduct(m.GetRow(1), v),
+        Vector4::DotProduct(m.GetRow(2), v),
+        Vector4::DotProduct(m.GetRow(3), v)
+    );
+}
+
+Vector4 operator * (const Vector4& v, const RMatrix4& m)
+{
+    return Vector4(
+        Vector4::DotProduct(v, m.GetColumn(0)),
+        Vector4::DotProduct(v, m.GetColumn(1)),
+        Vector4::DotProduct(v, m.GetColumn(2)),
+        Vector4::DotProduct(v, m.GetColumn(3))
+    );
+}
+
+std::ostream& operator << (std::ostream& os, const Vector4& v)
 {
     const auto flags = os.flags();
-    os << "Vector4{" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << "}";
+    os << "Vector4{" << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ", " << v.GetW() << "}";
     os.flags(flags);
     return os;
 }

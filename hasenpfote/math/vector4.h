@@ -9,9 +9,10 @@
 
 namespace hasenpfote{ namespace math{
 
+class Vector3;
+
 class Vector4 final
 {
-    friend class Vector3;
     friend class CMatrix4;
     friend class RMatrix4;
 
@@ -53,22 +54,6 @@ public:
     Vector4& operator -= (const Vector4& v);
     Vector4& operator *= (float scale);
     Vector4& operator /= (float divisor);
-
-/* Unary operator */
-
-    const Vector4 operator + () const;
-    const Vector4 operator - () const;
-
-/* Binary operator */
-
-    const Vector4 operator + (const Vector4& v) const;
-    const Vector4 operator - (const Vector4& v) const;
-    const Vector4 operator * (float scale) const;
-    const Vector4 operator / (float divisor) const;
-
-    friend const Vector4 operator * (float scale, const Vector4& v);
-    friend const Vector4 operator * (const CMatrix4& m, const Vector4& v);
-    friend const Vector4 operator * (const Vector4& v, const RMatrix4& m);
 
 /* Operation */
 
@@ -120,9 +105,6 @@ public:
      */
     static Vector4 Maximize(const Vector4& a, const Vector4& b);
 
-/* Debug */
-    friend std::ostream& operator<<(std::ostream& os, const Vector4& v);
-
 public:
     static const Vector4 ZERO;  //!< ゼロベクトル.
 
@@ -139,6 +121,22 @@ private:
         std::array<float, 4> v;
     };
 };
+
+/* Unary operator */
+Vector4 operator + (const Vector4& v);
+Vector4 operator - (const Vector4& v);
+
+/* Binary operator */
+Vector4 operator + (const Vector4& lhs, const Vector4& rhs);
+Vector4 operator - (const Vector4& lhs, const Vector4& rhs);
+Vector4 operator * (const Vector4& v, float scale);
+Vector4 operator * (float scale, const Vector4& v);
+Vector4 operator / (const Vector4& v, float divisor);
+Vector4 operator * (const CMatrix4& m, const Vector4& v);
+Vector4 operator * (const Vector4& v, const RMatrix4& m);
+
+/* Stream out */
+std::ostream& operator << (std::ostream& os, const Vector4& v);
 
 /* Inline */
 

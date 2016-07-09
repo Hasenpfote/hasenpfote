@@ -25,6 +25,7 @@ public:
     Quaternion(float w, float x, float y, float z);
     Quaternion(float s, const Vector3& v);
     explicit Quaternion(const std::array<float, 4>& q);
+    explicit Quaternion(const AxisAngle& a);
 
 /* Destructor */
 
@@ -201,6 +202,13 @@ public:
     static Quaternion RotationAxis(const Vector3& axis, float angle);
 
     /*!
+     * 任意軸周りの回転を表す四元数を生成.
+     * @param a axis angle.
+     * @return Quaternion
+     */
+    static Quaternion RotationAxis(const AxisAngle& a);
+
+    /*!
      * 2 つのベクトル間の最小弧回転を表す四元数を生成.
      * @param a an unit vector.
      * @param b an unit vector.
@@ -302,7 +310,7 @@ Quaternion operator * (float scale, const Quaternion& q);
 Quaternion operator / (const Quaternion& q, float divisor);
 
 /* Stream out */
-std::ostream& operator<<(std::ostream& os, const Quaternion& q);
+std::ostream& operator << (std::ostream& os, const Quaternion& q);
 
 /* Inline */
 
