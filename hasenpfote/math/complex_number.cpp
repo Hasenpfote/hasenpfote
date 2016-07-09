@@ -6,15 +6,13 @@ namespace hasenpfote{ namespace math{
 const ComplexNumber ComplexNumber::IDENTITY = ComplexNumber(1.0f, 0.0f);
 
 ComplexNumber::ComplexNumber(const ComplexNumber& c)
+    : re(c.re), im(c.im)
 {
-    re = c.re;
-    im = c.im;
 }
 
 ComplexNumber::ComplexNumber(float re, float im)
+    : re(re), im(im)
 {
-    this->re = re;
-    this->im = im;
 }
 
 ComplexNumber& ComplexNumber::operator = (const ComplexNumber& c)
@@ -40,7 +38,9 @@ ComplexNumber& ComplexNumber::operator -= (const ComplexNumber& c)
 
 ComplexNumber& ComplexNumber::operator *= (const ComplexNumber& c)
 {
-    *this = *this * c;
+    const ComplexNumber temp(*this);
+    re = temp.re * c.re - temp.im * c.im;
+    im = temp.re * c.im + temp.im * c.re;
     return *this;
 }
 
@@ -57,45 +57,6 @@ ComplexNumber& ComplexNumber::operator /= (float divisor)
     re /= divisor;
     im /= divisor;
     return *this;
-}
-
-const ComplexNumber ComplexNumber::operator + () const
-{
-    return *this;
-}
-
-const ComplexNumber ComplexNumber::operator - () const
-{
-    return ComplexNumber(-re, -im);
-}
-
-const ComplexNumber ComplexNumber::operator + (const ComplexNumber& c) const
-{
-    return ComplexNumber(re + c.re, im + c.im);
-}
-
-const ComplexNumber ComplexNumber::operator - (const ComplexNumber& c) const
-{
-    return ComplexNumber(re - c.re, im - c.im);
-}
-
-const ComplexNumber ComplexNumber::operator * (const ComplexNumber& c) const
-{
-    ComplexNumber result;
-    result.re = re * c.re - im * c.im;
-    result.im = re * c.im + im * c.re;
-    return result;
-}
-
-const ComplexNumber ComplexNumber::operator * (float scale) const
-{
-    return ComplexNumber(re * scale, im * scale);
-}
-
-const ComplexNumber ComplexNumber::operator / (float divisor) const
-{
-    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
-    return ComplexNumber(re / divisor, im / divisor);
 }
 
 float ComplexNumber::NormSquared() const
@@ -167,10 +128,50 @@ ComplexNumber ComplexNumber::Rotation(float angle)
     return ComplexNumber(std::cosf(angle), std::sinf(angle));
 }
 
-std::ostream& operator<<(std::ostream& os, const ComplexNumber& c)
+ComplexNumber operator + (const ComplexNumber& c)
+{
+    return c;
+}
+
+ComplexNumber operator - (const ComplexNumber& c)
+{
+    return ComplexNumber(-c.GetRealPart(), -c.GetImaginaryPart());
+}
+
+ComplexNumber operator + (const ComplexNumber& lhs, const ComplexNumber& rhs)
+{
+    return ComplexNumber(lhs) += rhs;
+}
+
+ComplexNumber operator - (const ComplexNumber& lhs, const ComplexNumber& rhs)
+{
+    return ComplexNumber(lhs) -= rhs;
+}
+
+ComplexNumber operator * (const ComplexNumber& lhs, const ComplexNumber& rhs)
+{
+    return ComplexNumber(lhs) *= rhs;
+}
+
+ComplexNumber operator * (const ComplexNumber& c, float scale)
+{
+    return ComplexNumber(c) *= scale;
+}
+
+ComplexNumber operator * (float scale, const ComplexNumber& c)
+{
+    return ComplexNumber(c) *= scale;
+}
+
+ComplexNumber operator / (const ComplexNumber& c, float divisor)
+{
+    return ComplexNumber(c) /= divisor;
+}
+
+std::ostream& operator << (std::ostream& os, const ComplexNumber& c)
 {
     const auto flags = os.flags();
-    os << "ComplexNumber{" << c.re << ", " << c.im << "}";
+    os << "ComplexNumber{" << c.GetRealPart() << ", " << c.GetImaginaryPart() << "}";
     os.flags(flags);
     return os;
 }

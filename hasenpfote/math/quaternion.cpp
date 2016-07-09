@@ -12,35 +12,23 @@ namespace hasenpfote{ namespace math{
 const Quaternion Quaternion::IDENTITY = Quaternion(1.0f, 0.0f, 0.0f, 0.0f);
 
 Quaternion::Quaternion(const Quaternion& q)
+    : w(q.w), x(q.x), y(q.y), z(q.z)
 {
-    w = q.w;
-    x = q.x;
-    y = q.y;
-    z = q.z;
 }
 
 Quaternion::Quaternion(float w, float x, float y, float z)
+    : w(w), x(x), y(y), z(z)
 {
-    this->w = w;
-    this->x = x;
-    this->y = y;
-    this->z = z;
 }
 
 Quaternion::Quaternion(float s, const Vector3& v)
+    : Quaternion(s, v.x, v.y, v.z)
 {
-    w = s;
-    x = v.x;
-    y = v.y;
-    z = v.z;
 }
 
 Quaternion::Quaternion(const std::array<float, 4>& q)
+    : Quaternion(q[0], q[1], q[2], q[3])
 {
-    w = q[0];
-    x = q[1];
-    y = q[2];
-    z = q[3];
 }
 
 Quaternion& Quaternion::operator = (const Quaternion& q)
@@ -81,7 +69,11 @@ Quaternion& Quaternion::operator -= (const Quaternion& q)
 
 Quaternion& Quaternion::operator *= (const Quaternion& q)
 {
-    *this = *this * q;
+    const Quaternion temp(*this);
+    w = temp.w * q.w - (temp.x * q.x + temp.y * q.y + temp.z * q.z);
+    x = temp.w * q.x + q.w * temp.x + (temp.y * q.z - temp.z * q.y);
+    y = temp.w * q.y + q.w * temp.y + (temp.z * q.x - temp.x * q.z);
+    z = temp.w * q.z + q.w * temp.z + (temp.x * q.y - temp.y * q.x);
     return *this;
 }
 
@@ -102,52 +94,6 @@ Quaternion& Quaternion::operator /= (float divisor)
     y /= divisor;
     z /= divisor;
     return *this;
-}
-
-const Quaternion Quaternion::operator + () const
-{
-    return *this;
-}
-
-const Quaternion Quaternion::operator - () const
-{
-    return Quaternion(-w, -x, -y, -z);
-}
-
-const Quaternion Quaternion::operator + (const Quaternion& q) const
-{
-    return Quaternion(w + q.w, x + q.x, y + q.y, z + q.z);
-}
-
-const Quaternion Quaternion::operator - (const Quaternion& q) const
-{
-    return Quaternion(w - q.w, x - q.x, y - q.y, z - q.z);
-}
-
-const Quaternion Quaternion::operator * (const Quaternion& q) const
-{
-    Quaternion result;
-    result.w = w * q.w - (x * q.x + y * q.y + z * q.z);
-    result.x = w * q.x + q.w * x + (y * q.z - z * q.y);
-    result.y = w * q.y + q.w * y + (z * q.x - x * q.z);
-    result.z = w * q.z + q.w * z + (x * q.y - y * q.x);
-    return result;
-}
-
-const Quaternion Quaternion::operator * (float scale) const
-{
-    return Quaternion(w * scale, x * scale, y * scale, z * scale);
-}
-
-const Quaternion Quaternion::operator / (float divisor) const
-{
-    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
-    return Quaternion(w / divisor, x / divisor, y / divisor, z / divisor);
-}
-
-const Quaternion operator * (float scale, const Quaternion& q)
-{
-    return Quaternion(scale * q.w, scale * q.x, scale * q.y, scale * q.z);
 }
 
 float Quaternion::NormSquared() const
@@ -398,10 +344,50 @@ Quaternion Quaternion::Spline(const Quaternion& prev, const Quaternion& current,
     return current * ExpP(-0.25f * (LnU(conj_cur * prev) + LnU(conj_cur * next)));
 }
 
+Quaternion operator + (const Quaternion& q)
+{
+    return q;
+}
+
+Quaternion operator - (const Quaternion& q)
+{
+    return Quaternion(-q.GetW(), -q.GetX(), -q.GetY(), -q.GetZ());
+}
+
+Quaternion operator + (const Quaternion& lhs, const Quaternion& rhs)
+{
+    return Quaternion(lhs) += rhs;
+}
+
+Quaternion operator - (const Quaternion& lhs, const Quaternion& rhs)
+{
+    return Quaternion(lhs) -= rhs;
+}
+
+Quaternion operator * (const Quaternion& lhs, const Quaternion& rhs)
+{
+    return Quaternion(lhs) *= rhs;
+}
+
+Quaternion operator * (const Quaternion& q, float scale)
+{
+    return Quaternion(q) *= scale;
+}
+
+Quaternion operator * (float scale, const Quaternion& q)
+{
+    return Quaternion(q) *= scale;
+}
+
+Quaternion operator / (const Quaternion& q, float divisor)
+{
+    return Quaternion(q) /= divisor;
+}
+
 std::ostream& operator<<(std::ostream& os, const Quaternion& q)
 {
     const auto flags = os.flags();
-    os << "Quaternion{" << q.w << ", " << q.x << ", " << q.y << ", " << q.z << "}";
+    os << "Quaternion{" << q.GetW() << ", " << q.GetX() << ", " << q.GetY() << ", " << q.GetZ() << "}";
     os.flags(flags);
     return os;
 }

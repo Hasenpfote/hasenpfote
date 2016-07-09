@@ -57,21 +57,6 @@ public:
     Quaternion& operator *= (float scale);
     Quaternion& operator /= (float divisor);
 
-/* Unary operator */
-
-    const Quaternion operator + () const;
-    const Quaternion operator - () const;
-
-/* Binary operator */
-
-    const Quaternion operator + (const Quaternion& q) const;
-    const Quaternion operator - (const Quaternion& q) const;
-    const Quaternion operator * (const Quaternion& q) const;
-    const Quaternion operator * (float scale) const;
-    const Quaternion operator / (float divisor) const;
-
-    friend const Quaternion operator * (float scale, const Quaternion& q);
-
 /* Operation */
 
     /*!
@@ -280,9 +265,6 @@ public:
      */
     static Quaternion Spline(const Quaternion& prev, const Quaternion& current, const Quaternion& next);
 
-/* Debug */
-    friend std::ostream& operator<<(std::ostream& os, const Quaternion& q);
-
 public:
     enum class Component : std::uint32_t
     {
@@ -306,6 +288,21 @@ private:
         std::array<float, 4> q;
     };
 };
+
+/* Unary operator */
+Quaternion operator + (const Quaternion& q);
+Quaternion operator - (const Quaternion& q);
+
+/* Binary operator */
+Quaternion operator + (const Quaternion& lhs, const Quaternion& rhs);
+Quaternion operator - (const Quaternion& lhs, const Quaternion& rhs);
+Quaternion operator * (const Quaternion& lhs, const Quaternion& rhs);
+Quaternion operator * (const Quaternion& q, float scale);
+Quaternion operator * (float scale, const Quaternion& q);
+Quaternion operator / (const Quaternion& q, float divisor);
+
+/* Stream out */
+std::ostream& operator<<(std::ostream& os, const Quaternion& q);
 
 /* Inline */
 

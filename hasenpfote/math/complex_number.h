@@ -39,19 +39,6 @@ public:
     ComplexNumber& operator *= (float scale);
     ComplexNumber& operator /= (float divisor);
 
-/* Unary operator */
-
-    const ComplexNumber operator + () const;
-    const ComplexNumber operator - () const;
-
-/* Binary operator */
-
-    const ComplexNumber operator + (const ComplexNumber& c) const;
-    const ComplexNumber operator - (const ComplexNumber& c) const;
-    const ComplexNumber operator * (const ComplexNumber& c) const;
-    const ComplexNumber operator * (float scale) const;
-    const ComplexNumber operator / (float divisor) const;
-
 /* Operation */
 
     /*!
@@ -136,9 +123,6 @@ public:
      */
     static ComplexNumber Rotation(float angle);
 
-/* Debug */
-    friend std::ostream& operator<<(std::ostream& os, const ComplexNumber& c);
-
 public:
     static const ComplexNumber IDENTITY;
 
@@ -146,6 +130,21 @@ private:
     float re;
     float im;
 };
+
+/* Unary operator */
+ComplexNumber operator + (const ComplexNumber& c);
+ComplexNumber operator - (const ComplexNumber& c);
+
+/* Binary operator */
+ComplexNumber operator + (const ComplexNumber& lhs, const ComplexNumber& rhs);
+ComplexNumber operator - (const ComplexNumber& lhs, const ComplexNumber& rhs);
+ComplexNumber operator * (const ComplexNumber& lhs, const ComplexNumber& rhs);
+ComplexNumber operator * (const ComplexNumber& c, float scale);
+ComplexNumber operator * (float scale, const ComplexNumber& c);
+ComplexNumber operator / (const ComplexNumber& c, float divisor);
+
+/* Stream out */
+std::ostream& operator << (std::ostream& os, const ComplexNumber& c);
 
 /* Inline */
 

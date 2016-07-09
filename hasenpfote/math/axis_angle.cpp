@@ -22,10 +22,11 @@ AxisAngle& AxisAngle::operator = (const AxisAngle& a)
     return *this;
 }
 
-std::ostream& operator<<(std::ostream& os, const AxisAngle& a)
+std::ostream& operator << (std::ostream& os, const AxisAngle& a)
 {
     const auto flags = os.flags();
-    os << "AxisAngle{" << a.axis << ", " << a.angle << "}";
+    const auto axis = a.GetAxis();
+    os << "AxisAngle{(" << axis.GetX() << ", " << axis.GetY() << ", " << axis.GetZ() << "), "<< a.GetAngle() << "}";
     os.flags(flags);
     return os;
 }

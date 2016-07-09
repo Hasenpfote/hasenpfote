@@ -37,13 +37,13 @@ public:
 
     AxisAngle& operator = (const AxisAngle& a);
 
-/* Debug */
-    friend std::ostream& operator<<(std::ostream& os, const AxisAngle& a);
-
 private:
     Vector3 axis;   //!< an unit vector.
     float angle;    //!< an angle in radians.
 };
+
+/* Stream out */
+std::ostream& operator<<(std::ostream& os, const AxisAngle& a);
 
 /* Inline */
 
