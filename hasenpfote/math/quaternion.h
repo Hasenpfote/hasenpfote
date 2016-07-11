@@ -11,12 +11,11 @@ namespace hasenpfote{ namespace math{
 
 class Vector3;
 class AxisAngle;
+class CMatrix4;
+class RMatrix4;
 
 class Quaternion final
 {
-    friend class CMatrix4;
-    friend class RMatrix4;
-
 public:
 /* Constructor */
 

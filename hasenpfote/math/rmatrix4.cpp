@@ -172,43 +172,43 @@ float RMatrix4::Trace() const
 
 Quaternion RMatrix4::ToRotationQuaternion() const
 {
-    Quaternion result;
+    float w, x, y, z;
     const float tr = Trace();
     if(tr >= 1.0f){
         // |w| が最大
-        result.w = std::sqrtf(tr) * 0.5f;
-        const float rcp_4w = 1.0f / (4.0f * result.w);  // 1/4|w|
-        result.x = (m23 - m32) * rcp_4w;    // 4wx / 4|w|
-        result.y = (m31 - m13) * rcp_4w;    // 4wy / 4|w|
-        result.z = (m12 - m21) * rcp_4w;    // 4wz / 4|w|
+        w = std::sqrtf(tr) * 0.5f;
+        const float rcp_4w = 1.0f / (4.0f * w);  // 1/4|w|
+        x = (m23 - m32) * rcp_4w;    // 4wx / 4|w|
+        y = (m31 - m13) * rcp_4w;    // 4wy / 4|w|
+        z = (m12 - m21) * rcp_4w;    // 4wz / 4|w|
     }
     else
     if((m11 > m22) && (m11 > m33)){
         // |x| が最大
-        result.x = std::sqrtf(m11 - m22 - m33 + 1.0f) * 0.5f;
-        const float rcp_4x = 1.0f / (4.0f * result.x);  // 1/4|x|
-        result.y = (m21 + m12) * rcp_4x;    // 4xy / 4|x|
-        result.z = (m31 + m13) * rcp_4x;    // 4xz / 4|x|
-        result.w = (m23 - m32) * rcp_4x;    // 4wx / 4|x|
+        x = std::sqrtf(m11 - m22 - m33 + 1.0f) * 0.5f;
+        const float rcp_4x = 1.0f / (4.0f * x);  // 1/4|x|
+        y = (m21 + m12) * rcp_4x;    // 4xy / 4|x|
+        z = (m31 + m13) * rcp_4x;    // 4xz / 4|x|
+        w = (m23 - m32) * rcp_4x;    // 4wx / 4|x|
     }
     else
     if((m22 > m33)){
         // |y| が最大
-        result.y = std::sqrtf(m22 - m33 - m11 + 1.0f) * 0.5f;
-        const float rcp_4y = 1.0f / (4.0f * result.y);  // 1/4|y|
-        result.x = (m21 + m12) * rcp_4y;    // 4xy / 4|y|
-        result.z = (m23 + m32) * rcp_4y;    // 4yz / 4|y|
-        result.w = (m31 - m13) * rcp_4y;    // 4wy / 4|y|
+        y = std::sqrtf(m22 - m33 - m11 + 1.0f) * 0.5f;
+        const float rcp_4y = 1.0f / (4.0f * y);  // 1/4|y|
+        x = (m21 + m12) * rcp_4y;    // 4xy / 4|y|
+        z = (m23 + m32) * rcp_4y;    // 4yz / 4|y|
+        w = (m31 - m13) * rcp_4y;    // 4wy / 4|y|
     }
     else{
         // |z| が最大
-        result.z = std::sqrtf(m33 - m11 - m22 + 1.0f) * 0.5f;
-        const float rcp_4z = 1.0f / (4.0f * result.z);  // 1/4|z|
-        result.x = (m31 + m13) * rcp_4z;    // 4xz / 4|z|
-        result.y = (m23 + m32) * rcp_4z;    // 4yz / 4|z|
-        result.w = (m12 - m21) * rcp_4z;    // 4wz / 4|z|
+        z = std::sqrtf(m33 - m11 - m22 + 1.0f) * 0.5f;
+        const float rcp_4z = 1.0f / (4.0f * z);  // 1/4|z|
+        x = (m31 + m13) * rcp_4z;    // 4xz / 4|z|
+        y = (m23 + m32) * rcp_4z;    // 4yz / 4|z|
+        w = (m12 - m21) * rcp_4z;    // 4wz / 4|z|
     }
-    return result;
+    return Quaternion(w, x, y, z);
 }
 
 std::string RMatrix4::ToString() const
