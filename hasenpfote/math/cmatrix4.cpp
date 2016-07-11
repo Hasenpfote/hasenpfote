@@ -362,9 +362,9 @@ CMatrix4 CMatrix4::RotationZ(float angle)
 CMatrix4 CMatrix4::RotationAxis(Vector3 axis, float angle)
 {
     ASSERT_MSG(almost_equals(1.0f, axis.Magnitude(), 1), "Axis is not an unit vector.");
-    const float x = axis.x;
-    const float y = axis.y;
-    const float z = axis.z;
+    const float x = axis.GetX();
+    const float y = axis.GetY();
+    const float z = axis.GetZ();
     const float s = std::sinf(angle);
     const float c = std::cosf(angle);
     const float vers = 1.0f - c;
@@ -383,10 +383,10 @@ CMatrix4 CMatrix4::LookAt(Vector3 position, Vector3 target, Vector3 up)
     xaxis.Normalize();
     Vector3 yaxis = Vector3::CrossProduct(zaxis, xaxis);
     return CMatrix4(
-        xaxis.x, xaxis.y, xaxis.z, -Vector3::DotProduct(xaxis, position),
-        yaxis.x, yaxis.y, yaxis.z, -Vector3::DotProduct(yaxis, position),
-        zaxis.x, zaxis.y, zaxis.z, -Vector3::DotProduct(zaxis, position),
-        0.0f,    0.0f,    0.0f,    1.0f);
+        xaxis.GetX(), xaxis.GetY(), xaxis.GetZ(), -Vector3::DotProduct(xaxis, position),
+        yaxis.GetX(), yaxis.GetY(), yaxis.GetZ(), -Vector3::DotProduct(yaxis, position),
+        zaxis.GetX(), zaxis.GetY(), zaxis.GetZ(), -Vector3::DotProduct(zaxis, position),
+        0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 CMatrix4 CMatrix4::Perspective(float fovy, float aspectRatio, float near, float far)

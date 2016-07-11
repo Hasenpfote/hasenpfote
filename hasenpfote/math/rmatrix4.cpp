@@ -362,9 +362,9 @@ RMatrix4 RMatrix4::RotationZ(float angle)
 RMatrix4 RMatrix4::RotationAxis(Vector3 axis, float angle)
 {
     ASSERT_MSG(almost_equals(1.0f, axis.Magnitude(), 1), "Axis is not an unit vector.");
-    const float x = axis.x;
-    const float y = axis.y;
-    const float z = axis.z;
+    const float x = axis.GetX();
+    const float y = axis.GetY();
+    const float z = axis.GetZ();
     const float s = std::sinf(angle);
     const float c = std::cosf(angle);
     const float vers = 1.0f - c;
@@ -383,9 +383,9 @@ RMatrix4 RMatrix4::LookAt(Vector3 position, Vector3 target, Vector3 up)
     xaxis.Normalize();
     Vector3 yaxis = Vector3::CrossProduct(zaxis, xaxis);
     return RMatrix4(
-        xaxis.x, yaxis.x, zaxis.x, 0.0f,
-        xaxis.y, yaxis.y, zaxis.y, 0.0f,
-        xaxis.z, yaxis.z, zaxis.z, 0.0f,
+        xaxis.GetX(), yaxis.GetX(), zaxis.GetX(), 0.0f,
+        xaxis.GetY(), yaxis.GetY(), zaxis.GetY(), 0.0f,
+        xaxis.GetZ(), yaxis.GetZ(), zaxis.GetZ(), 0.0f,
         -Vector3::DotProduct(xaxis, position), -Vector3::DotProduct(yaxis, position), -Vector3::DotProduct(zaxis, position), 1.0f);
 }
 
