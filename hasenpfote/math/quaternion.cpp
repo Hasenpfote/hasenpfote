@@ -22,7 +22,7 @@ Quaternion::Quaternion(float w, float x, float y, float z)
 }
 
 Quaternion::Quaternion(float s, const Vector3& v)
-    : Quaternion(s, v.x, v.y, v.z)
+    : Quaternion(s, v.GetX(), v.GetY(), v.GetZ())
 {
 }
 
@@ -284,7 +284,7 @@ Quaternion Quaternion::RotationAxis(const Vector3& axis, float angle)
     ASSERT_MSG(almost_equals(1.0f, axis.Magnitude(), 1), "Axis is not an unit quaternion.");
     const float half_angle = angle * 0.5f;
     const float s = std::sinf(half_angle);
-    return Quaternion(std::cosf(half_angle), axis.x * s, axis.y * s, axis.z * s);
+    return Quaternion(std::cosf(half_angle), axis * s);
 }
 
 Quaternion Quaternion::RotationAxis(const AxisAngle& a)
@@ -297,7 +297,7 @@ Quaternion Quaternion::RotationShortestArc(const Vector3& a, const Vector3& b)
     const float d = Vector3::DotProduct(a, b);
     const float s = std::sqrtf((1.0f + d) * 2.0f);
     const Vector3 c = Vector3::CrossProduct(a, b);
-    return Quaternion(s * 0.5f, c.x / s, c.y / s, c.z / s);
+    return Quaternion(s * 0.5f, c / s);
 }
 
 Quaternion Quaternion::RotationalDifference(const Quaternion& a, const Quaternion& b)
