@@ -16,13 +16,16 @@ class RMatrix4;
 class Vector4 final
 {
 public:
+    using Array = std::array<float, 4>;
+
+public:
 /* Constructor */
 
     Vector4() = default;
     Vector4(const Vector4& v);
     Vector4(float x, float y, float z, float w);
     Vector4(const Vector3& v, float w);
-    explicit Vector4(const std::array<float, 4>& v);
+    explicit Vector4(const Array& v);
 
 /* Destructor */
 
@@ -48,7 +51,7 @@ public:
 /* Assignment operator */
 
     Vector4& operator = (const Vector4& v);
-    Vector4& operator = (const std::array<float, 4>& v);
+    Vector4& operator = (const Array& v);
     Vector4& operator += (const Vector4& v);
     Vector4& operator -= (const Vector4& v);
     Vector4& operator *= (float scale);
@@ -117,7 +120,7 @@ private:
             float z;
             float w;
         };
-        std::array<float, 4> v;
+        Array v;
     };
 };
 

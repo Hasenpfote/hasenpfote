@@ -12,12 +12,15 @@ namespace hasenpfote{ namespace math{
 class Vector2 final
 {
 public:
+    using Array = std::array<float, 2>;
+
+public:
 /* Constructor */
 
     Vector2() = default;
     Vector2(const Vector2& v);
     Vector2(float x, float y);
-    explicit Vector2(const std::array<float, 2>& v);
+    explicit Vector2(const Array& v);
 
 /* Destructor */
 
@@ -39,7 +42,7 @@ public:
 /* Assignment operator */
 
     Vector2& operator = (const Vector2& v);
-    Vector2& operator = (const std::array<float, 2>& v);
+    Vector2& operator = (const Array& v);
     Vector2& operator += (const Vector2& v);
     Vector2& operator -= (const Vector2& v);
     Vector2& operator *= (float scale);
@@ -172,7 +175,7 @@ private:
             float x;
             float y;
         };
-        std::array<float, 2> v;
+        Array v;
     };
 };
 

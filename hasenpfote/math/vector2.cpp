@@ -21,7 +21,7 @@ Vector2::Vector2(float x, float y)
 {
 }
 
-Vector2::Vector2(const std::array<float, 2>& v)
+Vector2::Vector2(const Array& v)
     : Vector2(v[0], v[1])
 {
 }
@@ -33,7 +33,7 @@ Vector2& Vector2::operator = (const Vector2& v)
     return *this;
 }
 
-Vector2& Vector2::operator = (const std::array<float, 2>& v)
+Vector2& Vector2::operator = (const Array& v)
 {
     x = v[0];
     y = v[1];

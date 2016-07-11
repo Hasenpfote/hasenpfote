@@ -17,13 +17,16 @@ class RMatrix4;
 class Quaternion final
 {
 public:
+    using Array = std::array<float, 4>;
+
+public:
 /* Constructor */
 
     Quaternion() = default;
     Quaternion(const Quaternion& q);
     Quaternion(float w, float x, float y, float z);
     Quaternion(float s, const Vector3& v);
-    explicit Quaternion(const std::array<float, 4>& q);
+    explicit Quaternion(const Array& q);
     explicit Quaternion(const AxisAngle& a);
 
 /* Destructor */
@@ -50,7 +53,7 @@ public:
 /* Assignment operator */
 
     Quaternion& operator = (const Quaternion& q);
-    Quaternion& operator = (const std::array<float, 4>& q);
+    Quaternion& operator = (const Array& q);
     Quaternion& operator += (const Quaternion& q);
     Quaternion& operator -= (const Quaternion& q);
     Quaternion& operator *= (const Quaternion& q);
@@ -292,7 +295,7 @@ private:
             float y;
             float z;
         };
-        std::array<float, 4> q;
+        Array q;
     };
 };
 

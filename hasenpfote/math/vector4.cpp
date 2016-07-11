@@ -28,7 +28,7 @@ Vector4::Vector4(const Vector3& v, float w)
    
 }
 
-Vector4::Vector4(const std::array<float, 4>& v)
+Vector4::Vector4(const Array& v)
     : Vector4(v[0], v[1], v[2], v[3])
 {
 }
@@ -42,7 +42,7 @@ Vector4& Vector4::operator = (const Vector4& v)
     return *this;
 }
 
-Vector4& Vector4::operator = (const std::array<float, 4>& v)
+Vector4& Vector4::operator = (const Array& v)
 {
     x = v[0];
     y = v[1];

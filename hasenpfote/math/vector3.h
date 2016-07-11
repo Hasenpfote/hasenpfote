@@ -16,12 +16,15 @@ class RMatrix4;
 class Vector3 final
 {
 public:
+    using Array = std::array<float, 3>;
+
+public:
 /* Constructor */
 
     Vector3() = default;
     Vector3(const Vector3& v);
     Vector3(float x, float y, float z);
-    explicit Vector3(const std::array<float, 3>& v);
+    explicit Vector3(const Array& v);
     explicit Vector3(const Vector4& v);
 
 /* Destructor */
@@ -46,7 +49,7 @@ public:
 /* Assignment operator */
 
     Vector3& operator = (const Vector3& v);
-    Vector3& operator = (const std::array<float, 3>& v);
+    Vector3& operator = (const Array& v);
     Vector3& operator += (const Vector3& v);
     Vector3& operator -= (const Vector3& v);
     Vector3& operator *= (float scale);
@@ -181,7 +184,7 @@ private:
             float y;
             float z;
         };
-        std::array<float, 3> v;
+        Array v;
     };
 };
 

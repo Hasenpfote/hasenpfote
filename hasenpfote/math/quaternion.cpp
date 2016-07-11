@@ -26,7 +26,7 @@ Quaternion::Quaternion(float s, const Vector3& v)
 {
 }
 
-Quaternion::Quaternion(const std::array<float, 4>& q)
+Quaternion::Quaternion(const Array& q)
     : Quaternion(q[0], q[1], q[2], q[3])
 {
 }
@@ -45,7 +45,7 @@ Quaternion& Quaternion::operator = (const Quaternion& q)
     return *this;
 }
 
-Quaternion& Quaternion::operator = (const std::array<float, 4>& q)
+Quaternion& Quaternion::operator = (const Array& q)
 {
     w = q[0];
     x = q[1];
