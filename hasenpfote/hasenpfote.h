@@ -7,5 +7,9 @@
 #pragma once
 
 #ifdef _MSC_VER
- #pragma comment(lib, "hasenpfote.lib")
+ #ifdef NDEBUG
+  #pragma comment(lib, "hasenpfote.lib")
+ #else
+  #pragma comment(lib, "hasenpfoted.lib")
+ #endif
 #endif
