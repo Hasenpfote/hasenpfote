@@ -115,12 +115,14 @@ RMatrix4& RMatrix4::operator -= (const RMatrix4& m)
 RMatrix4& RMatrix4::operator *= (const RMatrix4& m)
 {
     const RMatrix4 temp(*this);
+    float elem;
     for(auto row = 0; row < order; row++){
         for(auto col = 0; col < order; col++){
-            this->m[row][col] = 0.0f;
+            elem = 0.0f;
             for(auto i = 0; i < order; i++){
-                this->m[row][col] += temp.m[row][i] * m.m[i][col];
+                elem += temp.m[row][i] * m.m[i][col];
             }
+            this->m[row][col] = elem;
         }
     }
     return *this;
