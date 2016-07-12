@@ -48,8 +48,8 @@ public:
 
 /* Casting operator */
 
-    inline explicit operator float* (){ return m[0]; }
-    inline explicit operator const float* () const { return m[0]; }
+    inline explicit operator float* (){ return m.data(); }
+    inline explicit operator const float* () const { return m.data(); }
 
 /* Assignment operator */
 
@@ -62,6 +62,7 @@ public:
     RMatrix4& operator /= (float divisor);
 
 /* Subscript operator */
+
     float& operator () (std::int32_t row, std::int32_t column);
     const float& operator () (std::int32_t row, std::int32_t column) const;
 
@@ -220,7 +221,7 @@ private:
             float m31, m32, m33, m34;
             float m41, m42, m43, m44;
         };
-        float m[order][order];
+        Array m;
     };
 };
 

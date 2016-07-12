@@ -23,9 +23,15 @@ const RMatrix4 RMatrix4::IDENTITY = {
     0.0f, 0.0f, 0.0f, 1.0f
 };
 
-RMatrix4::RMatrix4(const RMatrix4& m)
+template<std::int32_t N>
+static constexpr std::int32_t offset(std::int32_t row, std::int32_t column)
 {
-    *this = m;
+    return row * N + column;
+}
+
+RMatrix4::RMatrix4(const RMatrix4& m)
+    : m(m.m)
+{
 }
 
 RMatrix4::RMatrix4(
@@ -33,82 +39,96 @@ RMatrix4::RMatrix4(
     float m21, float m22, float m23, float m24,
     float m31, float m32, float m33, float m34,
     float m41, float m42, float m43, float m44)
+    : m{ m11, m12, m13, m14,
+         m21, m22, m23, m24,
+         m31, m32, m33, m34,
+         m41, m42, m43, m44 }
 {
-    this->m11 = m11; this->m12 = m12; this->m13 = m13; this->m14 = m14;
-    this->m21 = m21; this->m22 = m22; this->m23 = m23; this->m24 = m24;
-    this->m31 = m31; this->m32 = m32; this->m33 = m33; this->m34 = m34;
-    this->m41 = m41; this->m42 = m42; this->m43 = m43; this->m44 = m44;
 }
 
 RMatrix4::RMatrix4(const Vector4& v1, const Vector4& v2, const Vector4& v3, const Vector4& v4)
+#if 0
+    : m{ v1.GetX(), v1.GetY(), v1.GetZ(), v1.GetW(),
+         v2.GetX(), v2.GetY(), v2.GetZ(), v2.GetW(),
+         v3.GetX(), v3.GetY(), v3.GetZ(), v3.GetW(),
+         v4.GetX(), v4.GetY(), v4.GetZ(), v4.GetW() }
+{
+#else
 {
     constexpr std::size_t bytes = sizeof(float) * 4;
-    std::memcpy(this->m[0], static_cast<const float*>(v1), bytes);
-    std::memcpy(this->m[1], static_cast<const float*>(v2), bytes);
-    std::memcpy(this->m[2], static_cast<const float*>(v3), bytes);
-    std::memcpy(this->m[3], static_cast<const float*>(v4), bytes);
+    std::memcpy(static_cast<void*>(&m[0]), static_cast<const float*>(v1), bytes);
+    std::memcpy(static_cast<void*>(&m[4]), static_cast<const float*>(v2), bytes);
+    std::memcpy(static_cast<void*>(&m[8]), static_cast<const float*>(v3), bytes);
+    std::memcpy(static_cast<void*>(&m[12]), static_cast<const float*>(v4), bytes);
+#endif
 }
 
 RMatrix4::RMatrix4(const Array& m)
+    : m(m)
 {
-    *this = m;
 }
 
 void RMatrix4::SetRow(std::int32_t row, const Vector4& v)
 {
     ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
-    m[row][0] = v.GetX();
-    m[row][1] = v.GetY();
-    m[row][2] = v.GetZ();
-    m[row][3] = v.GetW();
+    m[offset<order>(row, 0)] = v.GetX();
+    m[offset<order>(row, 1)] = v.GetY();
+    m[offset<order>(row, 2)] = v.GetZ();
+    m[offset<order>(row, 3)] = v.GetW();
 }
 
 void RMatrix4::SetColumn(std::int32_t column, const Vector4& v)
 {
     ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
-    m[0][column] = v.GetX();
-    m[1][column] = v.GetY();
-    m[2][column] = v.GetZ();
-    m[3][column] = v.GetW();
+    m[offset<order>(0, column)] = v.GetX();
+    m[offset<order>(1, column)] = v.GetY();
+    m[offset<order>(2, column)] = v.GetZ();
+    m[offset<order>(3, column)] = v.GetW();
 }
 
 Vector4 RMatrix4::GetRow(std::int32_t row) const
 {
     ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
-    return Vector4(m[row][0], m[row][1], m[row][2], m[row][3]);
+    return Vector4(
+        m[offset<order>(row, 0)],
+        m[offset<order>(row, 1)],
+        m[offset<order>(row, 2)],
+        m[offset<order>(row, 3)]);
 }
 
 Vector4 RMatrix4::GetColumn(std::int32_t column) const
 {
     ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
-    return Vector4(m[0][column], m[1][column], m[2][column], m[3][column]);
+    return Vector4(
+        m[offset<order>(0, column)],
+        m[offset<order>(1, column)],
+        m[offset<order>(2, column)],
+        m[offset<order>(3, column)]);
 }
 
 RMatrix4& RMatrix4::operator = (const RMatrix4& m)
 {
-    std::memcpy(this->m, m.m, sizeof(float) * num_elements);
+    this->m = m.m;
     return *this;
 }
 
 RMatrix4& RMatrix4::operator = (const Array& m)
 {
-    std::memcpy(this->m, m.data(), sizeof(float) * num_elements);
+    this->m = m;
     return *this;
 }
 
 RMatrix4& RMatrix4::operator += (const RMatrix4& m)
 {
-    for(auto i = 0; i < order; i++)
-        for(auto j = 0; j < order; j++)
-            this->m[i][j] += m.m[i][j];
+    for(auto i = 0; i < num_elements; i++)
+        this->m[i] += m.m[i];
     return *this;
 }
 
 RMatrix4& RMatrix4::operator -= (const RMatrix4& m)
 {
-    for(auto i = 0; i < order; i++)
-        for(auto j = 0; j < order; j++)
-            this->m[i][j] -= m.m[i][j];
+    for(auto i = 0; i < num_elements; i++)
+        this->m[i] -= m.m[i];
     return *this;
 }
 
@@ -120,9 +140,9 @@ RMatrix4& RMatrix4::operator *= (const RMatrix4& m)
         for(auto col = 0; col < order; col++){
             elem = 0.0f;
             for(auto i = 0; i < order; i++){
-                elem += temp.m[row][i] * m.m[i][col];
+                elem += temp.m[offset<order>(row, i)] * m.m[offset<order>(i, col)];
             }
-            this->m[row][col] = elem;
+            this->m[offset<order>(row, col)] = elem;
         }
     }
     return *this;
@@ -130,18 +150,16 @@ RMatrix4& RMatrix4::operator *= (const RMatrix4& m)
 
 RMatrix4& RMatrix4::operator *= (float scale)
 {
-    for(auto i = 0; i < order; i++)
-        for(auto j = 0; j < order; j++)
-            this->m[i][j] *= scale;
+    for(auto i = 0; i < num_elements; i++)
+        this->m[i] *= scale;
     return *this;
 }
 
 RMatrix4& RMatrix4::operator /= (float divisor)
 {
     ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
-    for(auto i = 0; i < order; i++)
-        for(auto j = 0; j < order; j++)
-            this->m[i][j] /= divisor;
+    for(auto i = 0; i < num_elements; i++)
+        this->m[i] /= divisor;
     return *this;
 }
 
@@ -149,14 +167,14 @@ float& RMatrix4::operator () (std::int32_t row, std::int32_t column)
 {
     ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
     ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
-    return m[row][column];
+    return m[offset<order>(row, column)];
 }
 
 const float& RMatrix4::operator () (std::int32_t row, std::int32_t column) const
 {
     ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
     ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
-    return m[row][column];
+    return m[offset<order>(row, column)];
 }
 
 float RMatrix4::Determinant() const
@@ -217,9 +235,9 @@ std::string RMatrix4::ToString() const
 {
     std::ostringstream oss;
     for(auto i = 0; i < RMatrix4::order; i++){
-        oss << "RMatrix4[" << i << "]{" << m[i][0];
+        oss << "RMatrix4[" << i << "]{" << m[offset<order>(i, 0)];
         for(auto j = 1; j < RMatrix4::order; j++){
-            oss << ", " << m[i][j];
+            oss << ", " << m[offset<order>(i, j)];
         }
         oss << "}" << std::endl;
     }
@@ -231,7 +249,7 @@ RMatrix4 RMatrix4::Transpose(const RMatrix4& m)
     RMatrix4 result;
     for(auto i = 0; i < order; i++)
         for(auto j = 0; j < order; j++)
-            result.m[j][i] = m.m[i][j];
+            result.m[offset<order>(j, i)] = m.m[offset<order>(i, j)];
     return result;
 }
 
