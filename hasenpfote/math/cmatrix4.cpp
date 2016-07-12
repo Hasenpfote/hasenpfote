@@ -49,7 +49,7 @@ CMatrix4::CMatrix4(const Vector4& v1, const Vector4& v2, const Vector4& v3, cons
     std::memcpy(this->m[3], static_cast<const float*>(v4), bytes);
 }
 
-CMatrix4::CMatrix4(const std::array<float, num_elements>& m)
+CMatrix4::CMatrix4(const Array& m)
 {
     *this = m;
 }
@@ -90,7 +90,7 @@ CMatrix4& CMatrix4::operator = (const CMatrix4& m)
     return *this;
 }
 
-CMatrix4& CMatrix4::operator = (const std::array<float, num_elements>& m)
+CMatrix4& CMatrix4::operator = (const Array& m)
 {
     std::memcpy(this->m, m.data(), sizeof(float) * num_elements);
     return *this;

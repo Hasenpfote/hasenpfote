@@ -19,6 +19,9 @@ class RMatrix4 final
     static constexpr std::int32_t num_elements = order * order;
 
 public:
+    using Array = std::array<float, num_elements>;
+
+public:
 /* Constructor */
 
     RMatrix4() = default;
@@ -29,7 +32,7 @@ public:
         float m31, float m32, float m33, float m34,
         float m41, float m42, float m43, float m44);
     RMatrix4(const Vector4& v1, const Vector4& v2, const Vector4& v3, const Vector4& v4);
-    explicit RMatrix4(const std::array<float, num_elements>& m);
+    explicit RMatrix4(const Array& m);
 
 /* Destructor */
 
@@ -51,7 +54,7 @@ public:
 /* Assignment operator */
 
     RMatrix4& operator = (const RMatrix4& m);
-    RMatrix4& operator = (const std::array<float, num_elements>& m);
+    RMatrix4& operator = (const Array& m);
     RMatrix4& operator += (const RMatrix4& m);
     RMatrix4& operator -= (const RMatrix4& m);
     RMatrix4& operator *= (const RMatrix4& m);

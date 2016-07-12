@@ -19,6 +19,9 @@ class CMatrix4 final
     static constexpr std::int32_t num_elements = order * order;
 
 public:
+    using Array = std::array<float, num_elements>;
+
+public:
 /* Constructor */
 
     CMatrix4() = default;
@@ -29,7 +32,7 @@ public:
         float m31, float m32, float m33, float m34,
         float m41, float m42, float m43, float m44);
     CMatrix4(const Vector4& v1, const Vector4& v2, const Vector4& v3, const Vector4& v4);
-    explicit CMatrix4(const std::array<float, num_elements>& m);
+    explicit CMatrix4(const Array& m);
 
 /* Destructor */
 
@@ -51,7 +54,7 @@ public:
 /* Assignment operator */
 
     CMatrix4& operator = (const CMatrix4& m);
-    CMatrix4& operator = (const std::array<float, num_elements>& m);
+    CMatrix4& operator = (const Array& m);
     CMatrix4& operator += (const CMatrix4& m);
     CMatrix4& operator -= (const CMatrix4& m);
     CMatrix4& operator *= (const CMatrix4& m);
