@@ -63,6 +63,9 @@ public:
 
 /* Subscript operator */
 
+    float& operator [] (std::int32_t index);
+    const float& operator [] (std::int32_t index) const;
+
     float& operator () (std::int32_t row, std::int32_t column);
     const float& operator () (std::int32_t row, std::int32_t column) const;
 

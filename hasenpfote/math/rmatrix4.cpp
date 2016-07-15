@@ -163,6 +163,18 @@ RMatrix4& RMatrix4::operator /= (float divisor)
     return *this;
 }
 
+float& RMatrix4::operator [] (std::int32_t index)
+{
+    ASSERT_MSG((index >= 0) && (index < num_elements), "Index out of bounds.");
+    return m[index];
+}
+
+const float& RMatrix4::operator [] (std::int32_t index) const
+{
+    ASSERT_MSG((index >= 0) && (index < num_elements), "Index out of bounds.");
+    return m[index];
+}
+
 float& RMatrix4::operator () (std::int32_t row, std::int32_t column)
 {
     ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
