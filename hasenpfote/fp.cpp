@@ -1,7 +1,33 @@
-﻿#include <iomanip>
+﻿#include <ostream>
+#include <iomanip>
 #include "fp.h"
 
 namespace hasenpfote{
+
+std::ostream& operator << (std::ostream& os, const FP16& fp)
+{
+    const auto flags = os.flags();
+    os << "FP16{s=" << fp.sign;
+    os << std::setfill('0');
+    os << " e=0x" << std::hex << std::setw(2) << fp.exponent << "(" << std::dec << fp.exponent << ")";
+    os << " m=0x" << std::hex << std::setw(3) << fp.mantissa << "(" << std::dec << fp.mantissa << ")";
+    os << " u=0x" << std::hex << std::setw(4) << fp.u << "}";
+    os.flags(flags);
+    return os;
+}
+
+std::ostream& operator << (std::ostream& os, const FP32& fp)
+{
+    const auto flags = os.flags();
+    os << "FP32{s=" << fp.sign;
+    os << std::setfill('0');
+    os << " e=0x" << std::hex << std::setw(2) << fp.exponent << "(" << std::dec << fp.exponent << ")";
+    os << " m=0x" << std::hex << std::setw(6) << fp.mantissa << "(" << std::dec << fp.mantissa << ")";
+    os << " u=0x" << std::hex << std::setw(8) << fp.u << "}";
+    os << " f=" << std::fixed << fp.f << "}";
+    os.flags(flags);
+    return os;
+}
 
 std::uint16_t float_to_half(float f)
 {
@@ -61,31 +87,6 @@ float half_to_float(std::uint16_t h)
     }
     o.u |= (fp.u & 0x8000) << 16;   // sign bit
     return o.f;
-}
-
-std::ostream& operator<<(std::ostream& os, const FP16& fp)
-{
-    const auto flags = os.flags();
-    os << "FP16{s=" << fp.sign;
-    os << std::setfill('0');
-    os << " e=0x" << std::hex << std::setw(2) << fp.exponent << "(" << std::dec << fp.exponent << ")";
-    os << " m=0x" << std::hex << std::setw(3) << fp.mantissa << "(" << std::dec << fp.mantissa << ")";
-    os << " u=0x" << std::hex << std::setw(4) << fp.u << "}";
-    os.flags(flags);
-    return os;
-}
-
-std::ostream& operator<<(std::ostream& os, const FP32& fp)
-{
-    const auto flags = os.flags();
-    os << "FP32{s=" << fp.sign;
-    os << std::setfill('0');
-    os << " e=0x" << std::hex << std::setw(2) << fp.exponent << "(" << std::dec << fp.exponent << ")";
-    os << " m=0x" << std::hex << std::setw(6) << fp.mantissa << "(" << std::dec << fp.mantissa << ")";
-    os << " u=0x" << std::hex << std::setw(8) << fp.u << "}";
-    os << " f=" << std::fixed << fp.f << "}";
-    os.flags(flags);
-    return os;
 }
 
 }

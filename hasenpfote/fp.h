@@ -6,7 +6,6 @@
 */
 #pragma once
 #include <cstdint>
-#include <ostream>
 
 namespace hasenpfote{
 
@@ -19,8 +18,6 @@ union FP16
         std::uint16_t exponent : 5;
         std::uint16_t sign : 1;
     };
-/* Debug */
-    friend std::ostream& operator<<(std::ostream& os, const FP16& fp);
 };
 
 union FP32
@@ -33,9 +30,10 @@ union FP32
         std::uint32_t exponent : 8;
         std::uint32_t sign : 1;
     };
-/* Debug */
-    friend std::ostream& operator<<(std::ostream& os, const FP32& fp);
 };
+
+std::ostream& operator << (std::ostream& os, const FP16& fp);
+std::ostream& operator << (std::ostream& os, const FP32& fp);
 
 std::uint16_t float_to_half(float f);
 float half_to_float(std::uint16_t h);
