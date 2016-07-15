@@ -140,5 +140,8 @@
     <ClInclude Include="log\logger.h">
       <Filter>ヘッダー ファイル\log</Filter>
     </ClInclude>
+    <ClInclude Include="deprecated.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

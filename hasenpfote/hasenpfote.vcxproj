@@ -155,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assert.h" />
+    <ClInclude Include="deprecated.h" />
     <ClInclude Include="fp.h" />
     <ClInclude Include="hasenpfote.h" />
     <ClInclude Include="log\appender.h" />
