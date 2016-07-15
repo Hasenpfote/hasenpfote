@@ -53,7 +53,7 @@ ComplexNumber& ComplexNumber::operator *= (float scale)
 
 ComplexNumber& ComplexNumber::operator /= (float divisor)
 {
-    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     re /= divisor;
     im /= divisor;
     return *this;
@@ -77,7 +77,7 @@ float ComplexNumber::Argument() const
 void ComplexNumber::Normalize()
 {
     const float n = Norm();
-    ASSERT_MSG(n > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(n > 0.0f, "Division by zero.");
     re /= n;
     im /= n;
 }
@@ -85,7 +85,7 @@ void ComplexNumber::Normalize()
 ComplexNumber ComplexNumber::Normalized() const
 {
     const float n = Norm();
-    ASSERT_MSG(n > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(n > 0.0f, "Division by zero.");
     return ComplexNumber(re / n, im / n);
 }
 
@@ -97,7 +97,7 @@ ComplexNumber ComplexNumber::Polar(float rho, float theta)
 ComplexNumber ComplexNumber::Inverse(const ComplexNumber& c)
 {
     const float nsq = c.NormSquared();
-    ASSERT_MSG(nsq > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(nsq > 0.0f, "Division by zero.");
     return ComplexNumber(c.re / nsq, -c.im / nsq);
 }
 

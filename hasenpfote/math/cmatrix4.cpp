@@ -70,7 +70,7 @@ CMatrix4::CMatrix4(const Array& m)
 
 void CMatrix4::SetRow(std::int32_t row, const Vector4& v)
 {
-    ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
+    HASENPFOTE_ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
     m[offset<order>(row, 0)] = v.GetX();
     m[offset<order>(row, 1)] = v.GetY();
     m[offset<order>(row, 2)] = v.GetZ();
@@ -79,7 +79,7 @@ void CMatrix4::SetRow(std::int32_t row, const Vector4& v)
 
 void CMatrix4::SetColumn(std::int32_t column, const Vector4& v)
 {
-    ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
+    HASENPFOTE_ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
     m[offset<order>(0, column)] = v.GetX();
     m[offset<order>(1, column)] = v.GetY();
     m[offset<order>(2, column)] = v.GetZ();
@@ -88,7 +88,7 @@ void CMatrix4::SetColumn(std::int32_t column, const Vector4& v)
 
 Vector4 CMatrix4::GetRow(std::int32_t row) const
 {
-    ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
+    HASENPFOTE_ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
     return Vector4(
         m[offset<order>(row, 0)],
         m[offset<order>(row, 1)],
@@ -98,7 +98,7 @@ Vector4 CMatrix4::GetRow(std::int32_t row) const
 
 Vector4 CMatrix4::GetColumn(std::int32_t column) const
 {
-    ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
+    HASENPFOTE_ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
     return Vector4(
         m[offset<order>(0, column)],
         m[offset<order>(1, column)],
@@ -157,7 +157,7 @@ CMatrix4& CMatrix4::operator *= (float scale)
 
 CMatrix4& CMatrix4::operator /= (float divisor)
 {
-    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     for(auto i = 0; i < num_elements; i++)
         this->m[i] /= divisor;
     return *this;
@@ -165,27 +165,27 @@ CMatrix4& CMatrix4::operator /= (float divisor)
 
 float& CMatrix4::operator [] (std::int32_t index)
 {
-    ASSERT_MSG((index >= 0) && (index < num_elements), "Index out of bounds.");
+    HASENPFOTE_ASSERT_MSG((index >= 0) && (index < num_elements), "Index out of bounds.");
     return m[index];
 }
 
 const float& CMatrix4::operator [] (std::int32_t index) const
 {
-    ASSERT_MSG((index >= 0) && (index < num_elements), "Index out of bounds.");
+    HASENPFOTE_ASSERT_MSG((index >= 0) && (index < num_elements), "Index out of bounds.");
     return m[index];
 }
 
 float& CMatrix4::operator () (std::int32_t row, std::int32_t column)
 {
-    ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
-    ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
+    HASENPFOTE_ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
+    HASENPFOTE_ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
     return m[offset<order>(row, column)];
 }
 
 const float& CMatrix4::operator () (std::int32_t row, std::int32_t column) const
 {
-    ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
-    ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
+    HASENPFOTE_ASSERT_MSG((row >= 0) && (row < order), "Row index out of bounds.");
+    HASENPFOTE_ASSERT_MSG((column >= 0) && (column < order), "Column index out of bounds.");
     return m[offset<order>(row, column)];
 }
 
@@ -393,7 +393,7 @@ CMatrix4 CMatrix4::RotationZ(float angle)
 
 CMatrix4 CMatrix4::RotationAxis(Vector3 axis, float angle)
 {
-    ASSERT_MSG(almost_equals(1.0f, axis.Magnitude(), 1), "Axis is not an unit vector.");
+    HASENPFOTE_ASSERT_MSG(almost_equals(1.0f, axis.Magnitude(), 1), "Axis is not an unit vector.");
     const float x = axis.GetX();
     const float y = axis.GetY();
     const float z = axis.GetZ();
@@ -423,9 +423,9 @@ CMatrix4 CMatrix4::LookAt(Vector3 position, Vector3 target, Vector3 up)
 
 CMatrix4 CMatrix4::Perspective(float fovy, float aspectRatio, float near, float far)
 {
-    ASSERT(fovy > 0.0f);
-    ASSERT(aspectRatio > 0.0f);
-    ASSERT(far > near);
+    HASENPFOTE_ASSERT(fovy > 0.0f);
+    HASENPFOTE_ASSERT(aspectRatio > 0.0f);
+    HASENPFOTE_ASSERT(far > near);
     const float cot = 1.0f / std::tanf(fovy * 0.5f);
     const float q = 1.0f / (far - near);
     return CMatrix4(
@@ -437,9 +437,9 @@ CMatrix4 CMatrix4::Perspective(float fovy, float aspectRatio, float near, float 
 
 CMatrix4 CMatrix4::Frustum(float top, float bottom, float left, float right, float near, float far)
 {
-    ASSERT(top > bottom);
-    ASSERT(right > left);
-    ASSERT(far > near);
+    HASENPFOTE_ASSERT(top > bottom);
+    HASENPFOTE_ASSERT(right > left);
+    HASENPFOTE_ASSERT(far > near);
     const float w = 2.0f * near / (right - left);
     const float h = 2.0f * near / (top - bottom);
     const float q = 1.0f / (far - near);
@@ -454,9 +454,9 @@ CMatrix4 CMatrix4::Frustum(float top, float bottom, float left, float right, flo
 
 CMatrix4 CMatrix4::Ortho(float top, float bottom, float left, float right, float near, float far)
 {
-    ASSERT(top > bottom);
-    ASSERT(right > left);
-    ASSERT(far > near);
+    HASENPFOTE_ASSERT(top > bottom);
+    HASENPFOTE_ASSERT(right > left);
+    HASENPFOTE_ASSERT(far > near);
     const float w = 2.0f / (right - left);
     const float h = 2.0f / (top - bottom);
     const float q = 1.0f / (far - near);

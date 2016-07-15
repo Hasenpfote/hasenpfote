@@ -80,7 +80,7 @@ Vector4& Vector4::operator *= (float scale)
 
 Vector4& Vector4::operator /= (float divisor)
 {
-    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     x /= divisor;
     y /= divisor;
     z /= divisor;
@@ -101,7 +101,7 @@ float Vector4::MagnitudeSquared() const
 void Vector4::Normalize()
 {
     const float mag = Magnitude();
-    ASSERT_MSG(mag > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(mag > 0.0f, "Division by zero.");
     *this /= mag;
 }
 

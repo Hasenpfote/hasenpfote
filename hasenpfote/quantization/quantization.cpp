@@ -36,7 +36,7 @@ static math::Quaternion::Component get_component_by_abs_max(const math::Quaterni
 
 std::uint32_t encode32_quat(const math::Quaternion& q)
 {
-    ASSERT_MSG(math::almost_equals(1.0f, q.Norm(), 1), "Not an unit quaternion.");
+    HASENPFOTE_ASSERT_MSG(math::almost_equals(1.0f, q.Norm(), 1), "Not an unit quaternion.");
     constexpr auto bit = 10;
     constexpr auto max = 1.0f / math::root_two<float>();    // + 1/sqrt(2)
     constexpr auto min = -max;                              // - 1/sqrt(2)
@@ -109,7 +109,7 @@ std::uint32_t encode32_quat(const math::Quaternion& q)
             }
             break;
         default:
-            ASSERT_MSG(false, "Unknown type.");
+            HASENPFOTE_ASSERT_MSG(false, "Unknown type.");
             break;
     }
     return result;
@@ -168,7 +168,7 @@ math::Quaternion decode32_quat(std::uint32_t q)
             }
             break;
         default:
-            ASSERT_MSG(false, "Unknown type.");
+            HASENPFOTE_ASSERT_MSG(false, "Unknown type.");
             break;
     }
     return math::Quaternion(w, x, y, z);

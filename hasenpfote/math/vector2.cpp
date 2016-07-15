@@ -63,7 +63,7 @@ Vector2& Vector2::operator *= (float scale)
 
 Vector2& Vector2::operator /= (float divisor)
 {
-    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     x /= divisor;
     y /= divisor;
     return *this;
@@ -82,7 +82,7 @@ float Vector2::MagnitudeSquared() const
 void Vector2::Normalize()
 {
     const float mag = Magnitude();
-    ASSERT_MSG(mag > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(mag > 0.0f, "Division by zero.");
     *this /= mag;
 }
 
@@ -154,8 +154,8 @@ bool Vector2::IsPerpendicular(const Vector2& a, const Vector2& b)
 
 bool Vector2::IsParallel(const Vector2& a, const Vector2& b)
 {
-    ASSERT_MSG(almost_equals(1.0f, a.MagnitudeSquared(), 1), "Not an unit vector.");
-    ASSERT_MSG(almost_equals(1.0f, b.MagnitudeSquared(), 1), "Not an unit vector.");
+    HASENPFOTE_ASSERT_MSG(almost_equals(1.0f, a.MagnitudeSquared(), 1), "Not an unit vector.");
+    HASENPFOTE_ASSERT_MSG(almost_equals(1.0f, b.MagnitudeSquared(), 1), "Not an unit vector.");
     return !(std::abs(DotProduct(a, b)) < 1.0f);
 }
 

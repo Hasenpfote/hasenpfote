@@ -93,7 +93,7 @@ Quaternion& Quaternion::operator *= (float scale)
 
 Quaternion& Quaternion::operator /= (float divisor)
 {
-    ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
     w /= divisor;
     x /= divisor;
     y /= divisor;
@@ -119,7 +119,7 @@ float Quaternion::NormV() const
 void Quaternion::Normalize()
 {
     const float n = Norm();
-    ASSERT_MSG(n > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(n > 0.0f, "Division by zero.");
     w /= n;
     x /= n;
     y /= n;
@@ -129,7 +129,7 @@ void Quaternion::Normalize()
 Quaternion Quaternion::Normalized() const
 {
     const float n = Norm();
-    ASSERT_MSG(n > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(n > 0.0f, "Division by zero.");
     return Quaternion(w / n, x / n, y / n, z / n);
 }
 
@@ -171,7 +171,7 @@ RMatrix4 Quaternion::ToRotationRMatrix() const
 
 AxisAngle Quaternion::ToAxisAngle() const
 {
-    ASSERT_MSG(almost_equals(1.0f, Norm(), 1), "Quaternion is not an unit quaternion.");
+    HASENPFOTE_ASSERT_MSG(almost_equals(1.0f, Norm(), 1), "Quaternion is not an unit quaternion.");
     AxisAngle result;
     const float i = NormV();
     if(i > 0.0f){    // TODO: 少し余裕を持たせる
@@ -195,7 +195,7 @@ Vector3 Quaternion::Rotate(const Vector3& v) const
 Quaternion Quaternion::Inverse(const Quaternion& q)
 {
     const float nsq = q.NormSquared();
-    ASSERT_MSG(nsq > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(nsq > 0.0f, "Division by zero.");
     return Quaternion(q.w / nsq, -q.x / nsq, -q.y / nsq, -q.z / nsq);
 }
 
@@ -229,7 +229,7 @@ Quaternion Quaternion::LnU(const Quaternion& q)
     const float i = q.NormV();
     const float phi = std::atan2f(i, q.w);
     const float norm = q.Norm();
-    ASSERT_MSG(almost_equals(1.0f, norm, 1), "Not an unit quaternion.");
+    HASENPFOTE_ASSERT_MSG(almost_equals(1.0f, norm, 1), "Not an unit quaternion.");
 
     float _rcp_sinc;
     if(i > 0.0f){    // TODO: 少し余裕を持たせる
@@ -257,7 +257,7 @@ Quaternion Quaternion::Exp(const Quaternion& q)
 
 Quaternion Quaternion::ExpP(const Quaternion& q)
 {
-    ASSERT_MSG(almost_equals(0.0f, q.w, 1), "Not a purely imaginary quaternion.");
+    HASENPFOTE_ASSERT_MSG(almost_equals(0.0f, q.w, 1), "Not a purely imaginary quaternion.");
     const float i = q.NormV();
     float _sinc;
     if(i > 0.0f){    // TODO: 少し余裕を持たせる
@@ -281,7 +281,7 @@ Quaternion Quaternion::PowU(const Quaternion& q, float exponent)
 
 Quaternion Quaternion::RotationAxis(const Vector3& axis, float angle)
 {
-    ASSERT_MSG(almost_equals(1.0f, axis.Magnitude(), 1), "Axis is not an unit quaternion.");
+    HASENPFOTE_ASSERT_MSG(almost_equals(1.0f, axis.Magnitude(), 1), "Axis is not an unit quaternion.");
     const float half_angle = angle * 0.5f;
     const float s = std::sinf(half_angle);
     return Quaternion(std::cosf(half_angle), axis * s);
@@ -302,20 +302,20 @@ Quaternion Quaternion::RotationShortestArc(const Vector3& a, const Vector3& b)
 
 Quaternion Quaternion::RotationalDifference(const Quaternion& a, const Quaternion& b)
 {
-    ASSERT_MSG(almost_equals(1.0f, a.Norm(), 1), "Not an unit quaternion.");
-    ASSERT_MSG(almost_equals(1.0f, b.Norm(), 1), "Not an unit quaternion.");
+    HASENPFOTE_ASSERT_MSG(almost_equals(1.0f, a.Norm(), 1), "Not an unit quaternion.");
+    HASENPFOTE_ASSERT_MSG(almost_equals(1.0f, b.Norm(), 1), "Not an unit quaternion.");
     return Quaternion::Conjugate(a) * b;
 }
 
 Quaternion Quaternion::Lerp(const Quaternion& a, const Quaternion& b, float t)
 {
-    ASSERT_MSG(t >= 0.0f && t <= 1.0f, "Not in range.");
+    HASENPFOTE_ASSERT_MSG(t >= 0.0f && t <= 1.0f, "Not in range.");
     return a + t * (b - a);
 }
 
 Quaternion Quaternion::Slerp(const Quaternion& a, const Quaternion& b, float t, bool allowFlip)
 {
-    ASSERT_MSG(t >= 0.0f && t <= 1.0f, "Not in range.");
+    HASENPFOTE_ASSERT_MSG(t >= 0.0f && t <= 1.0f, "Not in range.");
     bool flipped = false;           // a または b の反転を表す
     float cos_t = Quaternion::DotProduct(a, b);
 
@@ -344,7 +344,7 @@ Quaternion Quaternion::Slerp(const Quaternion& a, const Quaternion& b, float t, 
 
 Quaternion Quaternion::Squad(const Quaternion& p, const Quaternion& q, const Quaternion& a, const Quaternion& b, float t)
 {
-    ASSERT_MSG(t >= 0.0f && t <= 1.0f, "Not in range.");
+    HASENPFOTE_ASSERT_MSG(t >= 0.0f && t <= 1.0f, "Not in range.");
     return Slerp(Slerp(p, q, t, false), Slerp(a, b, t, false), 2.0f*t*(1.0f-t), false);
 }
 
