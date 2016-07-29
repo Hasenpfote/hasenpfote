@@ -437,8 +437,8 @@ CMatrix4 CMatrix4::Perspective(float fovy, float aspectRatio, float near, float 
 
 CMatrix4 CMatrix4::Frustum(float top, float bottom, float left, float right, float near, float far)
 {
-    HASENPFOTE_ASSERT(top > bottom);
-    HASENPFOTE_ASSERT(right > left);
+    HASENPFOTE_ASSERT(std::fabsf(top - bottom) > 0.0f);
+    HASENPFOTE_ASSERT(std::fabsf(right - left) > 0.0f);
     HASENPFOTE_ASSERT(far > near);
     const float w = 2.0f * near / (right - left);
     const float h = 2.0f * near / (top - bottom);
@@ -454,8 +454,8 @@ CMatrix4 CMatrix4::Frustum(float top, float bottom, float left, float right, flo
 
 CMatrix4 CMatrix4::Ortho(float top, float bottom, float left, float right, float near, float far)
 {
-    HASENPFOTE_ASSERT(top > bottom);
-    HASENPFOTE_ASSERT(right > left);
+    HASENPFOTE_ASSERT(std::fabsf(top - bottom) > 0.0f);
+    HASENPFOTE_ASSERT(std::fabsf(right - left) > 0.0f);
     HASENPFOTE_ASSERT(far > near);
     const float w = 2.0f / (right - left);
     const float h = 2.0f / (top - bottom);
