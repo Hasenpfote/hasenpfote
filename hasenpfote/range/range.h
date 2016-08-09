@@ -7,11 +7,12 @@
 #pragma once
 #include <iterator>
 #include <type_traits>
+#include <cassert>
 #include "detail/range_iterator_base.h"
 
 namespace hasenpfote{ namespace range{
 
-template <typename T>
+template <typename T, bool AllowReverseOrder = true>
 class range final
 {
     static_assert(std::is_integral<T>::value, "T must be a integer type.");
@@ -52,16 +53,17 @@ public:
     range(const T& first, const T& last)
         : first(first), last(last)
     {
+        assert(AllowReverseOrder || (last >= first));
     }
 
     iterator begin() const
     {
-        return iterator(first, (last >= first)? +1 : -1);
+        return iterator(first, AllowReverseOrder? ((last >= first)? +1 : -1) : +1);
     }
 
     iterator end() const
     {
-        return iterator(last, (last >= first) ? +1 : -1);
+        return iterator(last, AllowReverseOrder? ((last >= first)? +1 : -1) : +1);
     }
 
 private:
