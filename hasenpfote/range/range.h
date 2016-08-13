@@ -15,8 +15,12 @@ namespace hasenpfote{ namespace range{
 template <typename T, bool AllowReverseOrder = true>
 class range final
 {
-    static_assert(std::is_integral<T>::value, "T must be a integer type.");
-    static_assert(!std::is_same<T, bool>::value, "bool type is not supported.");
+    static_assert(
+        std::is_integral<T>::value &&
+        !std::is_const<T>::value &&
+        !std::is_volatile<T>::value &&
+        !std::is_same<T, bool>::value,
+        "The type T must be a integer type (except for bool type) without cv-qualifier.");
 
 public:
     struct iterator final : public detail::range_iterator_base<T>
