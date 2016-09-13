@@ -152,6 +152,7 @@
     <ClCompile Include="math\vector3.cpp" />
     <ClCompile Include="math\vector4.cpp" />
     <ClCompile Include="quantization\quantization.cpp" />
+    <ClCompile Include="unicode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assert.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="quantization\quantization.h" />
     <ClInclude Include="range\detail\range_iterator_base.h" />
     <ClInclude Include="range\range.h" />
+    <ClInclude Include="unicode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
