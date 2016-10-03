@@ -66,8 +66,7 @@ public:
     void SetTimestampFormat(const std::string& format);
 
 private:
-    using AppenderMap = std::unordered_map<std::type_index, std::shared_ptr<IAppender>>;
-    AppenderMap appender;
+    std::unordered_map<std::type_index, std::shared_ptr<IAppender>> appender;
     Severity severity;
     std::string format;
     std::mutex m;
@@ -82,7 +81,7 @@ void Logger::Impl::AddAppender(const std::type_index& index, const std::shared_p
 void Logger::Impl::RemoveAppender(const std::type_index& index)
 {
     std::lock_guard<std::mutex> lg(m);
-    AppenderMap::const_iterator it = appender.find(index);
+    decltype(appender)::const_iterator it = appender.find(index);
     if(it != appender.cend()){
         appender.erase(it);
     }
