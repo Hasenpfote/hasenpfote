@@ -108,6 +108,9 @@
     <ClInclude Include="..\..\..\..\..\sources\range\range.h">
       <Filter>ヘッダー ファイル\range</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\sources\quantization\quantization.h">
+      <Filter>ヘッダー ファイル\quantization</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\sources\fp.cpp">

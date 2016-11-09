@@ -192,6 +192,7 @@ xcopy /Y /R /I "$(TargetDir)*.*" "$(SolutionDir)..\..\..\..\lib\vc2015\$(Configu
     <ClInclude Include="..\..\..\..\..\sources\math\vector2.h" />
     <ClInclude Include="..\..\..\..\..\sources\math\vector3.h" />
     <ClInclude Include="..\..\..\..\..\sources\math\vector4.h" />
+    <ClInclude Include="..\..\..\..\..\sources\quantization\quantization.h" />
     <ClInclude Include="..\..\..\..\..\sources\range\detail\range_iterator_base.h" />
     <ClInclude Include="..\..\..\..\..\sources\range\range.h" />
     <ClInclude Include="..\..\..\..\..\sources\unicode.h" />
