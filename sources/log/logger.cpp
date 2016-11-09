@@ -17,7 +17,8 @@ static std::string GetTimestamp(std::string& format)
 #ifdef _WIN32
     localtime_s(&tm, &time);
 #else
-#error Platform not supported.
+//#error Platform not supported.
+    tm = *std::localtime(&time);
 #endif
     std::stringstream ss;
     ss << std::put_time(&tm, format.c_str());
