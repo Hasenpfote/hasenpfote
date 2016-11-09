@@ -1,4 +1,5 @@
 ﻿#include <string>
+#include <ostream>
 #include "axis_angle.h"
 
 namespace hasenpfote{ namespace math{
