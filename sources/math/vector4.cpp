@@ -1,7 +1,8 @@
-﻿#include "../assert.h"
+﻿#include <cmath>
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include "../assert.h"
 #include "utility.h"
 #include "vector3.h"
 #include "cmatrix4.h"
@@ -80,7 +81,7 @@ Vector4& Vector4::operator *= (float scale)
 
 Vector4& Vector4::operator /= (float divisor)
 {
-    HASENPFOTE_ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(std::abs(divisor) > 0.0f, "Division by zero.");
     x /= divisor;
     y /= divisor;
     z /= divisor;
@@ -90,7 +91,7 @@ Vector4& Vector4::operator /= (float divisor)
 
 float Vector4::Magnitude() const
 {
-    return std::sqrtf(MagnitudeSquared());
+    return std::sqrt(MagnitudeSquared());
 }
 
 float Vector4::MagnitudeSquared() const

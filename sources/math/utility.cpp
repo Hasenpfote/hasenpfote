@@ -1,5 +1,6 @@
-﻿#include <iostream>
-#include <cstdint>
+﻿#include <cstdint>
+#include <cmath>
+#include <iostream>
 #include "constants.h"
 #include "utility.h"
 

@@ -1,5 +1,6 @@
-﻿#include "../assert.h"
+﻿#include <cmath>
 #include <string>
+#include "../assert.h"
 #include "utility.h"
 #include "vector3.h"
 #include "cmatrix4.h"
@@ -93,7 +94,7 @@ Quaternion& Quaternion::operator *= (float scale)
 
 Quaternion& Quaternion::operator /= (float divisor)
 {
-    HASENPFOTE_ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(std::abs(divisor) > 0.0f, "Division by zero.");
     w /= divisor;
     x /= divisor;
     y /= divisor;
@@ -108,12 +109,12 @@ float Quaternion::NormSquared() const
 
 float Quaternion::Norm() const
 {
-    return std::sqrtf(NormSquared());
+    return std::sqrt(NormSquared());
 }
 
 float Quaternion::NormV() const
 {
-    return std::sqrtf(x * x + y * y + z * z);
+    return std::sqrt(x * x + y * y + z * z);
 }
 
 void Quaternion::Normalize()
@@ -177,7 +178,7 @@ AxisAngle Quaternion::ToAxisAngle() const
     if(i > 0.0f){    // TODO: 少し余裕を持たせる
         float rcp_i = 1.0f / i;
         result.SetAxis(Vector3(x * rcp_i, y * rcp_i, z * rcp_i));
-        result.SetAngle(2.0f * std::atan2f(i, w));
+        result.SetAngle(2.0f * std::atan2(i, w));
     }
     else{
         result.SetAxis(Vector3::ZERO);
@@ -212,7 +213,7 @@ float Quaternion::DotProduct(const Quaternion& a, const Quaternion& b)
 Quaternion Quaternion::Ln(const Quaternion& q)
 {
     const float i = q.NormV();
-    const float phi = std::atan2f(i, q.w);
+    const float phi = std::atan2(i, q.w);
     const float norm = q.Norm();
     float coef;
     if(i > 0.0){    // TODO: 少し余裕を持たせる
@@ -221,13 +222,13 @@ Quaternion Quaternion::Ln(const Quaternion& q)
     else{
         coef = rcp_sinc(phi) / norm;
     }
-    return Quaternion(std::logf(norm), coef * q.x, coef * q.y, coef * q.z);
+    return Quaternion(std::log(norm), coef * q.x, coef * q.y, coef * q.z);
 }
 
 Quaternion Quaternion::LnU(const Quaternion& q)
 {
     const float i = q.NormV();
-    const float phi = std::atan2f(i, q.w);
+    const float phi = std::atan2(i, q.w);
     const float norm = q.Norm();
     HASENPFOTE_ASSERT_MSG(almost_equals(1.0f, norm, 1), "Not an unit quaternion.");
 
@@ -246,13 +247,13 @@ Quaternion Quaternion::Exp(const Quaternion& q)
     const float i = q.NormV();
     float _sinc;
     if(i > 0.0f) {    // TODO: 少し余裕を持たせる
-        _sinc = std::sinf(i) / i;
+        _sinc = std::sin(i) / i;
     }
     else{
         _sinc = sinc(i);
     }
-    const float exp_w = std::expf(q.w);
-    return Quaternion(exp_w * std::cosf(i), exp_w * q.x * _sinc, exp_w * q.y * _sinc, exp_w * q.z * _sinc);
+    const float exp_w = std::exp(q.w);
+    return Quaternion(exp_w * std::cos(i), exp_w * q.x * _sinc, exp_w * q.y * _sinc, exp_w * q.z * _sinc);
 }
 
 Quaternion Quaternion::ExpP(const Quaternion& q)
@@ -261,12 +262,12 @@ Quaternion Quaternion::ExpP(const Quaternion& q)
     const float i = q.NormV();
     float _sinc;
     if(i > 0.0f){    // TODO: 少し余裕を持たせる
-        _sinc = std::sinf(i) / i;
+        _sinc = std::sin(i) / i;
     }
     else{
         _sinc = sinc(i);
     }
-    return Quaternion(std::cosf(i), q.x * _sinc, q.y * _sinc, q.z * _sinc);
+    return Quaternion(std::cos(i), q.x * _sinc, q.y * _sinc, q.z * _sinc);
 }
 
 Quaternion Quaternion::Pow(const Quaternion& q, float exponent)
@@ -283,8 +284,8 @@ Quaternion Quaternion::RotationAxis(const Vector3& axis, float angle)
 {
     HASENPFOTE_ASSERT_MSG(almost_equals(1.0f, axis.Magnitude(), 1), "Axis is not an unit quaternion.");
     const float half_angle = angle * 0.5f;
-    const float s = std::sinf(half_angle);
-    return Quaternion(std::cosf(half_angle), axis * s);
+    const float s = std::sin(half_angle);
+    return Quaternion(std::cos(half_angle), axis * s);
 }
 
 Quaternion Quaternion::RotationAxis(const AxisAngle& a)
@@ -295,7 +296,7 @@ Quaternion Quaternion::RotationAxis(const AxisAngle& a)
 Quaternion Quaternion::RotationShortestArc(const Vector3& a, const Vector3& b)
 {
     const float d = Vector3::DotProduct(a, b);
-    const float s = std::sqrtf((1.0f + d) * 2.0f);
+    const float s = std::sqrt((1.0f + d) * 2.0f);
     const Vector3 c = Vector3::CrossProduct(a, b);
     return Quaternion(s * 0.5f, c / s);
 }
@@ -325,16 +326,16 @@ Quaternion Quaternion::Slerp(const Quaternion& a, const Quaternion& b, float t, 
     }
 
     float fx, fy;
-    if(almost_equals(1.0f, std::fabsf(cos_t), 1)){
+    if(almost_equals(1.0f, std::abs(cos_t), 1)){
         // |cosθ| ≈ 1 → sinθ ≈ 0 の時は線形補間に帰着
         fx = 1.0f - t;
         fy = t;
     }
     else{
-        const float theta = std::acosf(cos_t);
-        const float cosec = 1.0f / std::sinf(theta);
-        fx = std::sinf(theta * (1.0f - t)) * cosec;
-        fy = std::sinf(theta * t) * cosec;
+        const float theta = std::acos(cos_t);
+        const float cosec = 1.0f / std::sin(theta);
+        fx = std::sin(theta * (1.0f - t)) * cosec;
+        fy = std::sin(theta * t) * cosec;
     }
     if(flipped){
         fy = -fy;

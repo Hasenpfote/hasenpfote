@@ -1,4 +1,5 @@
-﻿#include "../assert.h"
+﻿#include <cmath>
+#include "../assert.h"
 #include "complex_number.h"
 
 namespace hasenpfote{ namespace math{
@@ -53,7 +54,7 @@ ComplexNumber& ComplexNumber::operator *= (float scale)
 
 ComplexNumber& ComplexNumber::operator /= (float divisor)
 {
-    HASENPFOTE_ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(std::abs(divisor) > 0.0f, "Division by zero.");
     re /= divisor;
     im /= divisor;
     return *this;
@@ -66,12 +67,12 @@ float ComplexNumber::NormSquared() const
 
 float ComplexNumber::Norm() const
 {
-    return std::sqrtf(NormSquared());
+    return std::sqrt(NormSquared());
 }
 
 float ComplexNumber::Argument() const
 {
-    return std::atan2f(im, re);
+    return std::atan2(im, re);
 }
 
 void ComplexNumber::Normalize()
@@ -91,7 +92,7 @@ ComplexNumber ComplexNumber::Normalized() const
 
 ComplexNumber ComplexNumber::Polar(float rho, float theta)
 {
-    return ComplexNumber(rho * std::cosf(theta), rho * std::sinf(theta));
+    return ComplexNumber(rho * std::cos(theta), rho * std::sin(theta));
 }
 
 ComplexNumber ComplexNumber::Inverse(const ComplexNumber& c)
@@ -108,24 +109,24 @@ ComplexNumber ComplexNumber::Conjugate(const ComplexNumber& c)
 
 ComplexNumber ComplexNumber::Pow(const ComplexNumber& c, float exponent)
 {
-    const float rho = std::powf(c.Norm(), exponent);
+    const float rho = std::pow(c.Norm(), exponent);
     const float arg = c.Argument() * exponent;
     return Polar(rho, arg);
 }
 
 ComplexNumber ComplexNumber::Ln(const ComplexNumber& c)
 {
-    return ComplexNumber(std::logf(c.Norm()), c.Argument());
+    return ComplexNumber(std::log(c.Norm()), c.Argument());
 }
 
 ComplexNumber ComplexNumber::Exp(const ComplexNumber& c)
 {
-    return Polar(std::expf(c.re), c.im);
+    return Polar(std::exp(c.re), c.im);
 }
 
 ComplexNumber ComplexNumber::Rotation(float angle)
 {
-    return ComplexNumber(std::cosf(angle), std::sinf(angle));
+    return ComplexNumber(std::cos(angle), std::sin(angle));
 }
 
 ComplexNumber operator + (const ComplexNumber& c)

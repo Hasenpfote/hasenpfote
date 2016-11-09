@@ -1,4 +1,6 @@
-﻿#include <string>
+﻿#include <cmath>
+#include <cstring>
+#include <string>
 #include <sstream>
 #include "../assert.h"
 #include "utility.h"
@@ -157,7 +159,7 @@ CMatrix4& CMatrix4::operator *= (float scale)
 
 CMatrix4& CMatrix4::operator /= (float divisor)
 {
-    HASENPFOTE_ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(std::abs(divisor) > 0.0f, "Division by zero.");
     for(auto i = 0; i < num_elements; i++)
         this->m[i] /= divisor;
     return *this;
@@ -208,7 +210,7 @@ Quaternion CMatrix4::ToRotationQuaternion() const
     const float tr = Trace();
     if(tr >= 1.0f){
         // |w| が最大
-        w = std::sqrtf(tr) * 0.5f;
+        w = std::sqrt(tr) * 0.5f;
         const float rcp_4w = 1.0f / (4.0f * w);  // 1/4|w|
         x = (m32 - m23) * rcp_4w;    // 4wx / 4|w|
         y = (m13 - m31) * rcp_4w;    // 4wy / 4|w|
@@ -217,7 +219,7 @@ Quaternion CMatrix4::ToRotationQuaternion() const
     else
     if((m11 > m22) && (m11 > m33)){
         // |x| が最大
-        x = std::sqrtf(m11 - m22 - m33 + 1.0f) * 0.5f;
+        x = std::sqrt(m11 - m22 - m33 + 1.0f) * 0.5f;
         const float rcp_4x = 1.0f / (4.0f * x);  // 1/4|x|
         y = (m12 + m21) * rcp_4x;    // 4xy / 4|x|
         z = (m13 + m31) * rcp_4x;    // 4xz / 4|x|
@@ -226,7 +228,7 @@ Quaternion CMatrix4::ToRotationQuaternion() const
     else
     if((m22 > m33)){
         // |y| が最大
-        y = std::sqrtf(m22 - m33 - m11 + 1.0f) * 0.5f;
+        y = std::sqrt(m22 - m33 - m11 + 1.0f) * 0.5f;
         const float rcp_4y = 1.0f / (4.0f * y);  // 1/4|y|
         x = (m12 + m21) * rcp_4y;    // 4xy / 4|y|
         z = (m32 + m23) * rcp_4y;    // 4yz / 4|y|
@@ -234,7 +236,7 @@ Quaternion CMatrix4::ToRotationQuaternion() const
     }
     else{
         // |z| が最大
-        z = std::sqrtf(m33 - m11 - m22 + 1.0f) * 0.5f;
+        z = std::sqrt(m33 - m11 - m22 + 1.0f) * 0.5f;
         const float rcp_4z = 1.0f / (4.0f * z);  // 1/4|z|
         x = (m13 + m31) * rcp_4z;    // 4xz / 4|z|
         y = (m32 + m23) * rcp_4z;    // 4yz / 4|z|
@@ -272,7 +274,7 @@ CMatrix4 CMatrix4::Inverse(const CMatrix4& m, float* determinant)
     if(determinant)
         *determinant = det;
 
-    if(almost_equals(0.0f, std::fabsf(det), 1))
+    if(almost_equals(0.0f, std::abs(det), 1))
         return CMatrix4::IDENTITY;
 
     // 余因子行列を求める.
@@ -309,7 +311,7 @@ CMatrix4 CMatrix4::InverseAffineTransformation(const CMatrix4& m, float* determi
     if(determinant)
         *determinant = det;
 
-    if(almost_equals(0.0f, std::fabsf(det), 1))
+    if(almost_equals(0.0f, std::abs(det), 1))
         return CMatrix4::IDENTITY;
 
     CMatrix4 result;
@@ -358,8 +360,8 @@ CMatrix4 CMatrix4::Scaling(float x, float y, float z)
 CMatrix4 CMatrix4::RotationX(float angle)
 {
     CMatrix4 result = CMatrix4::IDENTITY;
-    const float s = std::sinf(angle);
-    const float c = std::cosf(angle);
+    const float s = std::sin(angle);
+    const float c = std::cos(angle);
     result.m22 = c;
     result.m23 =-s;
     result.m32 = s;
@@ -370,8 +372,8 @@ CMatrix4 CMatrix4::RotationX(float angle)
 CMatrix4 CMatrix4::RotationY(float angle)
 {
     CMatrix4 result = CMatrix4::IDENTITY;
-    const float s = std::sinf(angle);
-    const float c = std::cosf(angle);
+    const float s = std::sin(angle);
+    const float c = std::cos(angle);
     result.m11 = c;
     result.m13 = s;
     result.m31 =-s;
@@ -382,8 +384,8 @@ CMatrix4 CMatrix4::RotationY(float angle)
 CMatrix4 CMatrix4::RotationZ(float angle)
 {
     CMatrix4 result = CMatrix4::IDENTITY;
-    const float s = std::sinf(angle);
-    const float c = std::cosf(angle);
+    const float s = std::sin(angle);
+    const float c = std::cos(angle);
     result.m11 = c;
     result.m12 =-s;
     result.m21 = s;
@@ -397,8 +399,8 @@ CMatrix4 CMatrix4::RotationAxis(Vector3 axis, float angle)
     const float x = axis.GetX();
     const float y = axis.GetY();
     const float z = axis.GetZ();
-    const float s = std::sinf(angle);
-    const float c = std::cosf(angle);
+    const float s = std::sin(angle);
+    const float c = std::cos(angle);
     const float vers = 1.0f - c;
     return CMatrix4(
         x*x*vers+c,   x*y*vers-z*s, x*z*vers+y*s, 0.0f,
@@ -426,7 +428,7 @@ CMatrix4 CMatrix4::Perspective(float fovy, float aspectRatio, float near, float 
     HASENPFOTE_ASSERT(fovy > 0.0f);
     HASENPFOTE_ASSERT(aspectRatio > 0.0f);
     HASENPFOTE_ASSERT(far > near);
-    const float cot = 1.0f / std::tanf(fovy * 0.5f);
+    const float cot = 1.0f / std::tan(fovy * 0.5f);
     const float q = 1.0f / (far - near);
     return CMatrix4(
         cot/aspectRatio, 0.0f, 0.0f,          0.0f,
@@ -437,8 +439,8 @@ CMatrix4 CMatrix4::Perspective(float fovy, float aspectRatio, float near, float 
 
 CMatrix4 CMatrix4::Frustum(float top, float bottom, float left, float right, float near, float far)
 {
-    HASENPFOTE_ASSERT(std::fabsf(top - bottom) > 0.0f);
-    HASENPFOTE_ASSERT(std::fabsf(right - left) > 0.0f);
+    HASENPFOTE_ASSERT(std::abs(top - bottom) > 0.0f);
+    HASENPFOTE_ASSERT(std::abs(right - left) > 0.0f);
     HASENPFOTE_ASSERT(far > near);
     const float w = 2.0f * near / (right - left);
     const float h = 2.0f * near / (top - bottom);
@@ -454,8 +456,8 @@ CMatrix4 CMatrix4::Frustum(float top, float bottom, float left, float right, flo
 
 CMatrix4 CMatrix4::Ortho(float top, float bottom, float left, float right, float near, float far)
 {
-    HASENPFOTE_ASSERT(std::fabsf(top - bottom) > 0.0f);
-    HASENPFOTE_ASSERT(std::fabsf(right - left) > 0.0f);
+    HASENPFOTE_ASSERT(std::abs(top - bottom) > 0.0f);
+    HASENPFOTE_ASSERT(std::abs(right - left) > 0.0f);
     HASENPFOTE_ASSERT(far > near);
     const float w = 2.0f / (right - left);
     const float h = 2.0f / (top - bottom);

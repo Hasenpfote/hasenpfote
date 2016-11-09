@@ -16,18 +16,18 @@ namespace hasenpfote{ namespace quantization{
 static math::Quaternion::Component get_component_by_abs_max(const math::Quaternion& q)
 {
     auto component = math::Quaternion::Component::W;
-    auto max = std::fabsf(q.GetW());
-    auto abs = std::fabsf(q.GetX());
+    auto max = std::abs(q.GetW());
+    auto abs = std::abs(q.GetX());
     if(abs > max){
         component = math::Quaternion::Component::X;
         max = abs;
     }
-    abs = std::fabsf(q.GetY());
+    abs = std::abs(q.GetY());
     if(abs > max){
         component = math::Quaternion::Component::Y;
         max = abs;
     }
-    abs = std::fabsf(q.GetZ());
+    abs = std::abs(q.GetZ());
     if(abs > max){
         component = math::Quaternion::Component::Z;
     }
@@ -131,7 +131,7 @@ math::Quaternion decode32_quat(std::uint32_t q)
                 x = math::remap(x, -1.0f, 1.0f, min, max);
                 y = math::remap(y, -1.0f, 1.0f, min, max);
                 z = math::remap(z, -1.0f, 1.0f, min, max);
-                w = std::sqrtf(1.0f - x * x - y * y - z * z);
+                w = std::sqrt(1.0f - x * x - y * y - z * z);
             }
             break;
         case math::Quaternion::Component::X:
@@ -142,7 +142,7 @@ math::Quaternion decode32_quat(std::uint32_t q)
                 w = math::remap(w, -1.0f, 1.0f, min, max);
                 y = math::remap(y, -1.0f, 1.0f, min, max);
                 z = math::remap(z, -1.0f, 1.0f, min, max);
-                x = std::sqrtf(1.0f - w * w - y * y - z * z);
+                x = std::sqrt(1.0f - w * w - y * y - z * z);
             }
             break;
         case math::Quaternion::Component::Y:
@@ -153,7 +153,7 @@ math::Quaternion decode32_quat(std::uint32_t q)
                 w = math::remap(w, -1.0f, 1.0f, min, max);
                 x = math::remap(x, -1.0f, 1.0f, min, max);
                 z = math::remap(z, -1.0f, 1.0f, min, max);
-                y = std::sqrtf(1.0f - w * w - x * x - z * z);
+                y = std::sqrt(1.0f - w * w - x * x - z * z);
             }
             break;
         case math::Quaternion::Component::Z:
@@ -164,7 +164,7 @@ math::Quaternion decode32_quat(std::uint32_t q)
                 w = math::remap(w, -1.0f, 1.0f, min, max);
                 x = math::remap(x, -1.0f, 1.0f, min, max);
                 y = math::remap(y, -1.0f, 1.0f, min, max);
-                z = std::sqrtf(1.0f - w * w - x * x - y * y);
+                z = std::sqrt(1.0f - w * w - x * x - y * y);
             }
             break;
         default:

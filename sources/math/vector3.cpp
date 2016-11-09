@@ -1,7 +1,8 @@
-﻿#include "../assert.h"
+﻿#include <cmath>
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include "../assert.h"
 #include "utility.h"
 #include "cmatrix4.h"
 #include "rmatrix4.h"
@@ -77,7 +78,7 @@ Vector3& Vector3::operator *= (float scale)
 
 Vector3& Vector3::operator /= (float divisor)
 {
-    HASENPFOTE_ASSERT_MSG(std::fabsf(divisor) > 0.0f, "Division by zero.");
+    HASENPFOTE_ASSERT_MSG(std::abs(divisor) > 0.0f, "Division by zero.");
     x /= divisor;
     y /= divisor;
     z /= divisor;
@@ -86,7 +87,7 @@ Vector3& Vector3::operator /= (float divisor)
 
 float Vector3::Magnitude() const
 {
-    return std::sqrtf(MagnitudeSquared());
+    return std::sqrt(MagnitudeSquared());
 }
 
 float Vector3::MagnitudeSquared() const
@@ -131,7 +132,7 @@ Vector3 Vector3::CrossProduct(const Vector3& a, const Vector3& b)
 
 float Vector3::Angle(const Vector3& a, const Vector3& b)
 {
-    return std::acosf(DotProduct(a, b));
+    return std::acos(DotProduct(a, b));
 }
 
 Vector3 Vector3::Lerp(const Vector3& a, const Vector3& b, float t)
@@ -148,9 +149,9 @@ Vector3 Vector3::Slerp(const Vector3& a, const Vector3& b, float t)
     Vector3 result;
     const float theta = Angle(a, b);
     if(theta > 0.0f){
-        const float fx = std::sinf(theta * (1.0f - t));
-        const float fy = std::sinf(theta * t);
-        const float cosec = 1.0f / std::sinf(theta);
+        const float fx = std::sin(theta * (1.0f - t));
+        const float fy = std::sin(theta * t);
+        const float cosec = 1.0f / std::sin(theta);
         result.x = (fx * a.x + fy * b.x) * cosec;
         result.y = (fx * a.y + fy * b.y) * cosec;
         result.z = (fx * a.z + fy * b.z) * cosec;
