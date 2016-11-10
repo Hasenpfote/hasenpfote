@@ -51,14 +51,14 @@ std::uint16_t float_to_half(float f)
             if(newexp >= -10){
                 // 非正規化数の処理(2^-25 <= newexp <= 2^0)
                 std::uint32_t mant = fp.mantissa | 0x800000; // hidden 1 bit
-                o.mantissa = mant >> (14 - newexp);
+                o.mantissa = 0x3ff & (mant >> (14 - newexp));
                 if((mant >> (13 - newexp)) & 1) // round
                     o.u++;  // 指数ビットにオーバーフローする可能性があるが問題ない
             }
         }
         else{
-            o.exponent = newexp;
-            o.mantissa = fp.mantissa >> 13;
+            o.exponent = 0x1f & newexp;
+            o.mantissa = 0x3ff & fp.mantissa >> 13;
             if(fp.mantissa & 0x1000)    // round
                 o.u++;  // 指数ビットにオーバーフローする可能性があるが問題ない
         }

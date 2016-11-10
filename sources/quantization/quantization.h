@@ -40,7 +40,7 @@ template <unsigned N> std::uint16_t encode_snorm(float x)
 template <unsigned N> float decode_snorm(std::uint16_t x)
 {
     static_assert(((N) > 1) && ((N) <= 16), "Out of range.");
-    return decode_unorm<(N)- 1>(x >> 1) * ((x & 0x1) ? -1.0f : 1.0f);
+    return decode_unorm<(N)- 1>(static_cast<std::uint16_t>(x >> 1)) * ((x & 0x1) ? -1.0f : 1.0f);
 }
 
 /*!
