@@ -1,4 +1,4 @@
-#include <cassert>
+﻿#include <cassert>
 #include <sstream>
 #include <chrono>
 #include <iomanip>
@@ -112,7 +112,7 @@ void Logger::Impl::SetTimestampFormat(const std::string& format)
 {
     std::lock_guard<std::mutex> lg(m);
     this->format = format;
-};
+}
 
 Logger::Logger()
     : pimpl(std::make_unique<Impl>())
