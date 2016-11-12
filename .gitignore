@@ -1,12 +1,4 @@
 *.suo
 *.db
-builds/windows/vc2015/hasenpfote/Debug/
-builds/windows/vc2015/hasenpfote/hasenpfote/Debug/
-builds/windows/vc2015/hasenpfote/hasenpfote/Release/
-builds/windows/vc2015/hasenpfote/hasenpfote/x64/Debug/
-builds/windows/vc2015/hasenpfote/hasenpfote/x64/Release/
-builds/windows/vc2015/hasenpfote/Release/
-builds/windows/vc2015/hasenpfote/x64/Debug/
-builds/windows/vc2015/hasenpfote/x64/Release/
-include/
-lib/
+builds/
+deploy/
