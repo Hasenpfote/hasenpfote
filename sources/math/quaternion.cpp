@@ -7,6 +7,7 @@
 #include "rmatrix4.h"
 #include "axis_angle.h"
 #include "quaternion.h"
+#include "approximate_funcs.h"
 
 namespace hasenpfote{ namespace math{
 
