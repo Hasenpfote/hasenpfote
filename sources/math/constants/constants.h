@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 namespace hasenpfote{ namespace math{
+namespace constants{
 
 #define HASENPFOTE_DEFINE_MATH_CONSTANT(name, value)\
     template <typename T>\
@@ -56,5 +57,5 @@ BOOST_DEFINE_MATH_CONSTANT(one_div_root_two_pi, 0.398942280401432677939946059934
 #define M_SQRT1_2  0.707106781186547524401  // 1/sqrt(2)
 
 */
-
+}
 }}
