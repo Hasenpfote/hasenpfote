@@ -82,7 +82,7 @@ void RollingFileAppender::Write(const std::string& buffer)
         ofs->open(filepath);
     }
     else
-    if(max_files > 1 && (GetNextPosition(*ofs, buffer) >= max_file_size)){
+    if(max_files > 1 && (GetNextPosition(*ofs, buffer) >= static_cast<std::streampos>(max_file_size))){
         ofs->close();
         // rolling files.
         for(auto i = max_files - 2; i >= 0; i--){
