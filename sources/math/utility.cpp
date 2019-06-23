@@ -1,6 +1,7 @@
 ﻿#include <cstdint>
 #include <cmath>
 #include <iostream>
+#include <cstring>
 #include "utility.h"
 
 namespace hasenpfote{ namespace math{
@@ -25,8 +26,12 @@ bool almost_equals(float a, float b, std::uint32_t max_ulps)
     if(std::isnan(a) || std::isnan(b))
         return false;
     // Sign check
-    auto ia = *reinterpret_cast<std::int32_t*>(&a);
-    auto ib = *reinterpret_cast<std::int32_t*>(&b);
+    //auto ia = *reinterpret_cast<std::int32_t*>(&a);
+    //auto ib = *reinterpret_cast<std::int32_t*>(&b);
+    std::int32_t ia, ib;
+    std::memcpy(&ia, &a, sizeof(ia));
+    std::memcpy(&ib, &b, sizeof(ib));
+
     if((ia & 0x80000000) != (ib & 0x80000000)){
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
@@ -68,8 +73,12 @@ bool almost_equals(double a, double b, std::uint64_t max_ulps)
     if(std::isnan(a) || std::isnan(b))
         return false;
     // Sign check
-    auto ia = *reinterpret_cast<std::int64_t*>(&a);
-    auto ib = *reinterpret_cast<std::int64_t*>(&b);
+    //auto ia = *reinterpret_cast<std::int64_t*>(&a);
+    //auto ib = *reinterpret_cast<std::int64_t*>(&b);
+    std::int64_t ia, ib;
+    std::memcpy(&ia, &a, sizeof(ia));
+    std::memcpy(&ib, &b, sizeof(ib));
+
     if((ia & 0x8000000000000000L) != (ib & 0x8000000000000000L)){
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
