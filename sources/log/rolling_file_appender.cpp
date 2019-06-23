@@ -4,10 +4,8 @@
 
 namespace hasenpfote{ namespace log{
 
-#if (__cplusplus > 201402L) || defined(_MSC_VER) && (_MSC_VER > 1900)
-#error Function not implemented.
-#elif defined(_MSC_VER) && (_MSC_VER == 1900)
-static std::tr2::sys::path BuildFilePath(const std::tr2::sys::path& filepath, int number)
+#if (__cplusplus > 201402L) || (defined(_MSC_VER) && (_MSVC_LANG > 201402L))
+static std::filesystem::path BuildFilePath(const std::filesystem::path& filepath, int number)
 {
     auto new_filepath(filepath);
     new_filepath.replace_extension("");
@@ -18,15 +16,15 @@ static std::tr2::sys::path BuildFilePath(const std::tr2::sys::path& filepath, in
     return new_filepath;
 }
 
-static bool ExistsFile(const std::tr2::sys::path& filepath)
+static bool ExistsFile(const std::filesystem::path& filepath)
 {
-    return std::tr2::sys::exists(filepath);
+    return std::filesystem::exists(filepath);
 }
 
-static bool RenameFile(const std::tr2::sys::path& old_filepath, const std::tr2::sys::path& new_filepath)
+static bool RenameFile(const std::filesystem::path& old_filepath, const std::filesystem::path& new_filepath)
 {
     std::error_code ret;
-    std::tr2::sys::rename(old_filepath, new_filepath, ret);
+    std::filesystem::rename(old_filepath, new_filepath, ret);
     return (ret)? false : true;
 }
 #else
@@ -70,10 +68,8 @@ RollingFileAppender::RollingFileAppender(const std::string& filepath, int max_fi
     assert(max_files > 0);
 }
 
-#if (__cplusplus > 201402L) || defined(_MSC_VER) && (_MSC_VER > 1900)
-#error Function not implemented.
-#elif defined(_MSC_VER) && (_MSC_VER == 1900)
-RollingFileAppender::RollingFileAppender(const std::tr2::sys::path& filepath, int max_files, std::size_t max_file_size)
+#if (__cplusplus > 201402L) || (defined(_MSC_VER) && (_MSVC_LANG > 201402L))
+RollingFileAppender::RollingFileAppender(const std::filesystem::path& filepath, int max_files, std::size_t max_file_size)
     : ofs(std::make_unique<std::ofstream>()), filepath(filepath), max_files(max_files), max_file_size(max_file_size)
 {
     assert(max_files > 0);

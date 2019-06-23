@@ -7,10 +7,8 @@ FileAppender::FileAppender(const std::string& filepath)
 {
 }
 
-#if (__cplusplus > 201402L) || (defined(_MSC_VER) && (_MSC_VER > 1900))
-#error Function not implemented.
-#elif defined(_MSC_VER) && (_MSC_VER == 1900)
-FileAppender::FileAppender(const std::tr2::sys::path& filepath)
+#if (__cplusplus > 201402L) || (defined(_MSC_VER) && (_MSVC_LANG > 201402L))
+FileAppender::FileAppender(const std::filesystem::path& filepath)
     : ofs(std::make_unique<std::ofstream>(filepath))
 {
 }
