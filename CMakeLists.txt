@@ -1,11 +1,11 @@
-﻿cmake_minimum_required(VERSION 3.5)
+﻿cmake_minimum_required(VERSION 3.7)
 
 project(hasenpfote CXX)
 
 # Check if supported platforms and compilers.
 if(WIN32)
     if(MSVC)
-        if(MSVC14)
+        if(MSVC_VERSION GREATER_EQUAL 1900)
         else()
             message(FATAL_ERROR "You are using an unsupported MSVC version!")
         endif()
